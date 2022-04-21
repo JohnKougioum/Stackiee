@@ -149,8 +149,46 @@
               >Login</a
             >
           </li>
-          <li>
-            <img src="../assets/images/UserIcon.svg" alt="user" />
+          <li class="cursor-pointer relative">
+            <img
+              @click="this.showMenu = !this.showMenu"
+              src="../assets/images/UserIcon.svg"
+              alt="user"
+            />
+            <div
+              v-if="this.showMenu"
+              class="
+                absolute
+                top-14
+                -right-1
+                w-32
+                h-40
+                flex flex-row
+                justify-center
+                pt-3
+                bg-white
+                shadow-md
+                rounded
+              "
+            >
+              <div class="flex flex-col">
+                <ul class="space-y-2">
+                  <li class="flex flex-row items-center">
+                    <img
+                      src="../assets/images/profileIconMenu.svg"
+                      alt="profileicon"
+                    />
+                    <router-link to="/" class="pl-2 text-base"
+                      >Profile</router-link
+                    >
+                  </li>
+                  <li class="flex flex-row items-center">
+                    <img src="../assets/images/logoutIcon.svg" alt="logout" />
+                    <a href="" class="pl-2 text-base">Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </li>
         </ul>
       </div>
@@ -164,6 +202,7 @@ export default {
   data() {
     return {
       searchParams: "",
+      showMenu: false,
     };
   },
   methods: {

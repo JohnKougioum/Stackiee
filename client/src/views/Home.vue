@@ -15,7 +15,26 @@ export default {
   components: {
     Posts,
   },
-  created() {},
+  data() {
+    return {
+      currentPage: 0,
+    };
+  },
+  mounted() {
+    document.addEventListener("scroll", (e) => {
+      if (
+        document.documentElement.scrollTop + window.innerHeight ===
+        document.documentElement.offsetHeight
+      ) {
+        this.nextPagePosts();
+      }
+    });
+  },
+  methods: {
+    nextPagePosts() {
+      console.log("s");
+    },
+  },
 };
 </script>
 
