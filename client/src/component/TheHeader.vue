@@ -1,6 +1,17 @@
 <template>
   <nav
-    class="bg-white border-gray-200 px-2 sm:px-4 py-4 rounded dark:bg-gray-800"
+    class="
+      fixed
+      top-0
+      w-full
+      bg-white
+      border-gray-200
+      px-2
+      sm:px-4
+      py-4
+      rounded
+      dark:bg-gray-800
+    "
   >
     <div
       class="
@@ -21,7 +32,7 @@
       </router-link>
       <div class="flex md:order-1 pl-2 sm:w-auto md:w-2/5">
         <div class="relative mr-3 md:mr-0 md:block w-full">
-          <form @submit="Search" action="/search/" method="get">
+          <form @submit.prevent="Search">
             <div
               class="
                 flex
@@ -207,7 +218,8 @@ export default {
   },
   methods: {
     Search: function (e) {
-      if (!this.searchParams.trim().length) e.preventDefault();
+      if (!this.searchParams.trim().length) return;
+      this.$router.push({ name: "Search", query: { s: this.searchParams } });
     },
   },
 };

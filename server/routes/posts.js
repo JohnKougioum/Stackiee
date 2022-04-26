@@ -7,10 +7,34 @@ const verify = require("./verifyToken");
 
 // get posts
 router.get("/", async (req, res) => {
+  const page = parseInt(req.query.page);
+  const limit = 5;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
   try {
     // const posts = await Post.find();
-    const posts = await Post.find().sort({ $natural: -1 });
-    res.json(posts);
+    const results = {};
+
+    if (endIndex < (await Post.countDocuments()))
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+
+    results.posts = await Post.find()
+      .skip(startIndex)
+      .limit(limit)
+      .sort({ $natural: -1 });
+    res.json(results);
   } catch (err) {
     res.json({ message: err });
   }
@@ -32,14 +56,42 @@ router.get("/test", verify, async (req, res) => {
 
 router.get("/search/results", async (req, res) => {
   const searchParams = req.query.search;
+  const page = parseInt(req.query.page);
+  const limit = 5;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  // const posts = await Post.find();
+  const results = {};
+
+  if (
+    endIndex <
+    (await Post.countDocuments({ $text: { $search: `${searchParams}` } }))
+  )
+    results.next = {
+      page: page + 1,
+      limit: limit,
+    };
+
+  if (startIndex > 0) {
+    results.previous = {
+      page: page - 1,
+      limit: limit,
+    };
+  }
+
   try {
-    const searchedPost = await Post.find(
+    results.posts = await Post.find(
       {
         $text: { $search: `${searchParams}` },
       },
       { score: { $meta: "textScore" } }
-    ).sort({ score: { $meta: "textScore" } });
-    res.json(searchedPost);
+    )
+      .skip(startIndex)
+      .limit(limit)
+      .sort({ score: { $meta: "textScore" } });
+    res.json(results);
   } catch (error) {
     console.log(error);
   }

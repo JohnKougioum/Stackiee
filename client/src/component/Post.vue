@@ -17,8 +17,9 @@
       <div class="flex flex-col">
         <div>
           <h1 class="text-sm text-gray-600">
-            Δημοσιευτηκε απο <span class="text-blue-600">it185201</span> στις
-            20/4/2020
+            Δημοσιευτηκε απο
+            <span class="text-blue-600">{{ details.user }}</span> στις
+            {{ String(details.createtAt).substring(0, 10) }}
           </h1>
         </div>
         <div>
@@ -27,7 +28,7 @@
       </div>
     </div>
     <div class="px-7 md:pl-20 md:pr-14 md:text-2xl">
-      <h1>Δήλωση μαθημάτων</h1>
+      <h1>{{ details.title }}</h1>
     </div>
     <div class="break-line py-1 flex justify-center">
       <div class="h-0.5 border bg-gray-300 rounded w-5/6"></div>
@@ -35,7 +36,7 @@
     <div class="flex flex-col px-7 md:pl-20 md:pr-14">
       <div>
         <p class="md:text-lg">
-          thelo na dilwso mathimata alla den me afinei to system asdas
+          {{ details.body }}
         </p>
       </div>
       <div class="pt-6 pb-2">
@@ -51,6 +52,9 @@
 <script>
 export default {
   name: "Post",
+  props: {
+    details: Object,
+  },
 };
 </script>
 
