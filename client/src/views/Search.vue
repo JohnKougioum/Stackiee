@@ -1,6 +1,7 @@
 <template>
   <div class="h-auto w-full mt-24 flex md:flex md:justify-center">
-    <div class="flex w-full lg:w-1/2 justify-center items-center">
+    <div class="flex w-full lg:w-1/2 justify-center items-center flex-col">
+      <h1>{{ this.err }} {{ this.err ? this.$route.query.s : "" }}</h1>
       <div class="custom-width">
         <Posts :posts="this.posts" />
       </div>
@@ -13,6 +14,7 @@ import {
   SET_SEARCHED_POSTS,
   GET_SEARCHED_POSTS,
   SET_MORE_SEARCHED_POSTS,
+  GET_NOFOUND_ERROR,
 } from "../store/defaults-type";
 import { mapGetters, mapActions } from "vuex";
 import Posts from "../component/Posts.vue";
@@ -38,6 +40,7 @@ export default {
   computed: {
     ...mapGetters({
       posts: GET_SEARCHED_POSTS,
+      err: GET_NOFOUND_ERROR,
     }),
     search() {
       return this.$route.query.s;

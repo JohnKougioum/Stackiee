@@ -3,8 +3,9 @@ import {
   GET_SEARCHED_POSTS,
   SET_SEARCH_MORE_DATA,
   SET_NEXT_SEARCH_PAGE,
-  FETCH_MORE_SEARCHED_POSTS,
   SET_MORE_SEARCHED_POSTS,
+  SET_NOFOUND_ERROR,
+  GET_NOFOUND_ERROR,
 } from "../defaults-type";
 import axios from "axios";
 
@@ -13,6 +14,7 @@ export default {
     searchedPosts: [],
     nextSearchPage: 1,
     searchMoreData: true,
+    noFoundError: "",
   },
   mutations: {
     [SET_SEARCHED_POSTS]: (state, posts) => (state.searchedPosts = posts),
@@ -23,6 +25,7 @@ export default {
         state.searchedPosts.push(element);
       });
     },
+    [SET_NOFOUND_ERROR]: (state, error) => (state.noFoundError = error),
   },
   actions: {
     [SET_SEARCHED_POSTS]: async ({ state, commit }, { query }) => {
@@ -37,6 +40,14 @@ export default {
         "http://localhost:5000/api/posts/search/results/",
         request
       );
+
+      let error = "No posts found for";
+      if (posts.data.posts == "") commit(SET_NOFOUND_ERROR, error);
+      else {
+        error = "";
+        commit(SET_NOFOUND_ERROR, error);
+      }
+
       if (posts.data.next) {
         let next = posts.data.next.page;
         commit(SET_NEXT_SEARCH_PAGE, next);
@@ -72,5 +83,6 @@ export default {
   },
   getters: {
     [GET_SEARCHED_POSTS]: (state) => state.searchedPosts,
+    [GET_NOFOUND_ERROR]: (state) => state.noFoundError,
   },
 };
