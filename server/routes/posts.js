@@ -34,6 +34,7 @@ router.get("/", async (req, res) => {
       .skip(startIndex)
       .limit(limit)
       .sort({ $natural: -1 });
+
     res.json(results);
   } catch (err) {
     res.json({ message: err });
