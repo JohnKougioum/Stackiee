@@ -189,7 +189,7 @@
                       src="../assets/images/profileIconMenu.svg"
                       alt="profileicon"
                     />
-                    <router-link to="/" class="pl-2 text-base"
+                    <router-link to="/profile" class="pl-2 text-base"
                       >Profile</router-link
                     >
                   </li>
