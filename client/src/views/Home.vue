@@ -18,6 +18,7 @@ export default {
   },
   mounted() {
     this.FETCH_POSTS();
+    //TODO add this to a mixin
     document.addEventListener("scroll", (e) => {
       if (
         document.documentElement.scrollTop + window.innerHeight ===
