@@ -26,7 +26,7 @@ export const store = createStore({
   },
   actions: {
     async FETCH_POSTS({ state, commit }) {
-      if (state.moreData == false) return;
+      if (state.moreData === false) return;
 
       const posts = await axios.get(
         "http://localhost:5000/api/posts?page=" + state.nextPage

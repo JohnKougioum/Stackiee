@@ -1,8 +1,8 @@
 <template>
-  <div class="h-auto w-full mt-24 flex md:flex md:justify-center">
+  <div class="st-container flex md:flex md:justify-center">
     <div class="flex w-full lg:w-1/2 justify-center items-center">
       <div class="custom-width">
-        <Posts :posts="getPosts" />
+        <PostsArea :posts="getPosts" />
       </div>
     </div>
   </div>
@@ -10,11 +10,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Posts from "../component/Posts.vue";
+import PostsArea from "../component/PostsArea.vue";
 export default {
   name: "Home",
   components: {
-    Posts,
+    PostsArea,
   },
   mounted() {
     this.FETCH_POSTS();

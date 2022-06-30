@@ -1,27 +1,9 @@
 <template>
   <nav
-    class="
-      fixed
-      top-0
-      w-full
-      bg-white
-      border-gray-200
-      px-2
-      sm:px-4
-      py-4
-      rounded
-      dark:bg-gray-800
-    "
+    class="fixed top-0 w-full bg-white border-gray-200 px-2 sm:px-4 py-4 rounded dark:bg-gray-800"
   >
     <div
-      class="
-        container
-        flex flex-wrap
-        justify-between
-        items-center
-        mx-auto
-        flex-row
-      "
+      class="container flex flex-wrap justify-between items-center mx-auto flex-row"
     >
       <router-link to="/" class="flex items-center">
         <img
@@ -34,15 +16,7 @@
         <div class="relative mr-3 md:mr-0 md:block w-full">
           <form @submit.prevent="Search">
             <div
-              class="
-                flex
-                absolute
-                inset-y-0
-                left-0
-                items-center
-                pl-3
-                pointer-events-none
-              "
+              class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none"
             >
               <svg
                 class="w-5 h-5 text-gray-500"
@@ -60,24 +34,7 @@
             <input
               type="text"
               id="email-adress-icon"
-              class="
-                block
-                p-2
-                pl-10
-                w-full
-                text-gray-900
-                bg-gray-50
-                rounded-lg
-                border border-gray-300
-                sm:text-sm
-                focus:ring-blue-500 focus:border-blue-500
-                dark:bg-gray-700
-                dark:border-gray-600
-                dark:placeholder-gray-400
-                dark:text-white
-                dark:focus:ring-blue-500
-                dark:focus:border-blue-500
-              "
+              class="block p-2 pl-10 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search..."
               name="s"
               v-model="searchParams"
@@ -135,27 +92,12 @@
         id="mobile-menu-3"
       >
         <ul
-          class="
-            flex flex-col
-            md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium
-            items-center
-          "
+          class="flex flex-col md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium items-center"
         >
           <li>
             <a
               href="#"
-              class="
-                hidden
-                md:block
-                py-2
-                pr-4
-                pl-3
-                text-white
-                bg-blue-700
-                rounded
-                md:text-white md:p-1 md:mt-1
-                dark:text-white
-              "
+              class="hidden md:block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:text-white md:p-1 md:mt-1 dark:text-white"
               aria-current="page"
               >Login</a
             >
@@ -168,19 +110,7 @@
             />
             <div
               v-if="this.showMenu"
-              class="
-                absolute
-                top-14
-                -right-1
-                w-32
-                h-40
-                flex flex-row
-                justify-center
-                pt-3
-                bg-white
-                shadow-md
-                rounded
-              "
+              class="absolute top-14 -right-1 w-32 h-40 flex flex-row justify-center pt-3 bg-white shadow-md rounded"
             >
               <div class="flex flex-col">
                 <ul class="space-y-2">
@@ -225,5 +155,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

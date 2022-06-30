@@ -1,21 +1,21 @@
 <template>
   <div>
     <div v-for="post in posts" :key="post.id" class="pb-4">
-      <Post :details="post" />
+      <PostItem :details="post" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import Post from "./Post.vue";
+import PostItem from "./PostItem.vue";
 export default {
   name: "Posts",
   props: {
     posts: Object,
   },
   components: {
-    Post,
+    PostItem,
   },
   computed: {
     ...mapGetters(["getPosts"]),
@@ -23,5 +23,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,14 +1,7 @@
 <template>
   <div
-    class="
-      md:w-full
-      flex flex-col
-      bg-white
-      rounded-2xl
-      shadow-lg
-      p-2
-      cursor-pointer
-    "
+    @click="gotoPost"
+    class="md:w-full flex flex-col bg-white rounded-2xl shadow-lg p-2 cursor-pointer"
   >
     <div class="flex flex-row p-3">
       <div class="pl-2 pr-2 md:pr-4 flex">
@@ -51,12 +44,20 @@
 
 <script>
 export default {
-  name: "Post",
+  name: "PostItem",
   props: {
-    details: Object,
+    details: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    gotoPost() {
+      console.log(this.details._id);
+      // this.$route.push()
+    },
   },
 };
 </script>
 
-<style>
-</style>
+<style lang="scss"></style>

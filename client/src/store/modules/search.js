@@ -1,12 +1,4 @@
-import {
-  SET_SEARCHED_POSTS,
-  GET_SEARCHED_POSTS,
-  SET_SEARCH_MORE_DATA,
-  SET_NEXT_SEARCH_PAGE,
-  SET_MORE_SEARCHED_POSTS,
-  SET_NOFOUND_ERROR,
-  GET_NOFOUND_ERROR,
-} from "../defaults-type";
+import types from '../constants'
 import axios from "axios";
 
 export default {
@@ -17,18 +9,18 @@ export default {
     noFoundError: "",
   },
   mutations: {
-    [SET_SEARCHED_POSTS]: (state, posts) => (state.searchedPosts = posts),
-    [SET_NEXT_SEARCH_PAGE]: (state, next) => (state.nextSearchPage = next),
-    [SET_SEARCH_MORE_DATA]: (state, flag) => (state.searchMoreData = flag),
-    [SET_MORE_SEARCHED_POSTS]: (state, posts) => {
+    [types.POSTS.mutations.SET_SEARCHED_POSTS]: (state, posts) => (state.searchedPosts = posts),
+    [types.POSTS.mutations.SET_NEXT_SEARCH_PAGE]: (state, next) => (state.nextSearchPage = next),
+    [types.POSTS.mutations.SET_SEARCH_MORE_DATA]: (state, flag) => (state.searchMoreData = flag),
+    [types.POSTS.mutations.SET_MORE_SEARCHED_POSTS]: (state, posts) => {
       posts.forEach((element) => {
         state.searchedPosts.push(element);
       });
     },
-    [SET_NOFOUND_ERROR]: (state, error) => (state.noFoundError = error),
+    [types.POSTS.mutations.SET_NOFOUND_ERROR]: (state, error) => (state.noFoundError = error),
   },
   actions: {
-    [SET_SEARCHED_POSTS]: async ({ state, commit }, { query }) => {
+    [types.POSTS.actions.FETCH_SEARCHED_POSTS]: async ({ state, commit }, { query="" }) => {
       
       // TO_THINK => merge fetch functions, merge search fetch function with fetch all posts(query default type etc....)
       
@@ -46,23 +38,22 @@ export default {
       );
 
       let error = "No posts found for";
-      if (posts.data.posts == "") commit(SET_NOFOUND_ERROR, error);
+      if (posts.data.posts == "") commit(types.POSTS.mutations.SET_NOFOUND_ERROR, error);
       else {
         error = "";
-        commit(SET_NOFOUND_ERROR, error);
+        commit(types.POSTS.mutations.SET_NOFOUND_ERROR, error);
       }
 
       if (posts.data.next) {
         let next = posts.data.next.page;
-        commit(SET_NEXT_SEARCH_PAGE, next);
+        commit(types.POSTS.mutations.SET_NEXT_SEARCH_PAGE, next);
       } else {
         let flag = false;
-        commit(SET_SEARCH_MORE_DATA, flag);
+        commit(types.POSTS.mutations.SET_SEARCH_MORE_DATA, flag);
       }
-      commit(SET_SEARCHED_POSTS, posts.data.posts);
+      commit(types.POSTS.mutations.SET_SEARCHED_POSTS, posts.data.posts);
     },
-    [SET_MORE_SEARCHED_POSTS]: async ({ state, commit }, { query }) => {
-
+    [types.POSTS.actions.FETCH_MORE_SEARCHED_POSTS]: async ({ state, commit }, { query="" }) => {
       
       if (state.searchMoreDataData == false) return;
       
@@ -80,16 +71,16 @@ export default {
       );
       if (posts.data.next) {
         let next = posts.data.next.page;
-        commit(SET_NEXT_SEARCH_PAGE, next);
+        commit(types.POSTS.mutations.SET_NEXT_SEARCH_PAGE, next);
       } else {
         let flag = false;
-        commit(SET_SEARCH_MORE_DATA, flag);
+        commit(types.POSTS.mutations.SET_SEARCH_MORE_DATA, flag);
       }
-      commit(SET_MORE_SEARCHED_POSTS, posts.data.posts);
+      commit(types.POSTS.mutations.SET_MORE_SEARCHED_POSTS, posts.data.posts);
     },
   },
   getters: {
-    [GET_SEARCHED_POSTS]: (state) => state.searchedPosts,
-    [GET_NOFOUND_ERROR]: (state) => state.noFoundError,
+    [types.POSTS.getters.GET_SEARCHED_POSTS]: (state) => state.searchedPosts,
+    [types.POSTS.getters.GET_NOFOUND_ERROR]: (state) => state.noFoundError,
   },
 };
