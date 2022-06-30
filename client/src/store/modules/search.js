@@ -29,6 +29,10 @@ export default {
   },
   actions: {
     [SET_SEARCHED_POSTS]: async ({ state, commit }, { query }) => {
+      
+      // TO_THINK => merge fetch functions, merge search fetch function with fetch all posts(query default type etc....)
+      
+      
       let params = new URLSearchParams();
       params.append("search", query);
       params.append("page", state.nextSearchPage);
@@ -58,8 +62,11 @@ export default {
       commit(SET_SEARCHED_POSTS, posts.data.posts);
     },
     [SET_MORE_SEARCHED_POSTS]: async ({ state, commit }, { query }) => {
-      if (state.searchMoreDataData == false) return;
 
+      
+      if (state.searchMoreDataData == false) return;
+      
+      
       let params = new URLSearchParams();
       params.append("search", query);
       params.append("page", state.nextSearchPage);
