@@ -14,10 +14,16 @@ export default {
     };
   },
   async created() {
-    await axios.get(this.url).then((response) => {
-      this.json = response.data;
-      this.loading = false;
-    });
+    await axios
+      .get(this.url)
+      .then((response) => {
+        this.json = response.data;
+        this.loading = false;
+      })
+      .catch((err) => {
+        console.log(err);
+        this.loading = true;
+      });
   },
   render() {
     return this.$slots.default({

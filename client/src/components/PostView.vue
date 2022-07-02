@@ -3,10 +3,10 @@
     <div>
       <h1 class="text--gray__color text-sm">
         Δημοσιευτηκε απο
-        <span class="text-blue-600"
+        <span class="text-blue-600 pr-2"
           ><i>{{ postData.user }}</i></span
         >
-        πριν 2 ωρες
+        {{ PostDate }}
       </h1>
     </div>
     <div class="py-6 md:post--content__margin">
@@ -35,6 +35,12 @@ export default {
     postData: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    PostDate() {
+      const date = new Date(this.postData?.createdAt);
+      return date.toUTCString();
     },
   },
 };
