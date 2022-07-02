@@ -9,7 +9,7 @@
       </div>
       <div class="flex flex-col">
         <div>
-          <h1 class="text-sm text-gray-600">
+          <h1 class="text-sm text--gray__color">
             Δημοσιευτηκε απο
             <span class="text-blue-600">{{ details.user }}</span> στις
             {{ String(details.createtAt).substring(0, 10) }}
@@ -53,8 +53,7 @@ export default {
   },
   methods: {
     gotoPost() {
-      console.log(this.details._id);
-      // this.$route.push()
+      this.$router.push({ name: "Post", params: { id: this.details._id } });
     },
   },
 };

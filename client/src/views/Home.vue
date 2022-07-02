@@ -10,7 +10,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import PostsArea from "../component/PostsArea.vue";
+import PostsArea from "../components/PostsArea.vue";
 export default {
   name: "Home",
   components: {

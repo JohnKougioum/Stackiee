@@ -18,4 +18,8 @@
     .st-container{
         @apply h-auto w-full mt-24
     }
+
+    .text--gray__color{
+        @apply text-gray-600
+    }
   }
