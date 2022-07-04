@@ -35,7 +35,7 @@
       <div class="pt-6 pb-2">
         <div class="flex flex-row">
           <img src="../assets/images/commentIcon.svg" alt="HTML5" />
-          <span class="pl-2 text-sm italic">5 σχολια</span>
+          <span class="pl-2 text-sm italic">{{ details.comments }} σχολια</span>
         </div>
       </div>
     </div>
