@@ -4,6 +4,7 @@ const Post = require("../models/Post");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: __dirname + "/.env" });
 const verify = require("./verifyToken");
+const mongoose = require("mongoose");
 
 // get posts
 router.get("/", async (req, res) => {
@@ -14,7 +15,6 @@ router.get("/", async (req, res) => {
   const endIndex = page * limit;
 
   try {
-    // const posts = await Post.find();
     const results = {};
 
     if (endIndex < (await Post.countDocuments()))
@@ -29,11 +29,33 @@ router.get("/", async (req, res) => {
         limit: limit,
       };
     }
-
-    results.posts = await Post.find()
-      .skip(startIndex)
-      .limit(limit)
-      .sort({ $natural: -1 });
+    results.posts = await Post.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $lookup: {
+          from: "comments",
+          localField: "_id",
+          foreignField: "p_id",
+          as: "comments",
+        },
+      },
+      {
+        $set: {
+          comments: { $size: "$comments" },
+        },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $skip: startIndex,
+      },
+      {
+        $limit: limit,
+      },
+    ]);
 
     res.json(results);
   } catch (err) {
@@ -57,7 +79,7 @@ router.get("/test", verify, async (req, res) => {
 
 router.get("/search/results", async (req, res) => {
   const searchParams = req.query.search;
-  const page = parseInt(req.query.page);
+  const page = req.query.page ? parseInt(req.query.page) : 1;
   const limit = 5;
 
   const startIndex = (page - 1) * limit;
@@ -83,15 +105,36 @@ router.get("/search/results", async (req, res) => {
   }
 
   try {
-    results.posts = await Post.find(
+    results.posts = await Post.aggregate([
       {
-        $text: { $search: `${searchParams}` },
+        $match: {
+          $text: { $search: `${searchParams}` },
+        },
       },
-      { score: { $meta: "textScore" } }
-    )
-      .skip(startIndex)
-      .limit(limit)
-      .sort({ score: { $meta: "textScore" } });
+      {
+        $lookup: {
+          from: "comments",
+          localField: "_id",
+          foreignField: "p_id",
+          as: "comments",
+        },
+      },
+      {
+        $set: {
+          comments: { $size: "$comments" },
+        },
+      },
+      {
+        $sort: { score: { $meta: "textScore" } },
+      },
+      {
+        $skip: startIndex,
+      },
+      {
+        $limit: limit,
+      },
+    ]);
+
     res.json(results);
   } catch (error) {
     console.log(error);
