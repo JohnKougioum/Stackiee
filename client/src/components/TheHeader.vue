@@ -95,11 +95,11 @@
           class="flex flex-col md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium items-center"
         >
           <li>
-            <a
-              href="#"
+            <router-link
+              to="/login"
               class="hidden md:block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:text-white md:p-1 md:mt-1 dark:text-white"
               aria-current="page"
-              >Login</a
+              >Login</router-link
             >
           </li>
           <li class="cursor-pointer relative">
