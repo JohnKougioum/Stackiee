@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Post = require("../models/Post");
+const Searches = require("../models/Searches");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: __dirname + "/.env" });
 const verify = require("./verifyToken");
@@ -81,11 +82,10 @@ router.get("/search/results", async (req, res) => {
   const searchParams = req.query.search;
   const page = req.query.page ? parseInt(req.query.page) : 1;
   const limit = 5;
-
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
+  const useruid = req.query.user;
 
-  // const posts = await Post.find();
   const results = {};
 
   if (
@@ -134,6 +134,19 @@ router.get("/search/results", async (req, res) => {
         $limit: limit,
       },
     ]);
+
+    if (useruid !== "null") {
+      await Searches.findOneAndUpdate(
+        {
+          user: useruid,
+        },
+        {
+          $addToSet: {
+            searchHistory: searchParams,
+          },
+        }
+      );
+    }
 
     res.json(results);
   } catch (error) {

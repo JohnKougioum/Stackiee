@@ -22,11 +22,12 @@ try {
 const login = require("./routes/users");
 const posts = require("./routes/posts");
 const comments = require("./routes/comments");
+const searchHistory = require("./routes/searchHistory");
 
 app.use("/api/user", login);
 app.use("/api/posts", posts);
 app.use("/api/comments", comments);
-
+app.use("/api/searchHistory", searchHistory);
 
 // app listen
 const PORT = process.env.PORT || 5000;

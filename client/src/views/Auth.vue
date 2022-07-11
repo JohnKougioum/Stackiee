@@ -39,6 +39,7 @@ export default {
                 uid: response.data.uid,
               })
               .then((response) => {
+                sessionStorage.setItem("user", response.data.uid);
                 if (response.status == 202) {
                   this.$router.push({ path: "/" });
                 }

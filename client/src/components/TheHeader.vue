@@ -96,6 +96,7 @@
         >
           <li>
             <router-link
+              v-if="!this.auth"
               to="/login"
               class="hidden md:block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:text-white md:p-1 md:mt-1 dark:text-white"
               aria-current="page"
@@ -138,12 +139,14 @@
 </template>
 
 <script>
+import Authentication from "../auth";
 export default {
   name: "TheHeader",
   data() {
     return {
       searchParams: "",
       showMenu: false,
+      auth: Authentication.isAuthenticated(),
     };
   },
   methods: {

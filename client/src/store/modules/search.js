@@ -1,4 +1,4 @@
-import types from '../constants'
+import types from "../constants";
 import axios from "axios";
 
 export default {
@@ -9,25 +9,31 @@ export default {
     noFoundError: "",
   },
   mutations: {
-    [types.POSTS.mutations.SET_SEARCHED_POSTS]: (state, posts) => (state.searchedPosts = posts),
-    [types.POSTS.mutations.SET_NEXT_SEARCH_PAGE]: (state, next) => (state.nextSearchPage = next),
-    [types.POSTS.mutations.SET_SEARCH_MORE_DATA]: (state, flag) => (state.searchMoreData = flag),
+    [types.POSTS.mutations.SET_SEARCHED_POSTS]: (state, posts) =>
+      (state.searchedPosts = posts),
+    [types.POSTS.mutations.SET_NEXT_SEARCH_PAGE]: (state, next) =>
+      (state.nextSearchPage = next),
+    [types.POSTS.mutations.SET_SEARCH_MORE_DATA]: (state, flag) =>
+      (state.searchMoreData = flag),
     [types.POSTS.mutations.SET_MORE_SEARCHED_POSTS]: (state, posts) => {
       posts.forEach((element) => {
         state.searchedPosts.push(element);
       });
     },
-    [types.POSTS.mutations.SET_NOFOUND_ERROR]: (state, error) => (state.noFoundError = error),
+    [types.POSTS.mutations.SET_NOFOUND_ERROR]: (state, error) =>
+      (state.noFoundError = error),
   },
   actions: {
-    [types.POSTS.actions.FETCH_SEARCHED_POSTS]: async ({ state, commit }, { query="" }) => {
-      
+    [types.POSTS.actions.FETCH_SEARCHED_POSTS]: async (
+      { state, commit },
+      { query = "" }
+    ) => {
       // TO_THINK => merge fetch functions, merge search fetch function with fetch all posts(query default type etc....)
-      
-      
+
       let params = new URLSearchParams();
       params.append("search", query);
       params.append("page", state.nextSearchPage);
+      params.append("user", sessionStorage.getItem("user"));
       let request = {
         params: params,
       };
@@ -38,7 +44,8 @@ export default {
       );
 
       let error = "No posts found for";
-      if (posts.data.posts == "") commit(types.POSTS.mutations.SET_NOFOUND_ERROR, error);
+      if (posts.data.posts == "")
+        commit(types.POSTS.mutations.SET_NOFOUND_ERROR, error);
       else {
         error = "";
         commit(types.POSTS.mutations.SET_NOFOUND_ERROR, error);
@@ -53,14 +60,16 @@ export default {
       }
       commit(types.POSTS.mutations.SET_SEARCHED_POSTS, posts.data.posts);
     },
-    [types.POSTS.actions.FETCH_MORE_SEARCHED_POSTS]: async ({ state, commit }, { query="" }) => {
-      
+    [types.POSTS.actions.FETCH_MORE_SEARCHED_POSTS]: async (
+      { state, commit },
+      { query = "" }
+    ) => {
       if (state.searchMoreDataData == false) return;
-      
-      
+
       let params = new URLSearchParams();
       params.append("search", query);
       params.append("page", state.nextSearchPage);
+      params.append("user", sessionStorage.getItem("user"));
       let request = {
         params: params,
       };

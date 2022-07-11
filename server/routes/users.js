@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const Searches = require("../models/Searches");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 require("dotenv").config({ path: __dirname + "/.env" });
@@ -33,7 +34,6 @@ router.post("/", async (req, res) => {
   const useruid = { uid: req.body.uid };
 
   User.findOne(useruid, async function (err, euser) {
-    // console.log(euser.eduPersonAffiliation);
     if (euser == null) {
       try {
         const savedUser = await user.save();
@@ -46,12 +46,13 @@ router.post("/", async (req, res) => {
             httpOnly: true,
           })
           .cookie("authSession", true, { sameSite: "strict" })
-          .send({ msg: "Verified" });
+          .json(useruid);
       } catch (error) {
         res.json({ message: error });
       }
     } else {
       const accessToken = jwt.sign(useruid, process.env.ACCESS_TOKEN_SECRET);
+      await new Searches({ user: useruid.uid }).save();
       res
         .status(202)
         .cookie("accessToken", accessToken, {
@@ -59,7 +60,7 @@ router.post("/", async (req, res) => {
           httpOnly: true,
         })
         .cookie("authSession", true, { sameSite: "strict" })
-        .send({ msg: "Verified" });
+        .json(useruid);
     }
   });
 });
