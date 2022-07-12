@@ -12,7 +12,7 @@
           alt="Stackiee Logo"
         />
       </router-link>
-      <div class="flex md:order-1 pl-2 sm:w-auto md:w-2/5">
+      <div class="relative flex flex-col md:order-1 pl-2 sm:w-auto md:w-2/5">
         <div class="relative mr-3 md:mr-0 md:block w-full">
           <form @submit.prevent="Search">
             <div
@@ -39,9 +39,12 @@
               name="s"
               v-model="searchParams"
               autocomplete="off"
+              @focus="this.showSearchHistory = true"
+              @blur="this.showSearchHistory = false"
             />
           </form>
         </div>
+        <SearchHistoryArea v-if="true" />
         <!-- <button
           data-collapse-toggle="mobile-menu-3"
           type="button"
@@ -140,13 +143,18 @@
 
 <script>
 import Authentication from "../auth";
+import SearchHistoryArea from "./SearchHistoryArea";
 export default {
   name: "TheHeader",
+  components: {
+    SearchHistoryArea,
+  },
   data() {
     return {
       searchParams: "",
       showMenu: false,
       auth: Authentication.isAuthenticated(),
+      showSearchHistory: false,
     };
   },
   methods: {
