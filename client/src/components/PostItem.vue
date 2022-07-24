@@ -12,7 +12,7 @@
           <h1 class="text-sm text--gray__color">
             Δημοσιευτηκε απο
             <span class="text-blue-600">{{ details.user }}</span> στις
-            {{ String(details.createtAt).substring(0, 10) }}
+            {{ String(details.createdAt).substring(0, 30) }}
           </h1>
         </div>
         <div>
@@ -34,8 +34,15 @@
       </div>
       <div class="pt-6 pb-2">
         <div class="flex flex-row">
-          <img src="../assets/images/commentIcon.svg" alt="HTML5" />
-          <span class="pl-2 text-sm italic">{{ details.comments }} σχολια</span>
+          <div class="flex flex-row flex-1">
+            <img src="../assets/images/commentIcon.svg" alt="HTML5" />
+            <h3 class="pl-2 text-sm italic">{{ details.comments }} σχολια</h3>
+          </div>
+          <div data-tags>
+
+            <span v-if="details.semester" class="tag"> {{ details.semester }} </span>
+            <span v-if="details.course" class="tag"> {{ details.course }} </span>
+          </div>
         </div>
       </div>
     </div>
@@ -59,4 +66,9 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.tag{
+  background-color: $main-blue;
+ @apply p-2 rounded-lg text-sm ml-1;
+}
+</style>

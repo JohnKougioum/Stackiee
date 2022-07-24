@@ -7,7 +7,7 @@ require("dotenv").config({ path: __dirname + "/.env" });
 
 router.get("/", async (req, res) => {
   try {
-    const history = await Searches.find();
+    const history = await Searches.find({"user": req.query.user});
     res.json(history);
   } catch (err) {
     res.json({ message: err });

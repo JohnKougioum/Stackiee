@@ -52,7 +52,7 @@ router.post("/", async (req, res) => {
       }
     } else {
       const accessToken = jwt.sign(useruid, process.env.ACCESS_TOKEN_SECRET);
-      await new Searches({ user: useruid.uid }).save();
+      // await new Searches({ user: useruid.uid }).save();
       res
         .status(202)
         .cookie("accessToken", accessToken, {

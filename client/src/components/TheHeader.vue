@@ -5,13 +5,13 @@
     <div
       class="container flex flex-wrap justify-between items-center mx-auto flex-row"
     >
-      <router-link to="/" class="flex items-center">
+      <div @click="gotoHome" class="flex items-center cursor-pointer">
         <img
           src="../assets/images/Logo.svg"
           class="mr-3 h-6 sm:h-9"
           alt="Stackiee Logo"
         />
-      </router-link>
+      </div>
       <div class="relative flex flex-col md:order-1 pl-2 sm:w-auto md:w-2/5">
         <div class="relative mr-3 md:mr-0 md:block w-full">
           <form @submit.prevent="Search">
@@ -44,7 +44,7 @@
             />
           </form>
         </div>
-        <SearchHistoryArea v-if="true" />
+      <SearchHistoryArea v-if="this.showSearchHistory" @emittedSearch="searchEmit" @emptyHistory="this.showSearchHistory = false" />
         <!-- <button
           data-collapse-toggle="mobile-menu-3"
           type="button"
@@ -158,10 +158,18 @@ export default {
     };
   },
   methods: {
-    Search: function (e) {
+    gotoHome(){
+      this.searchParams = ""
+      this.$router.push({name:"Home"})
+    },
+    Search: function () {
       if (!this.searchParams.trim().length) return;
       this.$router.push({ name: "Search", query: { s: this.searchParams } });
     },
+    searchEmit(searchTerm){
+      this.searchParams = searchTerm;
+      this.Search();
+    }
   },
 };
 </script>

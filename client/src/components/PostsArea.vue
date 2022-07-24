@@ -10,7 +10,7 @@
 import { mapGetters } from "vuex";
 import PostItem from "./PostItem.vue";
 export default {
-  name: "Posts",
+  name: "PostsArea",
   props: {
     posts: Object,
   },
