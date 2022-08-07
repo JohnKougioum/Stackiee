@@ -12,7 +12,7 @@ export default {
 .loader {
   width: 48px;
   height: 48px;
-  border: 5px solid $main-blue;
+  border: 5px solid rgba(37, 99, 235);
   border-bottom-color: transparent;
   border-radius: 50%;
   display: inline-block;

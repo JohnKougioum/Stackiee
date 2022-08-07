@@ -39,9 +39,12 @@
             <h3 class="pl-2 text-sm italic">{{ details.comments }} σχολια</h3>
           </div>
           <div data-tags>
-
-            <span v-if="details.semester" class="tag"> {{ details.semester }} </span>
-            <span v-if="details.course" class="tag"> {{ details.course }} </span>
+            <span v-if="details.semester" class="tag">
+              {{ details.semester }}
+            </span>
+            <span v-if="details.course" class="tag">
+              {{ details.course }}
+            </span>
           </div>
         </div>
       </div>
@@ -67,8 +70,8 @@ export default {
 </script>
 
 <style lang="scss">
-.tag{
-  background-color: $main-blue;
- @apply p-2 rounded-lg text-sm ml-1;
+.tag {
+  background-color: rgba(37, 99, 235);
+  @apply p-2 rounded-lg text-sm ml-1;
 }
 </style>

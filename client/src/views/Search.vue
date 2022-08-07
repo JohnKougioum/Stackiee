@@ -28,7 +28,7 @@ export default {
         document.documentElement.scrollTop + window.innerHeight ===
         document.documentElement.offsetHeight
       ) {
-        let query = this.$route.query?.s;
+        const query = this.$route.query?.s;
         this.fetchMorePosts({ query });
       }
     });

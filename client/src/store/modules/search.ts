@@ -30,11 +30,11 @@ export default {
     ) => {
       // TO_THINK => merge fetch functions, merge search fetch function with fetch all posts(query default type etc....)
 
-      let params = new URLSearchParams();
+      const params = new URLSearchParams();
       params.append("search", query);
       params.append("page", state.nextSearchPage);
       params.append("user", sessionStorage.getItem("user"));
-      let request = {
+      const request = {
         params: params,
       };
 
@@ -52,10 +52,10 @@ export default {
       }
 
       if (posts.data.next) {
-        let next = posts.data.next.page;
+        const next = posts.data.next.page;
         commit(types.POSTS.mutations.SET_NEXT_SEARCH_PAGE, next);
       } else {
-        let flag = false;
+        const flag = false;
         commit(types.POSTS.mutations.SET_SEARCH_MORE_DATA, flag);
       }
       commit(types.POSTS.mutations.SET_SEARCHED_POSTS, posts.data.posts);
@@ -66,11 +66,11 @@ export default {
     ) => {
       if (state.searchMoreDataData == false) return;
 
-      let params = new URLSearchParams();
+      const params = new URLSearchParams();
       params.append("search", query);
       params.append("page", state.nextSearchPage);
       params.append("user", sessionStorage.getItem("user"));
-      let request = {
+      const request = {
         params: params,
       };
 
@@ -79,10 +79,10 @@ export default {
         request
       );
       if (posts.data.next) {
-        let next = posts.data.next.page;
+        const next = posts.data.next.page;
         commit(types.POSTS.mutations.SET_NEXT_SEARCH_PAGE, next);
       } else {
-        let flag = false;
+        const flag = false;
         commit(types.POSTS.mutations.SET_SEARCH_MORE_DATA, flag);
       }
       commit(types.POSTS.mutations.SET_MORE_SEARCHED_POSTS, posts.data.posts);

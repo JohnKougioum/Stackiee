@@ -11,7 +11,7 @@ dotenv.config({ path: __dirname + "/config/config.env" });
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:8080", credentials: true }));
+app.use(cors());
 
 try {
   connectDB();

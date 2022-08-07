@@ -1,47 +1,54 @@
 <template>
   <div class="search--history--area">
-    <div class="flex justify-center"  v-if="isFetching" >
-      <SpinnerLoader/>
+    <div class="flex justify-center" v-if="isFetching">
+      <SpinnerLoader />
     </div>
     <div v-else>
-      <SearchHistoryItem @search="test" v-for="(data,index) in this.historyData" :key="index" :searchHistoryData="data"/>
+      <SearchHistoryItem
+        @search="test"
+        v-for="(data, index) in this.historyData"
+        :key="index"
+        :searchHistoryData="data"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import SearchHistoryItem from "./SearchHistoryItem";
-import SpinnerLoader from "./SpinnerLoader";
-import axios from 'axios'
+import SearchHistoryItem from "./SearchHistoryItem.vue";
+import SpinnerLoader from "./SpinnerLoader.vue";
+import axios from "axios";
 export default {
   name: "SearchHistoryArea",
   components: {
     SearchHistoryItem,
-    SpinnerLoader
+    SpinnerLoader,
   },
-  data(){
-    return{
+  data() {
+    return {
       isFetching: true,
-      historyData: null
-    }
+      historyData: null,
+    };
   },
   async mounted() {
-    const user =  sessionStorage.getItem('user')
-      user ?
-          await axios.get(`http://localhost:5000/api/searchHistory?user=${user}`)
-              .then((response)=>{
-                this.isFetching = false;this.historyData = response.data[0].searchHistory
-              })
-          : this.emitEmptyHistory();
+    const user = sessionStorage.getItem("user");
+    user
+      ? await axios
+          .get(`http://localhost:5000/api/searchHistory?user=${user}`)
+          .then((response) => {
+            this.isFetching = false;
+            this.historyData = response.data[0].searchHistory;
+          })
+      : this.emitEmptyHistory();
   },
-  methods:{
-    test(searchTerm){
-      this.$emit("emittedSearch", searchTerm)
+  methods: {
+    test(searchTerm) {
+      this.$emit("emittedSearch", searchTerm);
     },
-    emitEmptyHistory(){
-      this.$emit('emptyHistory')
-    }
-  }
+    emitEmptyHistory() {
+      this.$emit("emptyHistory");
+    },
+  },
 };
 </script>
 

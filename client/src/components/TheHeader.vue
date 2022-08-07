@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed top-0 w-full bg-white border-gray-200 px-2 sm:px-4 py-4 rounded dark:bg-gray-800 z-50"
+    class="fixed top-0 w-full bg-white border-gray-200 px-2 sm:px-4 py-4 rounded z-50"
   >
     <div
       class="container flex flex-wrap justify-between items-center mx-auto flex-row"
@@ -34,7 +34,7 @@
             <input
               type="text"
               id="email-adress-icon"
-              class="block p-2 pl-10 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              class="block p-2 pl-10 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search..."
               name="s"
               v-model="searchParams"
@@ -44,7 +44,11 @@
             />
           </form>
         </div>
-      <SearchHistoryArea v-if="this.showSearchHistory" @emittedSearch="searchEmit" @emptyHistory="this.showSearchHistory = false" />
+        <SearchHistoryArea
+          v-if="this.showSearchHistory"
+          @emittedSearch="searchEmit"
+          @emptyHistory="this.showSearchHistory = false"
+        />
         <!-- <button
           data-collapse-toggle="mobile-menu-3"
           type="button"
@@ -136,14 +140,14 @@
             </div>
           </li>
         </ul>
-      </div>
+      </div>,
     </div>
   </nav>
 </template>
 
 <script>
 import Authentication from "../auth";
-import SearchHistoryArea from "./SearchHistoryArea";
+import SearchHistoryArea from "./SearchHistoryArea.vue";
 export default {
   name: "TheHeader",
   components: {
@@ -158,18 +162,18 @@ export default {
     };
   },
   methods: {
-    gotoHome(){
-      this.searchParams = ""
-      this.$router.push({name:"Home"})
+    gotoHome() {
+      this.searchParams = "";
+      this.$router.push({ name: "Home" });
     },
     Search: function () {
       if (!this.searchParams.trim().length) return;
       this.$router.push({ name: "Search", query: { s: this.searchParams } });
     },
-    searchEmit(searchTerm){
+    searchEmit(searchTerm) {
       this.searchParams = searchTerm;
       this.Search();
-    }
+    },
   },
 };
 </script>

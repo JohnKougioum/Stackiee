@@ -26,17 +26,17 @@ export const store = createStore({
   },
   actions: {
     async FETCH_POSTS({ state, commit }) {
-      if (state.moreData === false) return;
+      if (!state.moreData) return;
 
       const posts = await axios.get(
         "http://localhost:5000/api/posts?page=" + state.nextPage
       );
 
       if (posts.data.next) {
-        let next = posts.data.next.page;
+        const next = posts.data.next.page;
         commit("SET_NEXT_PAGE", next);
       } else {
-        let flag = false;
+        const flag = false;
         commit("SET_MORE_DATA", flag);
       }
       commit("SET_POSTS", posts.data.posts);
