@@ -2,16 +2,16 @@
 import SpinnerLoader from "../components/SpinnerLoader.vue";
 import { h } from "vue";
 import axios from "axios";
+import qs from "qs";
 
 export default {
   beforeCreate() {
-    const qs = require("qs");
     axios
       .post(
         "https://login.iee.ihu.gr/token",
         qs.stringify({
-          client_id: process.env.VUE_APP_CLIENT_ID,
-          client_secret: process.env.VUE_APP_SECRET,
+          client_id: import.meta.env.VITE_CLIENT_ID,
+          client_secret: import.meta.env.VITE_SECRET,
           grant_type: "authorization_code",
           code: this.$route.query.code,
         })
@@ -25,7 +25,6 @@ export default {
             },
           })
           .then((response) => {
-            axios.defaults.withCredentials = true;
             axios
               .post("http://localhost:5000/api/user/", {
                 am: response.data.am,
