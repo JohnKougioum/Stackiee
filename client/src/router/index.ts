@@ -43,6 +43,11 @@ const router = createRouter({
         hideHeader: true,
       },
     },
+    {
+      path: "/groups",
+      name: "Groups",
+      component: () => import("@/views/GroupsPage.vue"),
+    },
   ],
 });
 
