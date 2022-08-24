@@ -11,7 +11,10 @@
         <div>
           <h1 class="text-sm text--gray__color">
             Δημοσιευτηκε απο
-            <span class="text-blue-600">{{ details.user }}</span> στις
+            <span class="text-blue-600" @click.stop.prevent="gotoProfile">{{
+              details.user
+            }}</span>
+            στις
             {{ String(details.createdAt).substring(0, 30) }}
           </h1>
         </div>
@@ -64,6 +67,12 @@ export default {
   methods: {
     gotoPost() {
       this.$router.push({ name: "Post", params: { id: this.details._id } });
+    },
+    gotoProfile() {
+      this.$router.push({
+        name: "Profile",
+        params: { user: this.details.user },
+      });
     },
   },
 };

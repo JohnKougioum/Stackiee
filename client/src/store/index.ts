@@ -6,15 +6,22 @@ export const store = createStore({
   state: {
     posts: [],
     // searchedPosts: [],
+    profilePosts: [],
     nextPage: 1,
     // nextSearchPage: 1,
     moreData: true,
     // searchMoreData: true,
+    profile: null
   },
   mutations: {
     SET_POSTS(state, posts) {
       posts.forEach((element) => {
         state.posts.push(element);
+      });
+    },
+    SET_PROFILE_POSTS(state, posts) {
+      posts.forEach((element) => {
+        state.profilePosts.push(element);
       });
     },
     SET_NEXT_PAGE(state, next) {
@@ -25,6 +32,12 @@ export const store = createStore({
     },
     CLEAR_POSTS(state){
       state.posts = [];
+    },
+    CLEAR_PROFILE_POSTS(state){
+      state.profilePosts = [];
+    },
+    SET_PROFILE(state, profile){
+      state.profile = profile;
     }
   },
   actions: {
@@ -81,6 +94,15 @@ export const store = createStore({
         obj,
       });
     },
+    FETCH_PROFILE_POSTS: async function({ state, commit }, user){
+
+      commit("CLEAR_PROFILE_POSTS");
+
+      const posts = await axios.get(
+        "http://localhost:5000/api/posts/user/posts?user=" + user);
+
+      commit("SET_PROFILE_POSTS", posts.data);
+    }
   },
   modules: {
     search,
@@ -88,5 +110,6 @@ export const store = createStore({
   getters: {
     getPosts: (state) => state.posts,
     // getSearchedPosts: (state) => state.searchedPosts,
+    getProfilePosts: (state) => state.profilePosts
   },
 });
