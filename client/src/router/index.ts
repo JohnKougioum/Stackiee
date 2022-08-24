@@ -29,6 +29,16 @@ const router = createRouter({
       component: () => import("@/views/Post.vue"),
     },
     {
+      path: '/CreatePost',
+      name: 'Create Post',
+      component: () => import('../components/CreatePost.vue'),
+      // beforeEnter: (to, from, next) => {
+      //   if (!AuthFunction.isAuthenticated())
+      //     next((window.location.href = login_red));
+      //   next();
+      // },
+    },
+    {
       path: "/login",
       name: "login",
       redirect: (to) => {

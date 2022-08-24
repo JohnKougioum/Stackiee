@@ -10,7 +10,7 @@ const PostSchema = new mongoose.Schema({
     required: true,
     ref: "User",
   },
-  createtAt: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
@@ -23,6 +23,14 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  semester: {
+    type: String,
+    required: true
+  },
+  course: {
+    type: String,
+    required: true
+  }
 });
 
 PostSchema.index({ title: "text", body: "text" });

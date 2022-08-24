@@ -75,7 +75,12 @@ export const store = createStore({
       }
       // console.log(posts.data)
       commit("SET_POSTS", posts.data);
-    }
+    },
+    CREATE_POST: async function({ commit }, obj){
+      axios.post("http://localhost:5000/api/posts", {
+        obj,
+      });
+    },
   },
   modules: {
     search,

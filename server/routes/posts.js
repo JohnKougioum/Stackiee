@@ -178,8 +178,10 @@ router.get("/search/results", async (req, res) => {
 router.post("/", verify, async (req, res) => {
   const post = new Post({
     user: req.useruid.uid,
-    title: req.body.new_post.title,
-    body: req.body.new_post.body,
+    title: req.body.obj.title,
+    body: req.body.obj.body,
+    semester: req.body.obj.semester,
+    course: req.body.obj.course
   });
 
   try {
