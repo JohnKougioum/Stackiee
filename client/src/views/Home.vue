@@ -4,6 +4,9 @@
       <div class="custom-width">
         <PostsArea :posts="getPosts" />
       </div>
+      <div>
+        <Filters />
+      </div>
     </div>
   </div>
 </template>
@@ -11,10 +14,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import PostsArea from "../components/PostsArea.vue";
+import Filters from "../components/Filters.vue";
 export default {
   name: "Home",
   components: {
     PostsArea,
+    Filters,
   },
   mounted() {
     this.FETCH_POSTS();

@@ -74,6 +74,26 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
+//posts filtering by semester, course
+router.get("/filter/results", async (req, res) => {
+  semesters = req.query.semester;
+  const courses = req.query.course;
+  
+  var FilterdPosts;
+  try {
+    if(courses==undefined){
+      FilterdPosts = await Post.find({ semester: { $in: semesters } });
+    }else{
+      FilterdPosts = await Post.find({ course: { $in: courses } });
+    }
+    
+    res.json(FilterdPosts);
+    
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
 router.get("/test", verify, async (req, res) => {
   res.json(req.useruid.uid);
 });

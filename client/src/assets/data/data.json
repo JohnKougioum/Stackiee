@@ -1,0 +1,147 @@
+[
+    {
+        "id": "first",
+        "value": "Εξάμηνο 1",
+        "courses": [
+            {"id": "mathimatika_1", "value": "Μαθηματικά"},
+            {"id": "domhmenos_programmatismos", "value": "Δομημένος Προγραμματισμός"},
+            {"id": "eisagwgh_sthn_episthmh_twn_ypologistwn", "value": "Εισαγωγή στην Επιστήμη των Υπολογιστών"},
+            {"id": "hlektronikh_fysikh", "value": "Ηλεκτρονική Φυσική"},
+            {"id": "kyklwmata_synexous_revmatos", "value": "Κυκλώματα Συνεχούς Ρεύματος"}
+        ]
+    },
+    {
+        "id": "second",
+        "value": "Εξάμηνο 2",
+        "courses": [
+            {"id": "mathimatika_2", "value": "Μαθηματικά ΙΙ"},
+            {"id": "metrhseis_kai_kyklwmata_enallasomenou_revmatos", "value": "Μετρήσεις και Κυκλώματα Εναλλασσόμενου Ρεύματος"},
+            {"id": "texnikh_syggrafh_parousiash_orologia_ksenhs_glwssas", "value": "Τεχνική Συγγραφή, Παρουσίαση και Ορολογία Ξένης Γλώσσας"},
+            {"id": "sxediash_pshfiakwn_systhmatwn", "value": "Σχεδίαση Ψηφιακών Συστημάτων"},
+            {"id": "antikeimenostrefhs_programmatismos", "value": "Αντικειμενοστρεφής Προγραμματισμός"}
+        ]
+    },
+    {
+        "id": "third",
+        "value": "Εξάμηνο 3",
+        "courses": [
+            {"id": "thewria_pithanothtwn_kai_statistikh", "value": "Θεωρία Πιθανοτήτων και Στατιστική"},
+            {"id": "mathimatika_3", "value": "Μαθηματικά ΙΙI"},
+            {"id": "epeksergasia_shmatos", "value": "Επεξεργασία Σήματος"},
+            {"id": "glwsses_kai_texnologies_istou", "value": "Γλώσσες και Τεχνολογίες Ιστού"},
+            {"id": "domes_dedomenwn_kai_analysh_algorithmwn", "value": "Δομές Δεδομένων και Ανάλυση Αλγορίθμων"}
+        ]
+    },
+    {
+        "id": "fourth",
+        "value": "Εξάμηνο 4",
+        "courses": [
+            {"id": "organwsh_kai_arxitektonikh_ypologistikwn_systhmatwn", "value": "Οργάνωση και Αρχιτεκτονική Υπολογιστικών Συστημάτων"},
+            {"id": "systhmata_diaxeirishs_vasewn_dedomenwn", "value": "Συστήματα Διαχείρισης Βάσεων Δεδομένων"},
+            {"id": "thlepikoinwniaka_systhmata", "value": "Τηλεπικοινωνιακά Συστήματα"},
+            {"id": "eisagwgh_sta_leitourgika_systhmata", "value": "Εισαγωγή στα Λειτουργικά Συστήματα"},
+            {"id": "hlektronika_kyklwmata", "value": "Ηλεκτρονικά Κυκλώματα"}
+        ]
+    },
+    {
+        "id": "fifth",
+        "value": "Εξάμηνο 5",
+        "courses": [
+            {"id": "asyrmates_epikoinwnies", "value": "Ασύρματες Επικοινωνίες"},
+            {"id": "mikroelegktes", "value": "Μικροελεγκτές"},
+            {"id": "sxediash_leitourgikwn_systhmatwn", "value": "Σχεδίαση Λειτουργικών Συστημάτων"},
+            {"id": "hlektronikes_diatakseis", "value": "Ηλεκτρονικές Διατάξεις"},
+            {"id": "allhlepidrash_anthrwpou_mhxanhs", "value": "Αλληλεπίδραση Ανθρώπου-Μηχανής"}
+        ]
+    },
+    {
+        "id": "sixth",
+        "value": "Εξάμηνο 6",
+        "courses": [
+            {"id": "texnith_nohmosynh", "value": "Τεχνητή Νοημοσύνη"},
+            {"id": "enswmatwmena_systhmata", "value": "Ενσωματωμένα Συστήματα"},
+            {"id": "synthesh_hlektronikwn_systhmatwn", "value": "Σύνθεση Ηλεκτρονικών Κυκλωμάτων"},
+            {"id": "kvantikh_ypologistikh", "value": "Κβαντική Υπολογιστική"},
+            {"id": "methodologies_sxediasmou_mikrohlektronikwn_kyklwmatwn", "value": "Μεθοδολογίες Σχεδιασμού Μικροηλεκτρονικών Κυκλωμάτων"},
+            {"id": "mikrokymatikh_texnologia_kai_thleskophsh", "value": "Μικροκυματική Τεχνολογία και Τηλεπισκόπηση"},
+            {"id": "optikohlektronikh_kai_optikes_epikoinwnies", "value": "Οπτοηλεκτρονική και Οπτικές Επικοινωνίες"},
+            {"id": "systhmata_meswn_mazikhs_epikoinwnias", "value": "Συστήματα Μέσων Μαζικής Επικοινωνίας"},
+            {"id": "arithmhtikes_methodoi", "value": "Αριθμητικές Μέθοδοι"},
+            {"id": "programmatismos_kinhtwn_episkevwn", "value": "Προηγμένα Θέματα Αλληλεπίδρασης (Προγραμματισμός Κινητών Συσκευών)"},
+            {"id": "dioikhsh_ergwn", "value": "Διοίκηση Έργων"}
+        ]
+    },
+    {
+        "id": "seventh",
+        "value": "Εξάμηνο 7",
+        "courses": [
+            {"id": "diktya_ypologistwn", "value": "Δίκτυα Υπολογιστών"},
+            {"id": "hlektronika_isxyos", "value": "Ηλεκτρονικά Ισχύος"},
+            {"id": "systhmata_aytomatou_elegxou", "value": "Συστήματα Αυτομάτου Ελέγχου"},
+            {"id": "aisthhthria_kai_epeksergasia_metrhsewn", "value": "Αισθητήρια και Επεξεργασία Μετρήσεων"},
+            {"id": "programmatizomenoi_logikoi_elegktes", "value": "Προγραμματιζόμενοι Λογικοί Ελεγκτές"},
+            {"id": "sxediash_epanaprosdiorizomenwn_pshfiakwn_systhmatwn", "value": "Σχεδίαση Επαναπροσδιοριζόμενων Ψηφιακών Συστημάτων (FPGA)"},
+            {"id": "texnologies_hxou_kai_eikonas", "value": "Τεχνολογίες Ήχου και Εικόνας"},
+            {"id": "eisagwgh_sthn_analytikh_twn_dedomenwn", "value": "Εισαγωγή στην Αναλυτική των Δεδομένων"},
+            {"id": "mhxanikh_logismikou", "value": "Μηχανική Λογισμικού"},
+            {"id": "texnologia_vasewn_dedomenwn", "value": "Τεχνολογία Βάσεων Δεδομένων"},
+            {"id": "prohgmenes_arxitektonikes_ypologistwn_kai_programmatismos_parallhlwn_systhmatwn", "value": "Προηγμένες Αρχιτεκτονικές Υπολογιστών και Προγραμματισμός Παράλληλων Συστημάτων"}
+        ]
+    },
+    {
+        "id": "eighth",
+        "value": "Εξάμηνο 8",
+        "courses": [
+            {"id": "arxes_kai_methodoi_mhxanikhs_mathhshs", "value": "Αρχές και Μέθοδοι Μηχανικής Μάθησης"},
+            {"id": "diadiktyo_twn_pragmatwn", "value": "Διαδίκτυο των Πραγμάτων"},
+            {"id": "efarmoges_systhmatwn_aytomatou_elegxou", "value": "Εφαρμογές Συστημάτων Αυτομάτου Ελέγχου"},
+            {"id": "metatropeis_isxyos", "value": "Μετατροπείς Ισχύος"},
+            {"id": "mikrohlektronikh", "value": "Μικροηλεκτρονική"},
+            {"id": "efarmoges_systhmatwn_isxyos_kai_ape", "value": "Εφαρμογές Συστημάτων Ισχύος και ΑΠΕ"},
+            {"id": "hlektronikh_kai_eyphyh_diktya", "value": "Ηλεκτροκίνηση και Ευφυή Δίκτυα"},
+            {"id": "asfaleia_plhroforiakwn_systhmatwn", "value": "Ασφάλεια Πληροφοριακών Συστημάτων"},
+            {"id": "asyrmata_diktya", "value": "Ασύρματα Δίκτυα"},
+            {"id": "eidika_themata_diktywn_1", "value": "Ειδικά Θέματα Δικτύων (CCNA) 1"},
+            {"id": "prohgmena_themata_diktywn", "value": "Προηγμένα Θέματα Δικτύων"},
+            {"id": "systhmata_kinhtwn_epikoinwniwn", "value": "Συστήματα Κινητών Επικοινωνιών"},
+            {"id": "organwsh_dedomenwn_kai_eksoryksh_plhroforias", "value": "Οργάνωση Δεδομένων και Εξόρυξη Πληροφορίας"},
+            {"id": "diadiktyakes_yphresies_prostithemenhs_aksias", "value": "Διαδικτυακές Υπηρεσίες Προστιθέμενης Αξίας"},
+            {"id": "anaptyksh_oloklhrwmenwn_plhroforiakwn_systhmatwn", "value": "Ανάπτυξη Ολοκληρωμένων Πληροφοριακών Συστημάτων"}
+        ]
+    },
+    {
+        "id": "ninth",
+        "value": "Εξάμηνο 9",
+        "courses": [
+            {"id": "efarmoges_enswmatwmenwn_systhmatwn", "value": "Εφαρμογές Ενσωματωμένων Συστημάτων"},
+            {"id": "rompotikh", "value": "Ρομποτική"},
+            {"id": "ape_kai_eyphyh_hlektrika_diktya", "value": "ΑΠΕ και Ευφυή Ηλεκτρικά Δίκτυα"},
+            {"id": "aptikes_diepafes", "value": "Απτικές Διεπαφές"},
+            {"id": "vioiatrikh_texnologia", "value": "Βιοϊατρική Τεχνολογία"},
+            {"id": "systhmata_metrhsewn_ypovohthoumenwn_apo_h/y", "value": "Συστήματα Μετρήσεων Υποβοηθούμενων από Η/Υ"},
+            {"id": "asfaleia_diktywn_kai_epikoinwniwn", "value": "Ασφάλεια Δικτύων και Επικοινωνιών"},
+            {"id": "diktywsh_kathorismenh_apo_logismiko", "value": "Δικτύωση Καθορισμένη από Λογισμικό"},
+            {"id": "eidika_themata_diktywn_2", "value": "Ειδικά Θέματα Δικτύων (CCNA) 2"},
+            {"id": "doryforikes_epikoinwnies", "value": "Δορυφορικές Επικοινωνίες"},
+            {"id": "texnologia_polymeswn", "value": "Τεχνολογία Πολυμέσων"},
+            {"id": "anaptyksh_diadiktyakwn_systhmatwn_kai_efarmogwn", "value": "Ανάπτυξη Διαδικτυακών Συστημάτων και Εφαρμογών"},
+            {"id": "epixeirhsiakh_erevna", "value": "Επιχειρησιακή Έρευνα"},
+            {"id": "anakthsh_phroforiwn_mhxanes_anazhthshs", "value": "Ανάκτηση Πληροφοριών – Μηχανές Αναζήτησης"},
+            {"id": "diaxeirish_systhmatos_kai_yphresiwn_dbms", "value": "Διαχείριση Συστήματος και Υπηρεσιών DBMS"},
+            {"id": "eyphyh_systhmata", "value": "Ευφυή Συστήματα"},
+            {"id": "prohgmena_themata_texnhths_nohmosynhs", "value": "Προηγμένα Θέματα Τεχνητής Νοημοσύνης"},
+            {"id": "prohgmenh_mhxanikh_mathhsh", "value": "Προηγμένη Μηχανική Μάθηση"},
+            {"id": "katanemhmena_systhmata", "value": "Κατανεμημένα Συστήματα"},
+            {"id": "shmasiologikos_istos", "value": "Σημασιολογικός Ιστός"},
+            {"id": "grafika_ypologistwn", "value": "Γραφικά Υπολογιστών"},
+            {"id": "praktikh_askhsh", "value": "Πρακτική Άσκηση"}
+        ]
+    },
+    {
+        "id": "tenth",
+        "value": "Εξάμηνο 10",
+        "courses": [
+            {"id": "diplvmatikh_ergasia", "value": "Διπλωματική Εργασία"}
+        ]
+    }
+]
