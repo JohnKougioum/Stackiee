@@ -193,6 +193,16 @@ router.post("/", verify, async (req, res) => {
   res.status(201).send();
 });
 
+router.get("/user/posts", async (req, res) => {
+
+  try {
+    const userPosts = await Post.find({ user: req.query.user });
+    res.json(userPosts);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
 router.delete("/:user", async (req, res) => {
   try {
     const removePost = await Post.deleteOne({ user: req.params.user });
