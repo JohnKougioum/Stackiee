@@ -1,25 +1,9 @@
-<template>
-  <div class="search--history--area">
-    <div class="flex justify-center" v-if="isFetching">
-      <SpinnerLoader />
-    </div>
-    <div v-else>
-      <SearchHistoryItem
-        @search="test"
-        v-for="(data, index) in this.historyData"
-        :key="index"
-        :searchHistoryData="data"
-      />
-    </div>
-  </div>
-</template>
-
 <script>
-import SearchHistoryItem from "./SearchHistoryItem.vue";
-import SpinnerLoader from "./SpinnerLoader.vue";
-import axios from "axios";
+import axios from 'axios'
+import SearchHistoryItem from './SearchHistoryItem.vue'
+import SpinnerLoader from './SpinnerLoader.vue'
 export default {
-  name: "SearchHistoryArea",
+  name: 'SearchHistoryArea',
   components: {
     SearchHistoryItem,
     SpinnerLoader,
@@ -28,29 +12,45 @@ export default {
     return {
       isFetching: true,
       historyData: null,
-    };
+    }
   },
   async mounted() {
-    const user = sessionStorage.getItem("user");
+    const user = sessionStorage.getItem('user')
     user
       ? await axios
-          .get(`http://localhost:5000/api/searchHistory?user=${user}`)
-          .then((response) => {
-            this.isFetching = false;
-            this.historyData = response.data[0].searchHistory;
-          })
-      : this.emitEmptyHistory();
+        .get(`http://localhost:5000/api/searchHistory?user=${user}`)
+        .then((response) => {
+          this.isFetching = false
+          this.historyData = response.data[0].searchHistory
+        })
+      : this.emitEmptyHistory()
   },
   methods: {
     test(searchTerm) {
-      this.$emit("emittedSearch", searchTerm);
+      this.$emit('emittedSearch', searchTerm)
     },
     emitEmptyHistory() {
-      this.$emit("emptyHistory");
+      this.$emit('emptyHistory')
     },
   },
-};
+}
 </script>
+
+<template>
+  <div class="search--history--area">
+    <div v-if="isFetching" class="flex justify-center">
+      <SpinnerLoader />
+    </div>
+    <div v-else>
+      <SearchHistoryItem
+        v-for="(data, index) in historyData"
+        :key="index"
+        :search-history-data="data"
+        @search="test"
+      />
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .search--history--area {

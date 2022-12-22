@@ -3,11 +3,11 @@ const router = express.Router();
 const Searches = require("../models/Searches");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: __dirname + "/.env" });
-// const verify = require("./verifyToken");
+const verify = require("./verifyToken");
 
-router.get("/", async (req, res) => {
+router.get("/", verify, async (req, res) => {
   try {
-    const history = await Searches.find({"user": req.query.user});
+    const history = await Searches.find({ user: req.query.user });
     res.json(history);
   } catch (err) {
     res.json({ message: err });

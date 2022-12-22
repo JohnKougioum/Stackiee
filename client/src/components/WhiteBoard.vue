@@ -1,23 +1,123 @@
+<!-- eslint-disable no-const-assign -->
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from 'vue'
+import { io } from 'socket.io-client'
+import { computed } from '@vue/reactivity'
 
-const colorPalette = ["black", "white", "blue", "red", "yellow", "green"];
+interface PositionInterface {
+  x: number
+  y: number
+}
 
-const canvas = ref(null);
-// onMounted(() => {
-// const ctx = (canvas.value as HTMLCanvasElement).getContext("2d");
-// console.log(ctx);
-// });
+interface PositionArrayInterface extends Array<PositionInterface> {}
+
+const colorPalette = ['black', 'white', 'blue', 'red', 'yellow', 'green']
+
+const socket = io('http://localhost:5000')
+let mousePressed = false
+let lastPos: null | Array<number> = null
+const drawColor = $ref('black')
+const lineWidth = ref(15)
+const lineWidthExamples = [0, 5, 10, 15, 20]
+
+const canvas = $ref<HTMLElement>()
+const ctx = ref<CanvasRenderingContext2D>()
+onMounted(() => {
+  ctx.value = canvas.getContext('2d')
+
+  canvas.addEventListener('mousedown', (e: MouseEvent) => {
+    mousePressed = true
+    draw(e)
+  })
+
+  canvas.addEventListener('mousemove', (e: MouseEvent) => {
+    if (mousePressed)
+      draw(e)
+  })
+
+  canvas.addEventListener('mouseleave', (e: MouseEvent) => {
+    lastPos = null
+  })
+
+  canvas.addEventListener('mouseup', (e: MouseEvent) => {
+    mousePressed = false
+    lastPos = null
+  })
+
+  socket.on('drawing', (color, width, startPos: PositionArrayInterface, endPos: PositionArrayInterface) => {
+    ctx.value!.beginPath()
+    ctx.value!.strokeStyle = color
+    ctx.value!.lineWidth = width
+    ctx.value!.lineJoin = 'round'
+    ctx.value!.moveTo(...startPos)
+    ctx.value!.lineTo(...endPos)
+    ctx.value!.closePath()
+    ctx.value!.stroke()
+  })
+
+  socket.on('clearCanvas', () => {
+    ctx.value!.clearRect(0, 0, canvas.width, canvas.height)
+  })
+
+  // socket.on('socketNumber', (number) => {
+  //   document.getElementById('counter').innerHTML = number
+  // })
+})
+
+function setLineWidth(e: MouseEvent) {
+  lineWidth.value = (e.target as HTMLElement).clientWidth - 5
+}
+
+const currentLineWidth = computed(() => {
+  return (index: number) => {
+    return lineWidth.value === lineWidthExamples[index - 1]
+  }
+})
+
+function mousePos(e: MouseEvent) {
+  const rect = canvas.getBoundingClientRect()
+  return [
+    (e.clientX - rect.left) * (canvas.width / rect.width),
+    (e.clientY - rect.top) * (canvas.height / rect.height),
+  ]
+}
+
+function draw(e: MouseEvent) {
+  const [x, y] = mousePos(e)
+  if (lastPos) {
+    socket.emit('drawing', drawColor, lineWidth.value, lastPos, [x, y])
+
+    lastPos = [x, y]
+  }
+  else {
+    lastPos = [x, y]
+  }
+}
+
+function clearCanvas() {
+  socket.emit('clearCanvas')
+}
+
+onUnmounted(() => {
+  canvas.removeEventListener('mousedown')
+  canvas.removeEventListener('mousemove')
+  canvas.removeEventListener('mouseleave')
+  canvas.removeEventListener('mouseup')
+})
 </script>
+
 <template>
   <div class="wb--container">
     <div class="wb--container--controls">
       <div class="wb--container--controls--pen">
-        <div class="wb--container--controls--pen__size"></div>
-        <div class="wb--container--controls--pen__size"></div>
-        <div class="wb--container--controls--pen__size"></div>
-        <div class="wb--container--controls--pen__size"></div>
-        <div class="wb--container--controls--pen__size"></div>
+        <div
+          v-for="i in 5"
+          :key="i"
+          class="wb--container--controls--pen__size"
+          :class="{ 'opacity-40': !currentLineWidth(i) }"
+          :style="`background-color:${drawColor}`"
+          @click="setLineWidth($event)"
+        />
       </div>
       <div class="wb--container--controls--palette">
         <div
@@ -25,18 +125,22 @@ const canvas = ref(null);
           :key="index"
           class="w-8 h-8 wb--container--controls--palette__color"
           :style="`background-color:${color}`"
-        ></div>
+          @click="drawColor = color"
+        />
       </div>
 
       <div class="wb--container--controls__clearBtn">
-        <Button>Clear</Button>
+        <button @click="clearCanvas">
+          Clear
+        </button>
       </div>
     </div>
     <div class="wb--container--canvas">
-      <canvas id="canvas" ref="canvas"></canvas>
+      <canvas id="canvas" ref="canvas" />
     </div>
   </div>
 </template>
+
 <style lang="scss">
 .wb--container {
   display: flex;
@@ -59,7 +163,6 @@ const canvas = ref(null);
         background-color: black;
         border-radius: 50%;
         margin: 3px;
-        opacity: 0.4;
       }
 
       &__size:nth-child(1) {
@@ -75,7 +178,6 @@ const canvas = ref(null);
       &__size:nth-child(3) {
         width: 15px;
         height: 15px;
-        opacity: 1;
       }
 
       &__size:nth-child(4) {
@@ -119,7 +221,8 @@ const canvas = ref(null);
     #canvas {
       width: 100%;
       color: white;
-      background-color: wheat;
+      background-color: white;
+      cursor: crosshair;
     }
   }
 }
