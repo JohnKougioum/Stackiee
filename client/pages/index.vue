@@ -37,7 +37,7 @@ const { pending, error } = await useFetch<PostsResults>('/devApi/posts', {
   watch: [page],
   onResponse({ response }) {
     posts.value.push(...response._data.posts)
-    nextPage.value = posts.value ? Object.keys(response._data).includes('next') : false
+    nextPage.value = Object.keys(response._data).includes('next')
   },
 })
 const { endAnchor } = usePaginator(page, pending, nextPage)
