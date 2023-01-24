@@ -5,9 +5,10 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
 </script>
 
 <template>
-  <div class="h-full text-white">
+  <!-- TODO: Fix layout shift on hydrate -->
+  <div class="h-full">
     <main class="flex w-full mx-auto lg:max-w-[80rem]">
-      <aside class="text-white hidden relative sm:flex w-[12.5%] md:w-1/6 lg:w-1/5 xl:w-1/4 justify-end margin-inline-4">
+      <aside class="hidden relative sm:flex w-[12.5%] md:w-1/6 lg:w-1/5 xl:w-1/4 justify-end margin-inline-4">
         <div class="sticky top-0 w-20 xl:w-[25rem] h-screen flex flex-col items-center">
           <div class="flex flex-col overflow-y-auto justify-between h-full max-w-full mt-5">
             Test

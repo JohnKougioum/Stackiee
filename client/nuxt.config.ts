@@ -2,6 +2,10 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
+    '@vueuse/nuxt',
+    '@pinia/nuxt',
+    '@nuxtjs/color-mode',
+    '@vue-macros/nuxt',
   ],
   typescript: {
     tsConfig: {
@@ -27,6 +31,15 @@ export default defineNuxtConfig({
         scss: {
           additionalData: '@import "@/stlyes/vars.css"',
         },
+      },
+    },
+  },
+  nitro: {
+    devProxy: {
+      '/devApi': {
+        target: 'http://localhost:5000/api',
+        changeOrigin: true,
+        prependPath: true,
       },
     },
   },

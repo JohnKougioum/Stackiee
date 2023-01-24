@@ -5,8 +5,17 @@
   </NuxtLayout>
 </template>
 
+<!-- TODO: add font -->
 <style>
-body{
-  background: black;
+html,
+body,
+#__nuxt {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  @apply bg-base text-primary-dark;
 }
 </style>
