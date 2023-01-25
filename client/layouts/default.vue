@@ -27,8 +27,7 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
         <div class="sticky top-0 h-screen flex flex-col gap-2 py-3 margin-inline-2">
           <slot name="right">
             <div class="flex-auto" />
-            footer here
-            <!-- <NavFooter /> -->
+            <NavFooter />
           </slot>
         </div>
       </aside>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // @ts-expect-error missing types
-import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
+import { DynamicScrollerItem } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 interface Post {
@@ -40,23 +40,42 @@ const { pending, error } = await useFetch<PostsResults>('/devApi/posts', {
     nextPage.value = Object.keys(response._data).includes('next')
   },
 })
-const { endAnchor } = usePaginator(page, pending, nextPage)
-// TODO: skeleton loading, extract login to component
 </script>
 
 <template>
   <div class="xl:block h-6" />
   <div class="text-3xl">
-    <div v-if="pending">
-      Loading...
-    </div>
-
     <template v-if="isHydrated && posts">
-      <TestComponent :items="posts">
-        <template #anchor>
-          <div ref="endAnchor" />
+      <CommonPaginator v-model:page="page" :items="posts" :pending="pending" :next-page="nextPage">
+        <template #default="{ item, active, index }">
+          <DynamicScrollerItem
+            :item="item"
+            :active="active"
+            :size-dependencies="[
+              item.body,
+            ]"
+            :data-index="index"
+          >
+            <div class="py-2 border-b-2">
+              <div class="flex justify-between">
+                <span class="text-lg">
+                  {{ item.user }}
+                </span>
+                <span class="text-sm">
+                  {{ item.createdAt }}
+                </span>
+              </div>
+              <h1>
+                {{ item.title }}
+              </h1>
+              <p class="text-xl pt-4 pb-1">
+                {{ item.body }}
+              </p>
+            </div>
+          </DynamicScrollerItem>
         </template>
-      </TestComponent>
+      </CommonPaginator>
     </template>
+    <TimelineSkeleton v-if="pending" />
   </div>
 </template>
