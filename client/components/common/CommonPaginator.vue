@@ -32,4 +32,5 @@ const { endAnchor } = usePaginator(page, $$(pending), $$(nextPage))
     />
   </DynamicScroller>
   <div ref="endAnchor" />
+  <TimelineSkeleton v-if="pending" />
 </template>

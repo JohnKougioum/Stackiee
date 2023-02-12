@@ -30,3 +30,7 @@ export function onReactivated(hook: Function, target?: ComponentInternalInstance
   }, target)
   onDeactivated(() => initial.value = false)
 }
+
+export const onHydrated = (cb: () => unknown) => {
+  watchOnce(isHydrated, () => cb(), { immediate: isHydrated.value })
+}

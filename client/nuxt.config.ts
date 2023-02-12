@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { i18n } from './config/i18n'
+
 export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
@@ -6,6 +8,9 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
     '@vue-macros/nuxt',
+    '@nuxt/devtools',
+    '@nuxtjs/i18n',
+    'nuxt-icon',
   ],
   typescript: {
     tsConfig: {
@@ -20,16 +25,22 @@ export default defineNuxtConfig({
   },
   app: {
     keepalive: true,
-    viewport: 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover',
-    bodyAttrs: {
-      class: 'overflow-x-hidden',
+    head: {
+      viewport: 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover',
+      bodyAttrs: {
+        class: 'overflow-x-hidden',
+      },
     },
   },
+  i18n,
+  css: [
+    'floating-vue/dist/style.css',
+  ],
   vite: {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@import "@/stlyes/vars.css"',
+          additionalData: '',
         },
       },
     },

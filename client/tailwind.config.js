@@ -4,11 +4,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'primary-c:': '#E29578',
         'base': '#F5F1ED',
         'primary-dark': '#252323',
         'primary-gray': '#70798C',
         'secondary-gray': '#D9D9D9',
+        'base-orange': '#E29578',
+        'primary-orange-ignore:': '#E29578',
+      },
+      fontSize: {
+        'size-base': '1rem',
       },
     },
   },
