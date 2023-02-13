@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex flex-col gap-2 sm:px-3 flex-shrink leading-normal md:text-lg h-full mt-1">
+  <nav class="flex flex-col gap-2 sm:px-3 flex-shrink leading-normal md:text-xl  h-full mt-1">
     <!-- <SearchWidget class="custom-inline-margin lg:ms-1 lg:me-5 hidden xl:block" /> -->
     <NavSideItem text="Search" to="/explore" icon="ri:search-line" class="hidden sm:block xl:hidden" />
 

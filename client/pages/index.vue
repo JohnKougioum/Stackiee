@@ -46,7 +46,7 @@ const { pending, error } = await useFetch<PostsResults>('/devApi/posts', {
             ]"
             :data-index="index"
           >
-            <div class="py-2 border-b-2">
+            <div class="pb-3 pt-5 border-b-2">
               <PostCard :item="item as PostData" />
               <!-- <div class="flex justify-between">
                 <span class="text-lg">

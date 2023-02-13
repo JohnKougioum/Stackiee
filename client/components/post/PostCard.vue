@@ -26,7 +26,7 @@ const createdAt = useFormattedDateTime(props.item.createdAt)
             {{ createdAt }}
           </span>
         </div>
-        <div class="my-2 cursor-pointer">
+        <div class="mt-1 mb-4 cursor-pointer">
           {{ item.body }}
         </div>
         <div class="mt-2 h-5 flex justify-between items-center">
