@@ -18,4 +18,34 @@ body,
 html{
   @apply bg-base text-primary-dark;
 }
+
+body{
+  overflow-y: scroll;
+}
+
+* {
+  scrollbar-color: #8885 #F5F1ED;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #D9D9D9;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8885;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8886;
+}
 </style>

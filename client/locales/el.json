@@ -1,3 +1,34 @@
 {
-    "hello": "Γεια σας"
+    "hello": "Γεια σας",
+    "time_ago_options": {
+        "day_future": "σε 0 μέρες|αύριο|σε {n} μέρες",
+        "day_past": "0 μέρες πριν|εχθές|{n} μέρες πριν",
+        "hour_future": "σε 0 ώρες|σε 1 ώρα|σε {n} ώρες",
+        "hour_past": "0 ώρες πριν|1 ώρα πριν|{n} ώρες πριν",
+        "just_now": "μόλις τώρα",
+        "minute_future": "σε 0 λεπτά|σε 1 minute|σε {n} λεπτά",
+        "minute_past": "0 λεπτά πριν|1 minute πριν|{n} λεπτά πριν",
+        "month_future": "σε 0 μήνες|επόμενο μήνα|σε {n} μήνες",
+        "month_past": "0 μήνες πριν|προηγούμενο μήνα|{n} μήνες πριν",
+        "second_future": "μόλις τώρα|σε {n} second|σε {n} δευτερόλεπτα",
+        "second_past": "μόλις τώρα|{n} second πριν|{n} δευτερόλεπτα πριν",
+        "short_day_future": "σε {n}d",
+        "short_day_past": "{n}d",
+        "short_hour_future": "σε {n}h",
+        "short_hour_past": "{n}h",
+        "short_minute_future": "σε {n}min",
+        "short_minute_past": "{n}min",
+        "short_month_future": "σε {n}mo",
+        "short_month_past": "{n}mo",
+        "short_second_future": "σε {n}s",
+        "short_second_past": "{n}s",
+        "short_week_future": "σε {n}w",
+        "short_week_past": "{n}w",
+        "short_year_future": "σε {n}y",
+        "short_year_past": "{n}y",
+        "week_future": "σε 0 εβδομάδες|επόμενη week|σε {n} εβδομάδες",
+        "week_past": "0 εβδομάδες πριν|last week|{n} εβδομάδες πριν",
+        "year_future": "σε 0 χρόνια|επόμενο έτος|σε {n} χρόνια",
+        "year_past": "0 χρόνια πριν|προηγούμενο έτος|{n} χρόνια πριν"
+      }
 }

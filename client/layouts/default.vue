@@ -10,7 +10,7 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
     <main class="flex w-full mx-auto lg:max-w-[80rem]">
       <aside class="hidden relative sm:flex w-[12.5%] md:w-1/6 lg:w-1/5 xl:w-1/4 justify-end margin-inline-4">
         <div class="sticky top-0 w-20 xl:w-[25rem] h-screen flex flex-col items-center">
-          <div class="flex flex-col overflow-y-auto justify-between h-full max-w-full mt-5">
+          <div class="flex flex-col overflow-y-auto justify-between h-full w-full max-w-full mt-5">
             <NavTitle />
             <NavSide />
           </div>
@@ -24,7 +24,7 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
           <!-- <NavBottom v-if="isHydrated" class="sm:hidden" /> -->
         </div>
       </div>
-      <aside v-if="isHydrated && !wideLayout" class="hidden sm:hidden lg:block w-1/4">
+      <aside v-if="isHydrated && !wideLayout" class="hidden lg:w-1/5 xl:w-1/4 sm:hidden xl:block">
         <div class="sticky top-0 h-screen flex flex-col gap-2 py-3 margin-inline-2">
           <slot name="right">
             <div class="flex-auto" />

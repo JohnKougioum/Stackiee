@@ -5,7 +5,8 @@ const props = defineProps<{
   item: PostData
 }>()
 
-const createdAt = useFormattedDateTime(props.item.createdAt)
+const timeAgoOptions = useTimeAgoOptions(true)
+const timeAgo = useTimeAgo(props.item.createdAt, timeAgoOptions)
 </script>
 
 <template>
@@ -23,7 +24,7 @@ const createdAt = useFormattedDateTime(props.item.createdAt)
             @{{ item.user }}
           </span>
           <span class="text-sm text-primary-gray">
-            {{ createdAt }}
+            {{ timeAgo }}
           </span>
         </div>
         <div class="mt-1 mb-4 cursor-pointer">
