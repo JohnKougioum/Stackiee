@@ -39,10 +39,12 @@ export default defineNuxtConfig({
   vite: {
     css: {
       preprocessorOptions: {
-        scss: {
-          additionalData: '',
-        },
       },
+    },
+  },
+  postcss: {
+    plugins: {
+      'postcss-nested': {},
     },
   },
   nitro: {

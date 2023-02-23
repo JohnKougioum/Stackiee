@@ -30,5 +30,8 @@
         "week_past": "0 weeks ago|last week|{n} weeks ago",
         "year_future": "in 0 years|next year|in {n} years",
         "year_past": "0 years ago|last year|{n} years ago"
+      },
+      "user:": {
+        "signIn": "Sign In"
       }
 }

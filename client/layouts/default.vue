@@ -5,7 +5,6 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
 </script>
 
 <template>
-  <!-- TODO: Fix layout shift on hydrate -->
   <div class="h-full">
     <main class="flex w-full mx-auto lg:max-w-[80rem]">
       <aside class="hidden relative sm:flex w-[12.5%] md:w-1/6 lg:w-1/5 xl:w-1/4 justify-end margin-inline-4">
@@ -13,6 +12,16 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
           <div class="flex flex-col overflow-y-auto justify-between h-full w-full max-w-full mt-5">
             <NavTitle />
             <NavSide />
+            <div class="flex-auto" />
+            <div v-if="isHydrated" class="flex flex-col stricky bottom-0">
+              <div class="hidden xl:block">
+                <!-- TODO: add user composable -->
+                <UserSignInEntry v-if="!currentUser" />
+              </div>
+              <div v-if="currentUser" class="p-6 pb-8 w-full">
+                <UserSignedInCard />
+              </div>
+            </div>
           </div>
         </div>
       </aside>

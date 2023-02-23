@@ -15,7 +15,7 @@
   </nav>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 @media screen and (min-width: 1024px) {
     .custom-inline-margin {
         margin-inline-start: 0.25rem;
