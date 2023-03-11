@@ -19,17 +19,17 @@ interface PostsResults {
 const posts = ref<PostData[]>([])
 const page = ref(1)
 const nextPage = ref(true)
-const { pending, error } = await useFetch<PostsResults>('/devApi/posts', {
-  query: {
-    page,
-  },
-  server: false,
-  watch: [page],
-  onResponse({ response }) {
-    posts.value.push(...response._data.posts)
-    nextPage.value = Object.keys(response._data).includes('next')
-  },
-})
+// const { pending, error } = await useFetch<PostsResults>('/devApi/posts', {
+//   query: {
+//     page,
+//   },
+//   server: false,
+//   watch: [page],
+//   onResponse({ response }) {
+//     posts.value.push(...response._data.posts)
+//     nextPage.value = Object.keys(response._data).includes('next')
+//   },
+// })
 </script>
 
 <template>

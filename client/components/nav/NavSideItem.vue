@@ -3,7 +3,6 @@ const props = withDefaults(defineProps<{
   text?: string
   icon: string
   to: string | Record<string, string>
-  color?: string
   userOnly?: boolean
 }>(), {
   userOnly: false,
@@ -13,12 +12,12 @@ defineSlots<{
   icon: {}
   default: {}
 }>()
-
-const activeClass = ref('text-primary')
+const route = useRoute()
+const activeClass = ref('text-primary-dark')
 onHydrated(async () => {
-  activeClass.value = ''
-  await nextTick()
   activeClass.value = 'text-primary-dark'
+  await nextTick()
+  activeClass.value = route.path === props.to ? 'text-base-orange' : 'text-primary-dark'
 })
 
 // Optimize rendering for the common case of being logged in, only show visual feedback for disabled user-only items
@@ -33,17 +32,17 @@ const noUserVisual = computed(() => isHydrated.value && props.userOnly)
     :disabled="noUserDisable"
     :class="noUserVisual ? 'opacity-25 pointer-events-none ' : ''"
     :active-class="activeClass"
-    :style="color ? `color: ${color}` : ''"
     class="group focus:outline-none disabled:pointer-events-none"
     :tabindex="noUserDisable ? -1 : null"
     @click="$scrollToTop"
   >
     <CommonTooltip :disabled="!isMediumOrLargeScreen" :content="text" placement="right">
       <div
-        class="flex items-center gap-4 w-fit rounded-xl px-2 py-2 mx-3 sm:mx-auto xl:ml-0 xl:mr-5 xl:px-5 xl:w-auto duration-100 group-hover:bg-secondary-gray group-focus-visible:ring-2 group-focus-visible:ring-primary-gray"
+        class="flex items-center gap-4 w-fit rounded-xl px-2 py-2 mx-3 sm:mx-auto xl:ml-0 xl:mr-5 xl:px-5 xl:w-auto
+        duration-100 group-hover:bg-secondary-gray group-focus-visible:ring-2 group-focus-visible:ring-primary-gray"
       >
         <slot name="icon">
-          <Icon :name="icon" size="1.5rem" :color="color ? color : '#252323'" />
+          <Icon :name="icon" size="1.5rem" />
         </slot>
         <slot>
           <span class="block sm:hidden xl:block select-none">{{ isHydrated ? text : '&nbsp;' }}</span>

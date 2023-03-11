@@ -23,6 +23,12 @@ export default defineNuxtConfig({
     payloadExtraction: false,
     reactivityTransform: true,
   },
+  routeRules: {
+    // Static generation
+    '/': { prerender: true },
+    '/settings/**': { prerender: false },
+    '/login/auth': { prerender: false, ssr: false },
+  },
   app: {
     keepalive: true,
     head: {
@@ -35,6 +41,7 @@ export default defineNuxtConfig({
   i18n,
   css: [
     'floating-vue/dist/style.css',
+    '~/styles/dropdown.css',
   ],
   vite: {
     css: {
@@ -47,14 +54,11 @@ export default defineNuxtConfig({
       'postcss-nested': {},
     },
   },
-  nitro: {
-    devProxy: {
-      '/devApi': {
-        target: 'http://localhost:5000/api',
-        changeOrigin: true,
-        prependPath: true,
-      },
+  runtimeConfig: {
+    token_secret: process.env.NUXT_TOKEN_SECRET,
+    public: {
+      CLIENT_ID: process.env.VITE_CLIENT_ID,
+      CLIENT_SECRET: process.env.VITE_SECRET,
     },
   },
-
 })
