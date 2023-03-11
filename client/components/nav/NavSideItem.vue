@@ -17,7 +17,9 @@ const activeClass = ref('text-primary-dark')
 onHydrated(async () => {
   activeClass.value = 'text-primary-dark'
   await nextTick()
-  activeClass.value = route.path === props.to ? 'text-base-orange' : 'text-primary-dark'
+  activeClass.value = (route.path === props.to) || (route.path === '/login/auth' && props.to === '/')
+    ? 'text-base-orange'
+    : 'text-primary-dark'
 })
 
 // Optimize rendering for the common case of being logged in, only show visual feedback for disabled user-only items

@@ -18,7 +18,7 @@ router.afterEach(() => {
       to="/"
       @click.prevent="$scrollToTop"
     >
-      Stackiee
+      S
     </NuxtLink>
     <div
       class="hidden xl:flex items-center me mt-2"
