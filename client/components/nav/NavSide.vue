@@ -1,7 +1,7 @@
 <template>
   <nav class="flex flex-col gap-2 sm:px-3 flex-shrink leading-normal md:text-xl  h-full mt-1">
     <!-- <SearchWidget class="custom-inline-margin lg:ms-1 lg:me-5 hidden xl:block" /> -->
-    <NavSideItem text="Search" to="/explore" icon="ri:search-line" class="hidden sm:block xl:hidden" />
+    <NavSideItem text="Search" to="/search" icon="ri:search-line" class="hidden sm:block xl:hidden" />
 
     <div class="flex-shrink hidden sm:block mt-2" />
     <NavSideItem text="Home" to="/" icon="majesticons:home-analytics-line" />

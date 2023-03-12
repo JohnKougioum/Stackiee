@@ -1,0 +1,51 @@
+<script setup lang='ts'>
+import stringLength from 'string-length'
+import { EditorContent } from '@tiptap/vue-3'
+
+const content = ref('')
+
+const { editor } = useTiptap({
+  content: computed({
+    get: () => content.value,
+    set: newValue => (content.value = newValue),
+  }),
+  placeholder: computed(() => 'Write something...'),
+  autofocus: true,
+  onSubmit: publish,
+  onFocus: () => console.log('focus'),
+  onPaste: handlePaste,
+})
+
+// const characterCount = $computed(() => {
+//   const text = htmlToText(editor.value?.getHTML() || '')
+
+//   let length = stringLength(text)
+
+//   const linkRegex = /(https?:\/\/(www\.)?|xmpp:)\S+/g
+
+//   const maxLength = 23
+
+//   for (const [fullMatch] of text.matchAll(linkRegex))
+//     length -= fullMatch.length - Math.min(maxLength, fullMatch.length)
+
+//   return length
+// })
+
+function publish() {
+  console.log(content.value)
+}
+
+function handlePaste(evt: ClipboardEvent) {
+  console.log(evt.clipboardData)
+}
+</script>
+
+<template>
+  <div class="my-10 px-10 ">
+    <div class="border-[1px] border-primary-dark rounded-xl">
+      <PublishEditorTools class="border-b-[1px] border-primary-dark" />
+      <EditorContent :editor="editor" />
+      {{ editor?.getHTML() }}
+    </div>
+  </div>
+</template>

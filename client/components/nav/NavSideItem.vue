@@ -12,14 +12,13 @@ defineSlots<{
   icon: {}
   default: {}
 }>()
-const route = useRoute()
+
 const activeClass = ref('text-primary-dark')
 onHydrated(async () => {
-  activeClass.value = 'text-primary-dark'
+  activeClass.value = ''
   await nextTick()
-  activeClass.value = (route.path === props.to) || (route.path === '/login/auth' && props.to === '/')
-    ? 'text-base-orange'
-    : 'text-primary-dark'
+
+  activeClass.value = 'text-base-orange'
 })
 
 // Optimize rendering for the common case of being logged in, only show visual feedback for disabled user-only items

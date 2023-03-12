@@ -34,7 +34,7 @@ const timeAgo = useTimeAgo(props.item.createdAt, timeAgoOptions)
           <div class="flex items-center">
             <button>
               <CommonTooltip placement="bottom" content="Comments">
-                <div class="p-2 leading-[0] rounded-full hover:bg-secondary-gray duration-100">
+                <div class="btn-icon">
                   <Icon name="majesticons:comment-2-line" size="20" color="#70798C" />
                 </div>
               </CommonTooltip>
@@ -45,7 +45,7 @@ const timeAgo = useTimeAgo(props.item.createdAt, timeAgoOptions)
           </div>
           <button>
             <CommonTooltip placement="bottom" content="Copy Link">
-              <div class="p-2 leading-[0] rounded-full hover:bg-secondary-gray duration-100">
+              <div class="btn-icon">
                 <Icon name="ph:link-simple-horizontal-duotone" size="24" color="#70798C" />
               </div>
             </CommonTooltip>

@@ -41,6 +41,7 @@ export default defineNuxtConfig({
   i18n,
   css: [
     'floating-vue/dist/style.css',
+    '~/styles/global.css',
     '~/styles/dropdown.css',
   ],
   vite: {

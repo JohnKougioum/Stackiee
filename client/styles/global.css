@@ -1,0 +1,7 @@
+.btn-icon{
+    @apply p-1 leading-[0] rounded-full hover:bg-secondary-gray duration-100;
+}
+
+.divider-vertical{
+    @apply w-0.5 h-5 bg-secondary-gray;
+}
