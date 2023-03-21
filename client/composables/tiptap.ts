@@ -8,10 +8,16 @@ import Mention from '@tiptap/extension-mention'
 import HardBreak from '@tiptap/extension-hard-break'
 import Bold from '@tiptap/extension-bold'
 import Italic from '@tiptap/extension-italic'
-import Code from '@tiptap/extension-code'
+import Code from '@tiptap/extension-code-block'
+import Blockquote from '@tiptap/extension-blockquote'
 import History from '@tiptap/extension-history'
+import Heading from '@tiptap/extension-heading'
+import Bulletlist from '@tiptap/extension-bullet-list'
+import Orderlist from '@tiptap/extension-ordered-list'
+import Listitem from '@tiptap/extension-list-item'
 
 import type { Ref } from 'vue'
+import { TiptapPluginCodeBlockShiki } from './shikit-editor'
 
 export interface UseTiptapOptions {
   content: Ref<string>
@@ -41,7 +47,12 @@ export function useTiptap(options: UseTiptapOptions) {
       Bold,
       Italic,
       Code,
+      Blockquote,
       Text,
+      Heading,
+      Bulletlist,
+      Orderlist,
+      Listitem,
       Mention
         .configure({
           HTMLAttributes: {
@@ -51,6 +62,7 @@ export function useTiptap(options: UseTiptapOptions) {
       Placeholder.configure({
         placeholder: () => placeholder.value!,
       }),
+      TiptapPluginCodeBlockShiki,
       History.configure({
         depth: 10,
       }),

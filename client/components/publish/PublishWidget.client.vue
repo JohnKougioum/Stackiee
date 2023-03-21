@@ -43,9 +43,18 @@ function handlePaste(evt: ClipboardEvent) {
 <template>
   <div class="my-10 px-10 ">
     <div class="border-[1px] border-primary-dark rounded-xl">
-      <PublishEditorTools class="border-b-[1px] border-primary-dark" />
-      <EditorContent :editor="editor" />
-      {{ editor?.getHTML() }}
+      <PublishEditorTools v-if="editor" :editor="editor" class="border-b-[1px] border-primary-dark" />
+      <div class="p-2 min-h-[10rem]">
+        <EditorContent :editor="editor" />
+      </div>
     </div>
+    {{ editor?.getHTML() }}
   </div>
 </template>
+
+<style>
+.content-rich{
+  outline: none;
+  min-height: 10rem;
+}
+</style>
