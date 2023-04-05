@@ -45,6 +45,9 @@ export default defineNuxtConfig({
     '~/styles/dropdown.css',
   ],
   vite: {
+    define: {
+      'process.env.VSCODE_TEXTMATE_DEBUG': 'false',
+    },
     css: {
       preprocessorOptions: {
       },

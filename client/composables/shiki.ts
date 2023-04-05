@@ -9,7 +9,7 @@ export function useHighlighter(lang: Lang) {
   if (!shikiImport) {
     shikiImport = import('shiki-es')
       .then(async (r) => {
-        r.setCDN('/shiki/')
+        r.setCDN('https://unpkg.com/shiki/')
         shiki.value = await r.getHighlighter({
           themes: [
             'vitesse-dark',

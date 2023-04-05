@@ -17,7 +17,13 @@ h2{
 h3{
     font-size: 1.1rem;
 }
+ul{
+    list-style: disc;
+}
 
+ol{
+    list-style: decimal;
+}
 .content-rich{
     overflow-wrap: break-word;
 
@@ -37,14 +43,13 @@ h3{
 
     ol{
         list-style: decimal;
-    }
+    }   
+}
 
-    .code-block{
-        background-color: #00000006;
-        @apply rounded-md p-3 mt-2 overflow-auto leading-[1.6rem];
-
-        .shiki {
-            background: transparent !important;
-        }
-    }
+.code-block{
+    background-color: #000000dc;
+    @apply text-base-orange rounded-md p-3 mt-2 overflow-auto leading-[1.6rem];
+}
+.shiki {
+    background: transparent !important;
 }

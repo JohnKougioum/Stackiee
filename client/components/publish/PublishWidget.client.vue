@@ -16,24 +16,29 @@ const { editor } = useTiptap({
   onPaste: handlePaste,
 })
 
-// const characterCount = $computed(() => {
-//   const text = htmlToText(editor.value?.getHTML() || '')
+const characterCount = computed(() => {
+  const text = htmlToText(editor.value?.getHTML() || '')
 
-//   let length = stringLength(text)
+  let length = stringLength(text)
 
-//   const linkRegex = /(https?:\/\/(www\.)?|xmpp:)\S+/g
+  const linkRegex = /(https?:\/\/(www\.)?|xmpp:)\S+/g
 
-//   const maxLength = 23
+  const maxLength = 23
 
-//   for (const [fullMatch] of text.matchAll(linkRegex))
-//     length -= fullMatch.length - Math.min(maxLength, fullMatch.length)
+  for (const [fullMatch] of text.matchAll(linkRegex))
+    length -= fullMatch.length - Math.min(maxLength, fullMatch.length)
 
-//   return length
-// })
+  return length
+})
 
+const t = ref('')
 function publish() {
-  console.log(content.value)
+  console.log(htmlToText(editor.value?.getHTML() || ''))
+  t.value = contentToVNode(editor.value?.getHTML() || '')
+  console.log(t.value)
 }
+
+const vnode = computed(() => t.value)
 
 function handlePaste(evt: ClipboardEvent) {
   console.log(evt.clipboardData)
@@ -48,13 +53,19 @@ function handlePaste(evt: ClipboardEvent) {
         <EditorContent :editor="editor" />
       </div>
     </div>
-    {{ editor?.getHTML() }}
+    <div class="text-right" :class="{ 'text-red-500': characterCount > 400 }">
+      {{ characterCount ?? 0 }}<span text-secondary-light>/</span><span text-secondary-light>{{ 400 }}</span>
+    </div>
+    <button @click="publish">
+      publish
+    </button>
+    <component :is="vnode" />
   </div>
 </template>
 
 <style>
 .content-rich{
   outline: none;
-  min-height: 10rem;
+  min-height: 15rem;
 }
 </style>
