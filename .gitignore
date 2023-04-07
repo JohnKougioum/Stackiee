@@ -1,7 +1,8 @@
 node_modules
-*.env
-.env.local
-
-.vscode/*
-!.vscode/extensions.json
-.idea
+*.log*
+.nuxt
+.nitro
+.cache
+.output
+.env
+dist
