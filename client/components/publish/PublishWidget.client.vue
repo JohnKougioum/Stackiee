@@ -31,7 +31,7 @@ const characterCount = computed(() => {
   return length
 })
 
-const t = ref('')
+const t = ref()
 function publish() {
   console.log(htmlToText(editor.value?.getHTML() || ''))
   t.value = contentToVNode(editor.value?.getHTML() || '')
@@ -53,8 +53,8 @@ function handlePaste(evt: ClipboardEvent) {
         <EditorContent :editor="editor" />
       </div>
     </div>
-    <div class="text-right" :class="{ 'text-red-500': characterCount > 400 }">
-      {{ characterCount ?? 0 }}<span text-secondary-light>/</span><span text-secondary-light>{{ 400 }}</span>
+    <div class="text-right" :class="{ 'text-red-500': characterCount > 500 }">
+      {{ characterCount ?? 0 }}<span text-secondary-light>/</span><span text-secondary-light>{{ 500 }}</span>
     </div>
     <button @click="publish">
       publish

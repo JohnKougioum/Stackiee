@@ -8,8 +8,7 @@ const languages = [
   'cpp',
   'csharp',
   'css',
-  'dart',
-  'go',
+  'bash',
   'html',
   'java',
   'javascript',
@@ -22,6 +21,7 @@ const languages = [
   'tsx',
   'typescript',
   'vue',
+  'php',
 ]
 
 const selectedLanguage = computed({
