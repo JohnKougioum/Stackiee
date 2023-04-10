@@ -33,5 +33,10 @@
       },
       "user:": {
         "signIn": "Sign In"
-      }
+      },
+      "select": {
+       "semester": "Select Semester",
+       "course": "Select Course"
+      },
+      "publish": "Publish"
 }

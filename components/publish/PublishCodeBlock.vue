@@ -41,7 +41,7 @@ const selectedLanguage = computed({
         v-model="selectedLanguage"
         contenteditable="false"
         class="absolute top-1 right-1 rounded px-2 opacity-0 hover:opacity-100 focus:opacity-100 transition
-        outline-none border[1px] border-base"
+        outline-none border-[1px] border-base"
       >
         <option :value="null">
           plain
