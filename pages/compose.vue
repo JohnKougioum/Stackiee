@@ -4,8 +4,11 @@ const semester = ref<number | undefined>(undefined)
 const lectures = computed(() => classes[semester.value as keyof typeof classes].courses)
 const selectedLecture = ref<string | undefined>(undefined)
 
+const t = ref()
+const vnode = computed(() => t.value)
+
 async function publishPost(body: string) {
-  console.log(body)
+  t.value = contentToVNode(body)
 }
 </script>
 
@@ -40,4 +43,5 @@ async function publishPost(body: string) {
     </select>
   </div>
   <PublishWidget @publish="publishPost" />
+  <component :is="vnode" />
 </template>

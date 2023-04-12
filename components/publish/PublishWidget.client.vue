@@ -38,7 +38,7 @@ const characterCount = computed(() => {
 const t = ref()
 async function publish() {
   t.value = contentToVNode(editor.value?.getHTML() || '')
-  emits('publish', editor.value?.getHTML() || '')
+  emits('publish', htmlToText(editor.value?.getHTML() || ''))
   // TODO: publish to server -> see markdownReplacements for sanatized html
 }
 

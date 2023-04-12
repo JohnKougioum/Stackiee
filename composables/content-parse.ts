@@ -1,4 +1,4 @@
-import { ELEMENT_NODE, TEXT_NODE, parse, render } from 'ultrahtml'
+import { DOCUMENT_NODE, ELEMENT_NODE, TEXT_NODE, parse, render, h as ulraH } from 'ultrahtml'
 import type { Node } from 'ultrahtml'
 import { decode } from 'tiny-decode'
 import type { VNode } from 'vue'
@@ -112,19 +112,25 @@ export function parseHTML(
 ) {
   // Handle code blocks
   html = html
-    .replace(/>(```|~~~)(\w*)([\s\S]+?)\1/g, (_1, _2, lang: string, raw: string) => {
+    .replace(/(```|~~~)(\w*)([\s\S]+?)\1/g, (_1, _2, lang: string, raw: string) => {
       const code = htmlToText(raw)
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/`/g, '&#96;')
       const classes = lang ? ` class="language-${lang}"` : ''
-      return `><pre><code${classes}>${code}</code></pre>`
+      return `<pre><code${classes}>${code}</code></pre>`
     })
     .replace(/`([^`\n]*)`/g, (_1, raw) => {
       return raw ? `<code>${htmlToText(raw).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code>` : ''
     })
 
-  return transformSync(parse(html), [sanitizer])
+  const transforms: Transform[] = [sanitizer]
+
+  transforms.push(transformMarkdown)
+
+  transforms.push(transformParagraphs)
+
+  return transformSync(parse(html), transforms)
 }
 
 export function convertHTML(html: string) {
@@ -196,8 +202,8 @@ export function treeToText(input: Node): string {
     post = '~_'
   }
   else if (input.name === 'li') {
-    pre = '--'
-    post = '--'
+    pre = '~--'
+    post = '~--'
   }
   else if (input.name === 'h2') {
     pre = '##'
@@ -206,6 +212,10 @@ export function treeToText(input: Node): string {
   else if (input.name === 'h3') {
     pre = '###'
     post = '###'
+  }
+  else if (input.name === 'blockquote') {
+    pre = '~~-'
+    post = '~~-'
   }
 
   if ('children' in input)
@@ -294,6 +304,8 @@ export function contentToVNode(
 function treeToVNode(
   input: Node,
 ): VNode | string | null {
+  console.log(input)
+
   if (input.type === TEXT_NODE)
     return decode(input.value)
 
@@ -312,7 +324,15 @@ function nodeToVNode(node: Node): VNode | string | null {
   if (node.type === TEXT_NODE)
     return node.value
 
+    //TODO: remove ul/ol
   if ('children' in node) {
+    console.log('node', node)
+
+    console.log(h(
+      node.name,
+      node.attributes,
+      node.children.map(treeToVNode),
+    ))
     return h(
       node.name,
       node.attributes,
@@ -330,4 +350,61 @@ function handleCodeBlock(el: Node) {
     const code = codeEl.children[0] ? treeToText(codeEl.children[0]) : ''
     return h(ContentCode, { lang, code: encodeURIComponent(code) })
   }
+}
+
+const _markdownReplacements: [RegExp, (c: (string | Node)[]) => Node][] = [
+  [/\*\*\*(.*?)\*\*\*/g, c => ulraH('b', null, [ulraH('em', null, c)])],
+  [/\*\*(.*?)\*\*/g, c => ulraH('b', null, c)],
+  [/\*(.*?)\*/g, c => ulraH('em', null, c)],
+  [/\#\#\#(.*?)\#\#\#/g, c => ulraH('h3', null, c)],
+  [/\#\#(.*?)\#\#/g, c => ulraH('h2', null, c)],
+  [/~~(.*?)~~/g, c => ulraH('del', null, c)],
+  [/~~-\n(.*?)~~-/g, c => ulraH('blockquote', null, c)],
+  [/__~--\n(.*?)~--__/g, c => ulraH('ul', null, [ulraH('li', null, c)])],
+  [/~_~--\n(.*?)~--~_/g, c => ulraH('ol', null, [ulraH('li', null, c)])],
+  [/~--\n(.*?)~--/g, c => ulraH('li', null, c)],
+  [/`([^`]+?)`/g, c => ulraH('code', null, c)],
+]
+
+function _markdownProcess(value: string) {
+  const results = [] as (string | Node)[]
+
+  let start = 0
+  while (true) {
+    let found: { match: RegExpMatchArray; replacer: (c: (string | Node)[]) => Node } | undefined
+
+    for (const [re, replacer] of _markdownReplacements) {
+      re.lastIndex = start
+
+      const match = re.exec(value)
+      if (match) {
+        if (!found || match.index < found.match.index!)
+          found = { match, replacer }
+      }
+    }
+
+    if (!found)
+      break
+
+    results.push(value.slice(start, found.match.index))
+    results.push(found.replacer(_markdownProcess(found.match[1])))
+    start = found.match.index! + found.match[0].length
+  }
+
+  results.push(value.slice(start))
+
+  return results.filter(Boolean)
+}
+
+function transformMarkdown(node: Node) {
+  if (node.type !== TEXT_NODE)
+    return node
+  return _markdownProcess(node.value)
+}
+
+function transformParagraphs(node: Node): Node | Node[] {
+  // For top level paragraphs, inject an empty <p> to preserve status paragraphs in our editor (except for the last one)
+  if (node.parent?.type === DOCUMENT_NODE && node.name === 'p' && node.parent.children.at(-1) !== node)
+    return [node, ulraH('p')]
+  return node
 }

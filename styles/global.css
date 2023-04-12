@@ -31,11 +31,7 @@ ol{
 .content-rich{
     overflow-wrap: break-word;
 
-    blockquote {
-        border-left: 2px solid #d9d9d9;
-        margin: 0.5rem 10px;
-        padding: 0.3em 10px;
-    }
+    
 
     ul, ol{
         margin-left: 1rem;
@@ -56,4 +52,10 @@ ol{
 }
 .shiki {
     background: transparent !important;
+}
+
+blockquote {
+    border-left: 2px solid #d9d9d9;
+    margin: 0.5rem 10px;
+    padding: 0.3em 10px;
 }
