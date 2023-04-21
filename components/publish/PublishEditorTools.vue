@@ -74,28 +74,6 @@ defineProps<{
         <Icon name="ci:heading-h3" size="1.2rem" />
       </button>
     </CommonTooltip>
-    <CommonTooltip placement="bottom" content="Bullet List">
-      <button
-        class="btn-icon"
-        aria-label="Bullet List"
-        :disabled="!editor.can().chain().focus().toggleBulletList().run()"
-        :class="{ 'bg-secondary-gray': editor.isActive('bulletList') }"
-        @click="editor.chain().focus().toggleBulletList().run()"
-      >
-        <Icon name="material-symbols:format-list-bulleted" size="1.2rem" />
-      </button>
-    </CommonTooltip>
-    <CommonTooltip placement="bottom" content="Numbered List">
-      <button
-        class="btn-icon"
-        aria-label="Numbered List"
-        :disabled="!editor.can().chain().focus().toggleOrderedList().run()"
-        :class="{ 'bg-secondary-gray': editor.isActive('orderedList') }"
-        @click="editor.chain().focus().toggleOrderedList().run()"
-      >
-        <Icon name="ic:baseline-format-list-numbered" size="1.2rem" />
-      </button>
-    </CommonTooltip>
     <div class="divider-vertical" />
     <CommonTooltip placement="bottom" content="Undo">
       <button
