@@ -193,18 +193,6 @@ export function treeToText(input: Node): string {
     pre = '~~'
     post = '~~'
   }
-  else if (input.name === 'ul') {
-    pre = '__'
-    post = '__'
-  }
-  else if (input.name === 'ol') {
-    pre = '~_'
-    post = '~_'
-  }
-  else if (input.name === 'li') {
-    pre = '~--'
-    post = '~--'
-  }
   else if (input.name === 'h2') {
     pre = '##'
     post = '##'
@@ -304,7 +292,6 @@ export function contentToVNode(
 function treeToVNode(
   input: Node,
 ): VNode | string | null {
-  console.log(input)
 
   if (input.type === TEXT_NODE)
     return decode(input.value)
@@ -324,15 +311,7 @@ function nodeToVNode(node: Node): VNode | string | null {
   if (node.type === TEXT_NODE)
     return node.value
 
-    //TODO: remove ul/ol
   if ('children' in node) {
-    console.log('node', node)
-
-    console.log(h(
-      node.name,
-      node.attributes,
-      node.children.map(treeToVNode),
-    ))
     return h(
       node.name,
       node.attributes,
@@ -360,9 +339,6 @@ const _markdownReplacements: [RegExp, (c: (string | Node)[]) => Node][] = [
   [/\#\#(.*?)\#\#/g, c => ulraH('h2', null, c)],
   [/~~(.*?)~~/g, c => ulraH('del', null, c)],
   [/~~-\n(.*?)~~-/g, c => ulraH('blockquote', null, c)],
-  [/__~--\n(.*?)~--__/g, c => ulraH('ul', null, [ulraH('li', null, c)])],
-  [/~_~--\n(.*?)~--~_/g, c => ulraH('ol', null, [ulraH('li', null, c)])],
-  [/~--\n(.*?)~--/g, c => ulraH('li', null, c)],
   [/`([^`]+?)`/g, c => ulraH('code', null, c)],
 ]
 
