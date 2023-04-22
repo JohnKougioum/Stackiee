@@ -19,7 +19,7 @@ interface TokenRespone {
   expires_in: number
   user: number
 }
-
+const { $auth } = useNuxtApp()
 onMounted(async () => {
   const token = await useFetch('https://login.iee.ihu.gr/token', {
     method: 'POST',
@@ -59,8 +59,10 @@ onMounted(async () => {
       regyear: profileResponseMapped.regyear,
     },
     async onResponse({ response }) {
-      if (response.status === 200)
+      if (response.status === 200) {
+        $auth.loginCookie.value = 'true'
         await navigateTo('/')
+      }
     },
   },
   )

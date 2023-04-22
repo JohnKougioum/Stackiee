@@ -292,7 +292,6 @@ export function contentToVNode(
 function treeToVNode(
   input: Node,
 ): VNode | string | null {
-
   if (input.type === TEXT_NODE)
     return decode(input.value)
 

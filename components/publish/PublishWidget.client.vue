@@ -16,8 +16,8 @@ const { editor } = useTiptap({
   placeholder: computed(() => 'Write something...'),
   autofocus: true,
   onSubmit: publish,
-  onFocus: () => console.log('focus'),
-  onPaste: handlePaste,
+  onFocus: () => {},
+  onPaste: () => {},
 })
 
 const characterCount = computed(() => {
@@ -35,17 +35,13 @@ const characterCount = computed(() => {
   return length
 })
 
-const t = ref()
 async function publish() {
-  t.value = contentToVNode(editor.value?.getHTML() || '')
+  if (characterCount.value > 500)
+    return
+  if (characterCount.value <= 0)
+    return
   emits('publish', htmlToText(editor.value?.getHTML() || ''))
-  // TODO: publish to server -> see markdownReplacements for sanatized html
-}
-
-const vnode = computed(() => t.value)
-
-function handlePaste(evt: ClipboardEvent) {
-  console.log(evt.clipboardData)
+  content.value = ''
 }
 </script>
 
@@ -57,15 +53,16 @@ function handlePaste(evt: ClipboardEvent) {
         <EditorContent :editor="editor" />
       </div>
     </div>
-    <div class="text-right" :class="{ 'text-red-500': characterCount > 500 }">
-      {{ characterCount ?? 0 }}<span text-secondary-light>/</span><span text-secondary-light>{{ 500 }}</span>
-    </div>
+    <PublishCharacterCount :character-count="characterCount" :max="500" />
     <div class="mt-2">
-      <button class="base-button float-right" :aria-label="$t('publish')" @click="publish">
+      <button
+        class="base-button float-right" :aria-label="$t('publish')"
+        :disabled="characterCount <= 0 || characterCount > 500"
+        @click="publish"
+      >
         {{ $t('publish') }}
       </button>
     </div>
-    <component :is="vnode" />
   </div>
 </template>
 

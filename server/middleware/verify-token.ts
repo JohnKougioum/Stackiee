@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 
 const routes = [
   '/api/user/info',
+  '/api/posts/create',
 ]
 
 export default defineEventHandler(async (event) => {
@@ -10,8 +11,12 @@ export default defineEventHandler(async (event) => {
 
   const { token } = parseCookies(event)
 
-  if (!token)
-    return { statusCode: 401 }
+  if (!token) {
+    throw createError({
+      statusCode: 403,
+      message: 'No token',
+    })
+  }
 
   jwt.verify(token, useRuntimeConfig().token_secret, (err, uid) => {
     if (err) {

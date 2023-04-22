@@ -15,9 +15,9 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
             <div class="flex-auto" />
             <div v-if="isHydrated" class="flex flex-col stricky bottom-0">
               <div class="hidden xl:block">
-                <UserSignInEntry v-if="!isLoggedIn" />
+                <UserSignInEntry v-if="!$auth.isLoggedIn.value" />
               </div>
-              <div v-if="isLoggedIn" class="p-6 pb-8 w-full">
+              <div v-if="$auth.isLoggedIn.value" class="p-6 pb-8 w-full">
                 <UserSignedInCard />
               </div>
             </div>

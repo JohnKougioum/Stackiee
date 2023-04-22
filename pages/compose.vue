@@ -1,14 +1,34 @@
 <script setup lang='ts'>
 import { classes } from '@/types/index'
+definePageMeta({
+  title: 'Compose',
+  description: 'Compose a new post',
+  middleware: ['auth'],
+})
 const semester = ref<number | undefined>(undefined)
 const lectures = computed(() => classes[semester.value as keyof typeof classes].courses)
 const selectedLecture = ref<string | undefined>(undefined)
 
-const t = ref()
-const vnode = computed(() => t.value)
+// const t = ref()
+// const vnode = computed(() => t.value)
 
-async function publishPost(body: string) {
-  t.value = contentToVNode(body)
+async function publishPost(postBody: string) {
+  const { data } = await useFetch('/api/posts/create', {
+    method: 'POST',
+    body: {
+      postBody,
+      semester: semester.value,
+      course: selectedLecture.value,
+    },
+  })
+
+  if (data.value?.statusCode === 200) {
+    semester.value = undefined
+    selectedLecture.value = undefined
+    await navigateTo('/')
+  }
+
+  // t.value = contentToVNode(postBody)
 }
 </script>
 
@@ -43,5 +63,4 @@ async function publishPost(body: string) {
     </select>
   </div>
   <PublishWidget @publish="publishPost" />
-  <component :is="vnode" />
 </template>

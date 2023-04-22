@@ -42,7 +42,7 @@ function displayUsernameLocale() {
       <template #popper>
         <CommonDropdownItem
           icon="ri:logout-box-line"
-          @click="logout()"
+          @click="$auth.logout"
         >
           <div>Log out</div>
         </CommonDropdownItem>
