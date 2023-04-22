@@ -311,6 +311,13 @@ function nodeToVNode(node: Node): VNode | string | null {
     return node.value
 
   if ('children' in node) {
+    if (node.children[0] && Array.isArray(node.children[0])) {
+      return h(
+        node.name,
+        { innerHTML: node.children[0][0] },
+      )
+    }
+
     return h(
       node.name,
       node.attributes,

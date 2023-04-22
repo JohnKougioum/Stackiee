@@ -21,14 +21,14 @@ const timeAgo = useTimeAgo(props.item.createdAt, timeAgoOptions)
       <div class="w-full">
         <div class="flex justify-between items-center">
           <span class="text-sm text-primary-gray cursor-pointer rounded-lg hover:bg-secondary-gray">
-            @{{ item.user }}
+            @{{ item.User.uid }}
           </span>
           <span class="text-sm text-primary-gray">
             {{ timeAgo }}
           </span>
         </div>
         <div class="mt-1 mb-4 cursor-pointer">
-          {{ item.body }}
+          <PostCardBody :body="item.body" />
         </div>
         <div class="mt-2 h-5 flex justify-between items-center">
           <div class="flex items-center">
@@ -40,7 +40,7 @@ const timeAgo = useTimeAgo(props.item.createdAt, timeAgoOptions)
               </CommonTooltip>
             </button>
             <span class="text-sm font-semibold text-primary-gray select-none">
-              {{ item.comments }}
+              {{ item._count.Comment }}
             </span>
           </div>
           <button>

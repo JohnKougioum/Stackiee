@@ -9,9 +9,6 @@ const semester = ref<number | undefined>(undefined)
 const lectures = computed(() => classes[semester.value as keyof typeof classes].courses)
 const selectedLecture = ref<string | undefined>(undefined)
 
-// const t = ref()
-// const vnode = computed(() => t.value)
-
 async function publishPost(postBody: string) {
   const { data } = await useFetch('/api/posts/create', {
     method: 'POST',
@@ -27,8 +24,6 @@ async function publishPost(postBody: string) {
     selectedLecture.value = undefined
     await navigateTo('/')
   }
-
-  // t.value = contentToVNode(postBody)
 }
 </script>
 

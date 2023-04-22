@@ -2,34 +2,29 @@
 // @ts-expect-error missing types
 import { DynamicScrollerItem } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
-import { PostData } from '~/types/index'
-
-interface PostsResults {
-  next?: {
-    page: number
-    limit: number
-  }
-  previous?: {
-    page: number
-    limit: number
-  }
-  posts: PostData[]
-}
+import type { PostData } from '~/types/index'
 
 const posts = ref<PostData[]>([])
 const page = ref(1)
 const nextPage = ref(true)
-// const { pending, error } = await useFetch<PostsResults>('/devApi/posts', {
-//   query: {
-//     page,
-//   },
-//   server: false,
-//   watch: [page],
-//   onResponse({ response }) {
-//     posts.value.push(...response._data.posts)
-//     nextPage.value = Object.keys(response._data).includes('next')
-//   },
-// })
+const { pending, error, execute } = await useFetch('/api/posts/search', {
+  method: 'POST',
+  body: {
+    page,
+  },
+  server: false,
+  watch: [page],
+  onResponse({ response }) {
+    posts.value.push(...response._data.body)
+    nextPage.value = posts.value.length < response._data.postsCount
+  },
+})
+
+onActivated(() => {
+  page.value = 1
+  posts.value = []
+  execute()
+})
 </script>
 
 <template>
@@ -48,20 +43,6 @@ const nextPage = ref(true)
           >
             <div class="pb-3 pt-5 border-b-2">
               <PostCard :item="item as PostData" />
-              <!-- <div class="flex justify-between">
-                <span class="text-lg">
-                  {{ item.user }}
-                </span>
-                <span class="text-sm">
-                  {{ item.createdAt }}
-                </span>
-              </div>
-              <h1>
-                {{ item.title }}
-              </h1>
-              <p class="text-xl pt-4 pb-1">
-                {{ item.body }}
-              </p> -->
             </div>
           </DynamicScrollerItem>
         </template>

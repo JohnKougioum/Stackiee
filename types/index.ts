@@ -1,15 +1,27 @@
 export interface PostData {
-  _id: string
-  user: string
-  title: string
+  id: string
   body: string
-  semester: string
-  course: string
   createdAt: string
-  __v: number
-  comments: number
+  updatedAt: string
+  semester: number
+  course: string
+  userId: string
+  User: User
+  _count: {
+    Comment: number
+  }
 }
-
+export interface User {
+  id: string
+  uid: string
+  am: string
+  fullName: string
+  fullNameEL: string
+  email: string
+  eduPersonAffiliation: string
+  eduPersonPrimaryAffiliation: string
+  regyear: string
+}
 export interface IhuApiProfile {
   uid: string
   am: string

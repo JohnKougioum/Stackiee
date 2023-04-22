@@ -22,7 +22,7 @@ const { endAnchor } = usePaginator(page, $$(pending), $$(nextPage))
     class="scoller"
     :items="items"
     :min-item-size="200"
-    key-field="_id"
+    key-field="id"
     page-mode
   >
     <slot
