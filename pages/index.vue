@@ -40,6 +40,7 @@ onActivated(() => {
               item.body,
             ]"
             :data-index="index"
+            tag="article"
           >
             <div class="pb-3 pt-5 border-b-2">
               <PostCard :item="item as PostData" />

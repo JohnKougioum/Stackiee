@@ -19,36 +19,23 @@ export default defineEventHandler(async (event) => {
 
     const startIndex = (searchRequest.page - 1) * limit
 
-    const lectures = {
-      semester: {
-        equals: searchRequest.semester,
-      },
-      course: {
-        equals: searchRequest.course,
-      },
-    }
-
-    // const posts = await prisma.post.findMany({
-    //   where: {
-    //     OR: [
-    //       {
-    //         body: {
-    //           contains: searchRequest.searchQuery,
-    //         },
-    //       },
-    //       lectures,
-    //     ],
-    //   },
-    //   skip: startIndex,
-    //   take: limit,
-    //   orderBy: {
-    //     createdAt: 'desc',
-    //   },
-    //   include: {
-    //     User: true,
-    //   },
-    // })
     const posts = await prisma.post.findMany({
+      where: {
+        AND: [
+          {
+            body: {
+              contains: searchRequest.searchQuery,
+              mode: 'insensitive',
+            },
+            semester: {
+              equals: searchRequest.semester,
+            },
+            course: {
+              equals: searchRequest.course,
+            },
+          },
+        ],
+      },
       include: {
         User: true,
         _count: {
