@@ -30,7 +30,10 @@ onActivated(() => {
 <template>
   <div class="xl:block h-6" />
   <div>
-    <template v-if="isHydrated && posts">
+    <MainContent>
+      <CommentSection />
+    </MainContent>
+    <!-- <template v-if="isHydrated && posts">
       <CommonPaginator v-model:page="page" :items="posts" :pending="pending" :next-page="nextPage">
         <template #default="{ item, active, index }">
           <DynamicScrollerItem
@@ -48,6 +51,6 @@ onActivated(() => {
           </DynamicScrollerItem>
         </template>
       </CommonPaginator>
-    </template>
+    </template> -->
   </div>
 </template>

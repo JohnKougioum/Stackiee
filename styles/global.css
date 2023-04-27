@@ -59,3 +59,7 @@ blockquote {
     margin: 0.5rem 10px;
     padding: 0.3em 10px;
 }
+
+.divider{
+    @apply w-full h-0.5 bg-secondary-gray;
+}

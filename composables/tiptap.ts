@@ -8,7 +8,6 @@ import Mention from '@tiptap/extension-mention'
 import HardBreak from '@tiptap/extension-hard-break'
 import Bold from '@tiptap/extension-bold'
 import Italic from '@tiptap/extension-italic'
-import Code from '@tiptap/extension-code-block'
 import Blockquote from '@tiptap/extension-blockquote'
 import History from '@tiptap/extension-history'
 import Heading from '@tiptap/extension-heading'
@@ -46,7 +45,6 @@ export function useTiptap(options: UseTiptapOptions) {
       HardBreak,
       Bold,
       Italic,
-      Code,
       Blockquote,
       Text,
       Heading,

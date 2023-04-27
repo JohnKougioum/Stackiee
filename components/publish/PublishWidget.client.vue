@@ -1,10 +1,17 @@
 <script setup lang='ts'>
 import stringLength from 'string-length'
 import { EditorContent } from '@tiptap/vue-3'
+const props = withDefaults(defineProps<{
+  shouldExpand?: boolean
+}>(), {
+  shouldExpand: true,
+})
 
 const emits = defineEmits<{
   (event: 'publish', body: string): void
 }>()
+
+const editorHeight = computed(() => props.shouldExpand ? '15rem' : '8rem')
 
 const content = ref('')
 
@@ -46,10 +53,10 @@ async function publish() {
 </script>
 
 <template>
-  <div class="my-10 px-10">
+  <div class="pt-10 pb-12 px-10">
     <div class="border-[1px] border-primary-dark rounded-xl">
       <PublishEditorTools v-if="editor" :editor="editor" class="border-b-[1px] border-primary-dark" />
-      <div class="p-2 min-h-[10rem]">
+      <div class="p-2">
         <EditorContent :editor="editor" />
       </div>
     </div>
@@ -68,7 +75,8 @@ async function publish() {
 
 <style>
 .content-rich{
+  overflow-wrap: break-word;
   outline: none;
-  min-height: 15rem;
+  min-height: v-bind(editorHeight);
 }
 </style>

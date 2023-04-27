@@ -39,6 +39,7 @@ onMounted(async () => {
     },
   })
 
+  // TODO: don't need this - remove
   const profileResponseMapped: any = {}
   for (const [key, value] of Object.entries(profileResponse.data.value as IhuApiProfile))
     profileResponseMapped[key.replace(';', '_')] = value
