@@ -5,9 +5,13 @@ async function comment() {
 </script>
 
 <template>
-  <div class="h-screen">
-    Comment Section
-    <PublishWidget :should-expand="false" @publish="comment" />
+  <div class="border-t-2">
+    <PublishWidget
+      class="pb-12 pt-4"
+      :should-expand="false"
+      :button-text="$t('reply')"
+      @publish="comment"
+    />
     <div class="divider" />
     <div class="my-2">
       <CommentMessage />

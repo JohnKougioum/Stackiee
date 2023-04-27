@@ -3,6 +3,7 @@ import stringLength from 'string-length'
 import { EditorContent } from '@tiptap/vue-3'
 const props = withDefaults(defineProps<{
   shouldExpand?: boolean
+  buttonText: string
 }>(), {
   shouldExpand: true,
 })
@@ -53,7 +54,7 @@ async function publish() {
 </script>
 
 <template>
-  <div class="pt-10 pb-12 px-10">
+  <div>
     <div class="border-[1px] border-primary-dark rounded-xl">
       <PublishEditorTools v-if="editor" :editor="editor" class="border-b-[1px] border-primary-dark" />
       <div class="p-2">
@@ -63,11 +64,11 @@ async function publish() {
     <PublishCharacterCount :character-count="characterCount" :max="500" />
     <div class="mt-2">
       <button
-        class="base-button float-right" :aria-label="$t('publish')"
+        class="base-button float-right" :aria-label="buttonText"
         :disabled="characterCount <= 0 || characterCount > 500"
         @click="publish"
       >
-        {{ $t('publish') }}
+        {{ buttonText }}
       </button>
     </div>
   </div>

@@ -31,12 +31,13 @@
         "year_future": "in 0 years|next year|in {n} years",
         "year_past": "0 years ago|last year|{n} years ago"
       },
-      "user:": {
-        "signIn": "Sign In"
-      },
-      "select": {
-       "semester": "Select Semester",
-       "course": "Select Course"
-      },
-      "publish": "Publish"
+    "user:": {
+      "signIn": "Sign In"
+    },
+    "select": {
+      "semester": "Select Semester",
+      "course": "Select Course"
+    },
+    "publish": "Publish",
+    "reply": "Reply"
 }

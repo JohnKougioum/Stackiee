@@ -75,3 +75,8 @@ export function useTimeAgoOptions(short = false): UseTimeAgoOptions<false> {
     },
   }
 }
+
+export function displayUsernameLocale(name: string, nameEL: string) {
+  const { locale } = useI18n()
+  return locale.value === 'en' ? name.toLowerCase() : nameEL.toLowerCase()
+}

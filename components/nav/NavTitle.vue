@@ -23,7 +23,7 @@ router.afterEach(() => {
     <div
       class="hidden xl:flex items-center me mt-2"
       :class="{
-        'pointer-events-none opacity-0': !back || back === '/' || back.startsWith('/login/auth'),
+        'pointer-events-none opacity-0': !back || back.startsWith('/login/auth'),
         'xl:flex': $route.name !== 'tag',
       }"
     >

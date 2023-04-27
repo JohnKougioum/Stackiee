@@ -57,5 +57,9 @@ async function publishPost(postBody: string) {
       </template>
     </select>
   </div>
-  <PublishWidget @publish="publishPost" />
+  <PublishWidget
+    class="pt-10 pb-12 px-10"
+    :button-text="$t('publish')"
+    @publish="publishPost"
+  />
 </template>

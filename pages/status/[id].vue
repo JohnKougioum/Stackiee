@@ -6,7 +6,17 @@ const { data } = await useFetch(`/api/posts/searchById/${route.params.id}`, {
 </script>
 
 <template>
-  <template v-if="data?.body">
-    <PostCardBody :body="data?.body.body" />
-  </template>
+  <div class="mt-4">
+    <template v-if="data?.body">
+      <StatusDetails
+        class="px-0"
+        :user="data.body.User!"
+        :time-ago="data.body.createdAt!"
+        inline
+      >
+        <ContentRenderer :body="data?.body.body" />
+      </StatusDetails>
+    </template>
+    <CommentSection class="mt-2" />
+  </div>
 </template>

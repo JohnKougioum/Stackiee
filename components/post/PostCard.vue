@@ -29,52 +29,36 @@ function go(evt: MouseEvent | KeyboardEvent) {
 </script>
 
 <template>
-  <div
+  <StatusHeader
     ref="el"
-    class="py-2 px-4 flex gap-4 w-full h-fit"
     tabindex="0"
-    @click="onclick"
-    @keydown.enter="onclick"
+    :user="item.User"
+    :time-ago="timeAgo"
+    @click="onclick" @keydown.enter="onclick"
   >
-    <div class="flex flex-col gap-1 justify-start items-center">
-      <Icon name="carbon:user-avatar-filled" size="45" />
-      <div class="bg-secondary-gray rounded-xl px-1 text-sm select-none">
-        Student
-      </div>
+    <div class="mt-1 mb-4 cursor-pointer">
+      <ContentRenderer :body="item.body" />
     </div>
-    <div class="w-full">
-      <div class="flex justify-between items-center">
-        <span class="text-sm text-primary-gray cursor-pointer rounded-lg hover:bg-secondary-gray">
-          @{{ item.User.uid }}
-        </span>
-        <span class="text-sm text-primary-gray">
-          {{ timeAgo }}
-        </span>
-      </div>
-      <div class="mt-1 mb-4 cursor-pointer">
-        <PostCardBody :body="item.body" />
-      </div>
-      <div class="mt-2 h-5 flex justify-between items-center">
-        <div class="flex items-center">
-          <button>
-            <CommonTooltip placement="bottom" content="Comments">
-              <div class="btn-icon">
-                <Icon name="majesticons:comment-2-line" size="20" color="#70798C" />
-              </div>
-            </CommonTooltip>
-          </button>
-          <span class="text-sm font-semibold text-primary-gray select-none">
-            {{ item._count.Comment }}
-          </span>
-        </div>
+    <div class="mt-2 h-5 flex justify-between items-center">
+      <div class="flex items-center">
         <button>
-          <CommonTooltip placement="bottom" content="Copy Link">
+          <CommonTooltip placement="bottom" content="Comments">
             <div class="btn-icon">
-              <Icon name="ph:link-simple-horizontal-duotone" size="24" color="#70798C" />
+              <Icon name="majesticons:comment-2-line" size="20" color="#70798C" />
             </div>
           </CommonTooltip>
         </button>
+        <span class="text-sm font-semibold text-primary-gray select-none">
+          {{ item._count.Comment }}
+        </span>
       </div>
+      <button>
+        <CommonTooltip placement="bottom" content="Copy Link">
+          <div class="btn-icon">
+            <Icon name="ph:link-simple-horizontal-duotone" size="24" color="#70798C" />
+          </div>
+        </CommonTooltip>
+      </button>
     </div>
-  </div>
+  </StatusHeader>
 </template>
