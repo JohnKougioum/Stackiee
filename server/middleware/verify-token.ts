@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 const routes = [
   '/api/user/info',
   '/api/posts/create',
+  '/api/comments/create',
 ]
 
 export default defineEventHandler(async (event) => {
@@ -13,7 +14,7 @@ export default defineEventHandler(async (event) => {
 
   if (!token) {
     throw createError({
-      statusCode: 403,
+      statusCode: 401,
       message: 'No token',
     })
   }

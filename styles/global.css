@@ -61,5 +61,5 @@ blockquote {
 }
 
 .divider{
-    @apply w-full h-0.5 bg-secondary-gray;
+    @apply border-b-2;
 }

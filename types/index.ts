@@ -11,6 +11,17 @@ export interface PostData {
     Comment: number
   }
 }
+
+export interface CommentData {
+  id: string
+  body: string
+  createdAt: string
+  updatedAt: string
+  userId: string
+  User: User
+  postId: string
+}
+
 export interface User {
   id: string
   uid: string

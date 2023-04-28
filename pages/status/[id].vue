@@ -16,7 +16,7 @@ const { data } = await useFetch(`/api/posts/searchById/${route.params.id}`, {
       >
         <ContentRenderer :body="data?.body.body" />
       </StatusDetails>
+      <CommentSection :id="data?.body?.id" class="mt-2" />
     </template>
-    <CommentSection class="mt-2" />
   </div>
 </template>

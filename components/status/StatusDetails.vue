@@ -1,9 +1,10 @@
 <script setup lang='ts'>
 import type { User } from '~/types/index'
-defineProps<{
+const props = defineProps<{
   user: User
   timeAgo: string
 }>()
+const date = new Date(props.timeAgo)
 </script>
 
 <template>
@@ -25,6 +26,6 @@ defineProps<{
     </div>
   </div>
   <span class="text-sm text-primary-gray">
-    {{ timeAgo }}
+    {{ date }}
   </span>
 </template>
