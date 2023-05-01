@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import type { ApiResult, CommentData } from '~/types'
 const props = defineProps<{
   id: string
 }>()
@@ -50,7 +51,7 @@ async function addComment(comment: string) {
       <TimelineSkeleton v-if="pending" />
       <template v-if="comments && !pending">
         <CommentMessage
-          v-for="comment in comments.body"
+          v-for="comment in (comments as ApiResult<CommentData[]>).body"
           :key="comment.id"
           class="border-b-2 py-4"
           :data="comment"

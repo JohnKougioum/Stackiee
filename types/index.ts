@@ -1,3 +1,8 @@
+export interface ApiResult<T> {
+  statusCode: number
+  body: T
+}
+
 export interface PostData {
   id: string
   body: string
