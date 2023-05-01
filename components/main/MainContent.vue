@@ -1,4 +1,8 @@
 <script setup lang='ts'>
+defineProps<{
+  back?: boolean
+}>()
+
 const container = ref()
 const route = useRoute()
 const { height: windowHeight } = useWindowSize()
@@ -14,9 +18,34 @@ const containerClass = computed(() => {
 
 <template>
   <div ref="container" :class="containerClass">
-    <div class="sticky top-0 z-10 backdrop-blur bg-base bg-opacity-70">
-      asdfasd
+    <div class="sticky top-0 z-10 backdrop-blur bg-base bg-opacity-70 border-b-[1px]">
+      <div class="flex justify-between px-5 py-2" :class="{ 'xl:hidden': $route.name !== 'tag' }">
+        <div class="flex gap-3 items-center py-2 w-full">
+          <NuxtLink
+            v-if="back"
+            :aria-label="$t('back')"
+            @click="$router.go(-1)"
+          >
+            <Icon name="ri:arrow-left-line" size="1.3rem" class="timeline-title cursor-pointer" />
+          </NuxtLink>
+          <div class="flex w-full">
+            <slot name="title" />
+          </div>
+          <div class="sm:hidden h-7 w-[1px]" />
+        </div>
+        <div class="flex items-center flex-shrink-0 gap-2">
+          <button
+            v-if="!$auth.isLoggedIn.value"
+            class="base-button"
+            :aria-label="$t('user.signIn')"
+            @click="$auth.redirectToLogin"
+          >
+            {{ $t('user.signIn') }}
+          </button>
+        </div>
+      </div>
     </div>
+    <div :class="{ 'xl:block': $route.name !== 'tag' }" class="hidden h-6" />
     <div class="m-auto" :class="isHydrated && wideLayout ? 'xl:w-full sm:max-w-600px' : 'sm:max-w-600px md:shrink-0'">
       <slot />
     </div>

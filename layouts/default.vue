@@ -5,6 +5,7 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
 </script>
 
 <template>
+  <!-- TODO: make this responsive for mobile -->
   <div class="h-full">
     <main class="flex w-full mx-auto lg:max-w-[80rem]">
       <aside class="hidden relative sm:flex w-[12.5%] md:w-1/6 lg:w-1/5 xl:w-1/4 justify-end margin-inline-4">

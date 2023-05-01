@@ -3,7 +3,7 @@
 }
 
 .base-button {
-    @apply p-2 rounded-md capitalize bg-base-orange disabled:opacity-40 text-white enabled:hover:bg-opacity-80 duration-100;
+    @apply p-1 rounded-md capitalize bg-base-orange disabled:opacity-40 text-white enabled:hover:bg-base-orange-darker duration-100;
 }
 
 .divider-vertical{
@@ -62,4 +62,8 @@ blockquote {
 
 .divider{
     @apply border-b-2;
+}
+
+.timeline-title{
+    @apply text-base-orange text-lg font-bold;
 }

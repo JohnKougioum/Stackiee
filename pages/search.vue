@@ -4,5 +4,14 @@ const route = useRoute()
 
 <template>
   <!-- You searched for {{ route.query.query }} -->
-  <TimelinePaginator :search-query="route.query.query as string" />
+  <MainContent>
+    <template #title>
+      <NuxtLink to="/search" class="timeline-title flex items-center gap-2" @click="$scrollToTop">
+        <Icon name="ri:search-line" size="1.5em" />
+        {{ $t('pagesTitles.search') }}
+      </NuxtLink>
+    </template>
+
+    <TimelinePaginator :search-query="route.query.query as string" />
+  </MainContent>
 </template>

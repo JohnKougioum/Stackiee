@@ -43,28 +43,26 @@ watch(() => props.searchQuery, () => {
 </script>
 
 <template>
-  <MainContent>
-    <div class="xl:block h-6" />
-    <div>
-      <template v-if="isHydrated && posts">
-        <CommonPaginator v-model:page="page" :items="posts" :pending="pending" :next-page="nextPage">
-          <template #default="{ item, active, index }">
-            <DynamicScrollerItem
-              :item="item"
-              :active="active"
-              :size-dependencies="[
-                item.body,
-              ]"
-              :data-index="index"
-              tag="article"
-            >
-              <div class="pb-3 pt-5 border-b-2">
-                <PostCard :item="item as PostData" />
-              </div>
-            </DynamicScrollerItem>
-          </template>
-        </CommonPaginator>
-      </template>
-    </div>
-  </MainContent>
+  <div class="xl:block h-6" />
+  <div>
+    <template v-if="isHydrated && posts">
+      <CommonPaginator v-model:page="page" :items="posts" :pending="pending" :next-page="nextPage">
+        <template #default="{ item, active, index }">
+          <DynamicScrollerItem
+            :item="item"
+            :active="active"
+            :size-dependencies="[
+              item.body,
+            ]"
+            :data-index="index"
+            tag="article"
+          >
+            <div class="pb-3 pt-5 border-b-2">
+              <PostCard :item="item as PostData" />
+            </div>
+          </DynamicScrollerItem>
+        </template>
+      </CommonPaginator>
+    </template>
+  </div>
 </template>

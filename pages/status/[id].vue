@@ -6,17 +6,19 @@ const { data } = await useFetch(`/api/posts/searchById/${route.params.id}`, {
 </script>
 
 <template>
-  <div class="mt-4">
-    <template v-if="data?.body">
-      <StatusDetails
-        class="px-0"
-        :user="data.body.User!"
-        :time-ago="data.body.createdAt!"
-        inline
-      >
-        <ContentRenderer :body="data?.body.body" />
-      </StatusDetails>
-      <CommentSection :id="data?.body?.id" class="mt-2" />
-    </template>
-  </div>
+  <MainContent back>
+    <div class="mt-4">
+      <template v-if="data?.body">
+        <StatusDetails
+          class="px-0"
+          :user="data.body.User!"
+          :time-ago="data.body.createdAt!"
+          inline
+        >
+          <ContentRenderer :body="data?.body.body" />
+        </StatusDetails>
+        <CommentSection :id="data?.body?.id" class="mt-2" />
+      </template>
+    </div>
+  </MainContent>
 </template>

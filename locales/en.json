@@ -40,5 +40,11 @@
     },
     "search": "Search",
     "publish": "Publish",
-    "reply": "Reply"
+    "reply": "Reply",
+    "back": "Go Back",
+    "pagesTitles": {
+      "home": "Home",
+      "search": "Search"
+    }
+
 }
