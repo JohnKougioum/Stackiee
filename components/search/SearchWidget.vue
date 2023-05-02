@@ -4,6 +4,8 @@ const router = useRouter()
 const inputRef = ref<HTMLInputElement>()
 const query = ref('')
 
+defineExpose({ inputRef })
+
 function search() {
   if (query.value.trim() === '')
     return

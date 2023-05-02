@@ -67,3 +67,11 @@ blockquote {
 .timeline-title{
     @apply text-base-orange text-lg font-bold;
 }
+
+.scrollbar-hide{
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }

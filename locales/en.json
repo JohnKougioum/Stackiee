@@ -39,6 +39,7 @@
       "course": "Select Course"
     },
     "search": "Search",
+    "searchedFor": "Showing results for: ",
     "publish": "Publish",
     "reply": "Reply",
     "back": "Go Back",

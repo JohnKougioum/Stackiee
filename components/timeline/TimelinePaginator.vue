@@ -43,7 +43,6 @@ watch(() => props.searchQuery, () => {
 </script>
 
 <template>
-  <div class="xl:block h-6" />
   <div>
     <template v-if="isHydrated && posts">
       <CommonPaginator v-model:page="page" :items="posts" :pending="pending" :next-page="nextPage">

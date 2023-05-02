@@ -5,7 +5,6 @@
   </NuxtLayout>
 </template>
 
-<!-- TODO: add font -->
 <style>
 html,
 body,
