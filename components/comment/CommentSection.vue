@@ -38,7 +38,7 @@ async function addComment(comment: string) {
         </div>
       </template>
       <PublishWidget
-        class="pb-12 pt-4"
+        class="px-2 sm:px-0 pb-12 pt-4"
         :should-expand="false"
         :button-text="$t('reply')"
         @publish="addComment"

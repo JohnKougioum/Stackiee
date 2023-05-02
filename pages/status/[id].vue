@@ -10,7 +10,6 @@ const { data } = await useFetch(`/api/posts/searchById/${route.params.id}`, {
     <div class="mt-4">
       <template v-if="data?.body">
         <StatusDetails
-          class="px-0"
           :user="data.body.User!"
           :time-ago="data.body.createdAt!"
           inline

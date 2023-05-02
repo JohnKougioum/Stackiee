@@ -8,7 +8,7 @@ const date = new Date(props.timeAgo)
 </script>
 
 <template>
-  <div class="py-2 gap-4 w-full h-fit" v-bind="$attrs">
+  <div class="py-2 px-2 sm:px-0 w-full h-fit" v-bind="$attrs">
     <div class="flex gap-2 items-center">
       <Icon name="carbon:user-avatar-filled" size="45" />
       <div class="text-sm flex flex-col text-primary-gray cursor-pointer rounded-lg hover:bg-secondary-gray hover:ring-1 ring-secondary-gray">
@@ -25,7 +25,9 @@ const date = new Date(props.timeAgo)
       <slot />
     </div>
   </div>
-  <span class="text-sm text-primary-gray">
-    {{ date }}
-  </span>
+  <div class="w-full whitespace-nowrap text-ellipsis overflow-hidden">
+    <span class="text-sm text-primary-gray px-2 sm:px-0">
+      {{ date }}
+    </span>
+  </div>
 </template>
