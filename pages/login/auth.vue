@@ -32,17 +32,12 @@ onMounted(async () => {
   if (!(token?.data?.value as TokenRespone)?.access_token)
     return
 
-  const profileResponse = await useFetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
+  const { data: profileResponse } = await useFetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
     method: 'GET',
     headers: {
       'x-access-token': (token?.data?.value as TokenRespone)?.access_token,
     },
   })
-
-  // TODO: don't need this - remove
-  const profileResponseMapped: any = {}
-  for (const [key, value] of Object.entries(profileResponse.data.value as IhuApiProfile))
-    profileResponseMapped[key.replace(';', '_')] = value
 
   await useFetch('/api/login', {
     method: 'POST',
@@ -50,14 +45,14 @@ onMounted(async () => {
       'Content-Type': 'application/json',
     },
     body: {
-      uid: profileResponseMapped.uid,
-      am: profileResponseMapped.am,
-      fullName: profileResponseMapped.cn,
-      fullNameEL: profileResponseMapped['cn_lang-el'],
-      email: profileResponseMapped.mail,
-      eduPersonAffiliation: profileResponseMapped.eduPersonAffiliation,
-      eduPersonPrimaryAffiliation: profileResponseMapped.eduPersonPrimaryAffiliation,
-      regyear: profileResponseMapped.regyear,
+      uid: profileResponse.value?.uid,
+      am: profileResponse.value?.am,
+      fullName: profileResponse.value?.cn,
+      fullNameEL: profileResponse.value!['cn;lang-el'],
+      email: profileResponse.value?.mail,
+      eduPersonAffiliation: profileResponse.value?.eduPersonAffiliation,
+      eduPersonPrimaryAffiliation: profileResponse.value?.eduPersonPrimaryAffiliation,
+      regyear: profileResponse.value?.regyear,
     },
     async onResponse({ response }) {
       if (response.status === 200) {
