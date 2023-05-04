@@ -18,7 +18,7 @@ const { data: user, pending } = await useLazyFetch('/api/user/info', {
           <div class="flex gap-2">
             <Icon name="carbon:user-avatar-filled" size="3rem" />
             <div class="text-sm flex-1 flex flex-col sm:hidden xl:flex">
-              <span v-if="user" class="w-[10rem] capitalize text-ellipsis whitespace-nowrap overflow-hidden">
+              <span v-if="user" class="w-[10rem] text-start capitalize text-ellipsis whitespace-nowrap overflow-hidden">
                 {{ displayUsernameLocale(user.data.fullName, user.data.fullNameEL) }}
               </span>
               <span class="w-fit text-primary-gray">@{{ user?.data.uid }}</span>
@@ -36,7 +36,7 @@ const { data: user, pending } = await useLazyFetch('/api/user/info', {
           icon="ri:logout-box-line"
           @click="$auth.logout"
         >
-          <div>Log out</div>
+          <div>{{ $t('user.signOut') }}</div>
         </CommonDropdownItem>
       </template>
     </CommonDropdown>

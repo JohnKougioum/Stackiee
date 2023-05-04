@@ -34,6 +34,6 @@ const { endAnchor } = usePaginator(page, $$(pending), $$(nextPage))
   <div ref="endAnchor" />
   <TimelineSkeleton v-if="pending" />
   <div v-if="!pending && !nextPage" class="p-4 text-center text-xl">
-    No more posts...
+    {{ $t('noMorePosts') }}
   </div>
 </template>

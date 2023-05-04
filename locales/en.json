@@ -1,5 +1,12 @@
 {
     "hello": "Hello",
+    "nav": {
+        "home": "Home",
+        "search": "Search",
+        "messages": "Messages",
+        "profile": "Profile",
+        "compose": "Compose"
+    },
     "time_ago_options": {
         "day_future": "in 0 days|tomorrow|in {n} days",
         "day_past": "0 days ago|yesterday|{n} days ago",
@@ -31,8 +38,9 @@
         "year_future": "in 0 years|next year|in {n} years",
         "year_past": "0 years ago|last year|{n} years ago"
       },
-    "user:": {
-      "signIn": "Sign In"
+    "user": {
+      "signIn": "Sign In",
+      "signOut": "Sign Out"
     },
     "select": {
       "semester": "Select Semester",
@@ -46,6 +54,13 @@
     "pagesTitles": {
       "home": "Home",
       "search": "Search"
+    },
+    "noMorePosts": "No more posts",
+    "settings": {
+      "title": "Settings",
+      "language": {
+        "title": "Language",
+        "change": "Change Language"
+      }
     }
-
 }
