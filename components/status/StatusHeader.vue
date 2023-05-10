@@ -15,7 +15,7 @@ defineProps<{
     <div class="w-full">
       <div class="flex justify-between items-center">
         <span class="text-sm text-primary-gray cursor-pointer rounded-lg hover:bg-secondary-gray hover:ring-1 ring-secondary-gray">
-          <span v-if="user" class="text-primary-dark font-bold capitalize">{{ displayUsernameLocale(user.fullName, user.fullNameEL) }}</span> @{{ user.uid }}
+          <span v-if="user" class="text-primary-dark font-bold capitalize">{{ displayUsernameLocale(user.fullName, user.fullNameEL, true) }}</span> @{{ user.uid }}
         </span>
         <span class="text-sm text-primary-gray">
           {{ timeAgo }}

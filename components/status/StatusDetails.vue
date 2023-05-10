@@ -13,7 +13,7 @@ const date = new Date(props.timeAgo)
       <Icon name="carbon:user-avatar-filled" size="45" />
       <div class="text-sm flex flex-col text-primary-gray cursor-pointer rounded-lg hover:bg-secondary-gray hover:ring-1 ring-secondary-gray">
         <span v-if="user" class="text-primary-dark font-bold capitalize">
-          {{ displayUsernameLocale(user.fullName, user.fullNameEL) }}
+          {{ displayUsernameLocale(user.fullName, user.fullNameEL, true) }}
         </span>
         <span>
           @{{ user.uid }}

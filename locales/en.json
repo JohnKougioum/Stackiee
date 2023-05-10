@@ -62,5 +62,10 @@
         "title": "Language",
         "change": "Change Language"
       }
+    },
+    "filters": {
+      "title": "Filters",
+      "semester": "Semester",
+      "course": "Course"
     }
 }
