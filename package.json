@@ -10,7 +10,7 @@
     "typecheck": "stale-dep && nuxi typecheck"
   },
   "dependencies": {
-    "@nuxt/devtools": "^0.4.0",
+    "@nuxt/devtools": "^0.5.3",
     "@nuxtjs/i18n": "8.0.0-beta.10",
     "@tiptap/extension-character-count": "2.0.2",
     "@tiptap/extension-code-block": "2.0.2",
@@ -53,14 +53,14 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.34.1",
     "@nuxtjs/color-mode": "^3.2.0",
-    "@nuxtjs/tailwindcss": "^6.4.0",
+    "@nuxtjs/tailwindcss": "^6.8.0",
     "@pinia/nuxt": "^0.4.8",
     "@prisma/client": "^4.10.1",
     "@types/jsonwebtoken": "^9.0.1",
     "@vue-macros/nuxt": "^0.2.16",
     "@vueuse/nuxt": "^9.10.0",
     "eslint": "^8.31.0",
-    "nuxt": "^3.4.2",
+    "nuxt": "^3.6.0",
     "nuxt-icon": "^0.2.11",
     "prisma": "^4.10.1",
     "sass": "^1.54.3",

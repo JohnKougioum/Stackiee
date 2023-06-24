@@ -1,3 +1,4 @@
+import { defineStore } from 'pinia'
 import type { Ref } from 'vue'
 
 export function usePaginator(page: Ref<number>, pending: Ref<boolean>, next: Ref<boolean>) {
@@ -26,3 +27,20 @@ export function usePaginator(page: Ref<number>, pending: Ref<boolean>, next: Ref
     endAnchor,
   }
 }
+
+export const useFilters = defineStore('filters', () => {
+  const filters = ref<string[]>([])
+  const { t } = useI18n()
+
+  function applyFilters(selectedSemester: number, selectedCourses: number[] | []) {
+    // TODO: fix locales when switching languages
+    selectedCourses.length
+      ? filters.value = selectedCourses.map((course: number) => course.toString())
+      : filters.value = [`${t('filters.semester')} ${selectedSemester.toString()}`]
+  }
+
+  return {
+    filters,
+    applyFilters,
+  }
+})

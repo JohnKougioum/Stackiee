@@ -1,19 +1,26 @@
 <script setup lang='ts'>
-import { classes } from '@/types/index'
+import { storeToRefs } from 'pinia'
+const { filters } = storeToRefs(useFilters())
 </script>
 
 <template>
-  <CommonDropdown class="w-fit ml-auto" placement="bottom">
-    <button
-      class="py-2 px-4 bg-base-orange text-white text-lg rounded-3xl
-          cursor-pointer hover:bg-opacity-70 duration-75"
-    >
-      Filters
-    </button>
-    <template #popper>
-      <div class="w-full md:w-[25rem] h-[30rem]">
-        <SearchFiltersItem :items="classes" />
-      </div>
-    </template>
-  </CommonDropdown>
+  <div class="mt-2 flex justify-between items-center">
+    <div class="ml-4 flex gap-2">
+      <SearchFiltersChips v-for="item in filters" :key="item">
+        {{ item }}
+      </SearchFiltersChips>
+    </div>
+    <CommonDropdown class="w-fit" placement="bottom">
+      <button
+        class="base-button text-xl"
+      >
+        Filters
+      </button>
+      <template #popper>
+        <div class="w-full md:w-[25rem] h-[30rem]">
+          <SearchFiltersMain />
+        </div>
+      </template>
+    </CommonDropdown>
+  </div>
 </template>

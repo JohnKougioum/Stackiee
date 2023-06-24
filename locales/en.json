@@ -66,6 +66,8 @@
     "filters": {
       "title": "Filters",
       "semester": "Semester",
-      "course": "Course"
+      "course": "Course",
+      "clear": "Clear",
+      "apply": "Apply"
     }
 }
