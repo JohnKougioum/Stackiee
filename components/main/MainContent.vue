@@ -33,16 +33,6 @@ const containerClass = computed(() => {
           </div>
           <div class="sm:hidden h-7 w-[1px]" />
         </div>
-        <div class="flex items-center flex-shrink-0 gap-2">
-          <button
-            v-if="!$auth.isLoggedIn.value"
-            class="base-button"
-            :aria-label="$t('user.signIn')"
-            @click="$auth.redirectToLogin"
-          >
-            {{ $t('user.signIn') }}
-          </button>
-        </div>
       </div>
     </div>
     <div :class="{ 'xl:block': $route.name !== 'tag' }" class="hidden h-6" />
