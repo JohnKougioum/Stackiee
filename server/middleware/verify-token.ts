@@ -8,8 +8,10 @@ export default defineEventHandler(async (event) => {
   )
     return
 
-  if (!token)
+  if (!token) {
+    deleteCookie(event, 'loggedIn')
     await sendRedirect(event, '/login', 401)
+  }
 
   jwt.verify(token, useRuntimeConfig().token_secret, (err, uid) => {
     if (err) {

@@ -7,10 +7,17 @@ definePageMeta({
 
 <template>
   <div class="flex h-full">
-    <div class="flex-1 bg-red-500" />
-    <div class="min-w-[500px] px-20 py-40 flex flex-col justify-between">
-      <p>bla bla bla</p>
-      <p>this is a thesis bla bla bla</p>
+    <div class="flex-1 bg-base-orange" />
+    <div class="max-w-[450px] px-20 py-32 flex flex-col justify-between">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sapiente nam quis mollitia aut, nemo culpa obcaecati quae quaerat consectetur impedit modi harum ipsam tenetur sequi. Quidem quam inventore sunt!
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sapiente nam quis mollitia aut, nemo culpa obcaecati quae quaerat consectetur impedit modi harum ipsam tenetur sequi. Quidem quam inventore sunt!
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sapiente nam quis mollitia aut, nemo culpa obcaecati quae quaerat consectetur impedit modi harum ipsam tenetur sequi. Quidem quam inventore sunt!
+      </p>
 
       <div class="py-8 px-10">
         <button
