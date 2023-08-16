@@ -31,22 +31,20 @@ async function addComment(comment: string) {
 
 <template>
   <div class="border-t-2">
-    <template v-if="$auth.isLoggedIn.value">
-      <template v-if="errorMessage">
-        <div class="text-center text-red-500">
-          {{ errorMessage }}
-        </div>
-      </template>
-      <PublishWidget
-        class="px-2 sm:px-0 pb-12 pt-4"
-        :should-expand="false"
-        :button-text="$t('reply')"
-        @publish="addComment"
-      />
-      <ClientOnly>
-        <div class="divider" />
-      </ClientOnly>
+    <template v-if="errorMessage">
+      <div class="text-center text-red-500">
+        {{ errorMessage }}
+      </div>
     </template>
+    <PublishWidget
+      class="px-2 sm:px-0 pb-12 pt-4"
+      :should-expand="false"
+      :button-text="$t('reply')"
+      @publish="addComment"
+    />
+    <ClientOnly>
+      <div class="divider" />
+    </ClientOnly>
     <div class="my-2 py-2">
       <TimelineSkeleton v-if="pending" />
       <template v-if="comments && !pending">

@@ -1,22 +1,16 @@
 import jwt from 'jsonwebtoken'
 
-const routes = [
-  '/api/user/info',
-  '/api/posts/create',
-  '/api/comments/create',
-]
-
 export default defineEventHandler(async (event) => {
-  if (!routes.some(route => event.node.req.url?.startsWith(route)))
+  const { token } = parseCookies(event)
+  if (
+    event.node.req.url?.startsWith('/login')
+    || event.node.req.url?.startsWith('/api/login')
+  )
     return
 
-  const { token } = parseCookies(event)
-
   if (!token) {
-    throw createError({
-      statusCode: 401,
-      message: 'No token',
-    })
+    deleteCookie(event, 'loggedIn')
+    await sendRedirect(event, '/login', 401)
   }
 
   jwt.verify(token, useRuntimeConfig().token_secret, (err, uid) => {

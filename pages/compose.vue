@@ -3,7 +3,6 @@ import { classes } from '@/types/index'
 definePageMeta({
   title: 'Compose',
   description: 'Compose a new post',
-  middleware: ['auth'],
 })
 const semester = ref<number | undefined>(undefined)
 const lectures = computed(() => classes[semester.value as keyof typeof classes].courses)
