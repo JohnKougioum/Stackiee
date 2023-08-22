@@ -21,7 +21,7 @@ function onclick(evt: MouseEvent | KeyboardEvent) {
 
 function go(evt: MouseEvent | KeyboardEvent) {
   if (evt.metaKey || evt.ctrlKey)
-    window.open(`http://localhost:8080/status/${props.item.id}`)
+    window.open(`${window.location.origin}/status/${props.item.id}`)
 
   else
     router.push(`/status/${props.item.id}`)
