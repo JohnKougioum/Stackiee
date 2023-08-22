@@ -7,7 +7,7 @@ import type { PostData } from '~/types/index'
 const props = defineProps<{
   searchQuery?: string
   semester?: number
-  course?: string
+  courses?: string[]
 }>()
 
 const reactiveProps = toRefs(props)
@@ -20,7 +20,7 @@ const { pending, error, execute } = await useFetch('/api/posts/search', {
   body: {
     page,
     searchQuery: reactiveProps.searchQuery,
-    ...(props.course && { course: props.course }),
+    ...(props.courses && { courses: props.courses }),
   },
   server: false,
   watch: [page],

@@ -7,7 +7,7 @@ const postSearchSchema = z.object({
   page: z.number(),
   searchQuery: z.string().nullable().optional(),
   semester: z.number().nullable().optional(),
-  course: z.string().nullable().optional(),
+  courses: z.string().array().nullable().optional(),
 })
 
 export default defineEventHandler(async (event) => {
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
               equals: searchRequest.semester,
             },
             course: {
-              equals: searchRequest.course,
+              in: searchRequest.courses,
             },
           },
         ],
