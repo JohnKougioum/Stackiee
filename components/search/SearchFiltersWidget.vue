@@ -10,15 +10,15 @@ const { filters } = storeToRefs(useFilters())
         {{ item }}
       </SearchFiltersChips>
     </div>
-    <CommonDropdown class="w-fit" placement="bottom">
+    <CommonDropdown class="w-fit">
       <button
         class="base-button text-xl"
       >
         Filters
       </button>
       <template #popper>
-        <div class="w-full md:w-[25rem] h-[30rem]">
-          <SearchFiltersMain />
+        <div class="w-full md:w-[25rem] h-[34rem]">
+          <SearchFiltersNew />
         </div>
       </template>
     </CommonDropdown>
