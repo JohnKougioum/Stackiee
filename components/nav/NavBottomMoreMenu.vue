@@ -1,24 +1,22 @@
 <script lang="ts" setup>
-let { modelValue } = $defineModel<{
-  modelValue: boolean
-}>()
+const modelValue = defineModel<boolean>({ required: true })
 
 function toggleVisible() {
-  modelValue = !modelValue
+  modelValue.value = !modelValue.value
 }
 
 const buttonEl = ref<HTMLDivElement>()
 /** Close the drop-down menu if the mouse click is not on the drop-down menu button when the drop-down menu is opened */
 function clickEvent(mouse: MouseEvent) {
   if (mouse.target && !buttonEl.value?.children[0].contains(mouse.target as any)) {
-    if (modelValue) {
+    if (modelValue.value) {
       document.removeEventListener('click', clickEvent)
-      modelValue = false
+      modelValue.value = false
     }
   }
 }
 
-watch($$(modelValue), (val) => {
+watch(modelValue, (val) => {
   if (val && typeof document !== 'undefined')
     document.addEventListener('click', clickEvent)
 })

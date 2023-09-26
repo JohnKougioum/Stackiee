@@ -12,6 +12,12 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     'nuxt-icon',
   ],
+  vue: {
+    defineModel: true,
+  },
+  macros: {
+    defineModels: false,
+  },
   typescript: {
     tsConfig: {
       vueCompilerOptions: {
