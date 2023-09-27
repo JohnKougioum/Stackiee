@@ -46,7 +46,7 @@ export const useFilters = defineStore('filters', () => {
   }
 
   function isWholeSemesterSelected(semester: number) {
-    return Object.keys(classes[semester]).every((course: string) => tempFilters.value.includes(course))
+    return Object.keys(classes[semester].courses).every((course: string) => tempFilters.value.includes(course.toString()))
   }
 
   return {

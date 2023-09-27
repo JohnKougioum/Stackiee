@@ -9,8 +9,10 @@ defineEmits<{
   (event: 'goBack'): void
 }>()
 
-// TODO: add logic for isWholeSemesterSelected
-const { tempFilters, isWholeSemesterSelected } = storeToRefs(useFilters())
+const { tempFilters } = storeToRefs(useFilters())
+const { isWholeSemesterSelected } = useFilters()
+const allClassesSelected = ref(false)
+allClassesSelected.value = isWholeSemesterSelected(props.semester)
 
 function selectAll(event: InputEvent, semester: number) {
   const checkboxes = document.getElementsByName(`semester-${semester}-courses`)
@@ -34,6 +36,8 @@ function addToTempFilter(event: InputEvent, code: number) {
   (event.target as HTMLInputElement).checked
     ? tempFilters.value.push(codeToString)
     : tempFilters.value = tempFilters.value.filter(item => item !== codeToString)
+
+  allClassesSelected.value = isWholeSemesterSelected(props.semester)
 }
 </script>
 
@@ -41,10 +45,13 @@ function addToTempFilter(event: InputEvent, code: number) {
   <button class="mb-1" @click="$emit('goBack')">
     <Icon name="ri:arrow-left-line" size="1.3rem" />
   </button>
-  {{ tempFilters }}
   <div class="my-1 rounded-md">
     <label class="flex items-center gap-2 p-4" :for="`semester-${semester}`">
-      <CommonCheckbox :id="`semester-${semester}`" @change="selectAll($event, semester)" />
+      <CommonCheckbox
+        :id="`semester-${semester}`"
+        :checked="allClassesSelected"
+        @change="selectAll($event, semester)"
+      />
       <span class="flex-1 ml-4">
         {{ $t('filters.selectAll') }}
       </span>
