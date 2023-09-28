@@ -49,10 +49,27 @@ export const useFilters = defineStore('filters', () => {
     return Object.keys(classes[semester].courses).every((course: string) => tempFilters.value.includes(course.toString()))
   }
 
+  const coursesSelectedFromSemester = computed(() => {
+    return (semester: number) => {
+      return Object.keys(classes[semester].courses).filter((course: string) => tempFilters.value.includes(course.toString())).length
+    }
+  })
+
+  function semesterClasses(semester: number) {
+    return classes[semester].courses
+  }
+
+  function resetTempFilters() {
+    tempFilters.value = []
+  }
+
   return {
     filters,
     tempFilters,
     applyFilters,
     isWholeSemesterSelected,
+    coursesSelectedFromSemester,
+    semesterClasses,
+    resetTempFilters,
   }
 })

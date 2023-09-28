@@ -10,7 +10,7 @@ defineEmits<{
 }>()
 
 const { tempFilters } = storeToRefs(useFilters())
-const { isWholeSemesterSelected } = useFilters()
+const { isWholeSemesterSelected, semesterClasses } = useFilters()
 const allClassesSelected = ref(false)
 allClassesSelected.value = isWholeSemesterSelected(props.semester)
 
@@ -58,7 +58,7 @@ function addToTempFilter(event: InputEvent, code: number) {
     </label>
   </div>
   <div
-    v-for="(course, name) in classes[semester].courses" :key="name"
+    v-for="(course, name) in semesterClasses(semester)" :key="name"
     class=" my-1 rounded-md"
   >
     <label class="flex items-center gap-2 p-4" :for="`course-${name}`">

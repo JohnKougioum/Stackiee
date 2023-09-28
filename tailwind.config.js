@@ -11,6 +11,7 @@ module.exports = {
         'base-orange': '#E29578',
         'base-orange-darker': '#C87353',
         'primary-orange-ignore:': '#E29578',
+        'primary-red': '#E76161',
       },
       fontSize: {
         'size-base': '1rem',

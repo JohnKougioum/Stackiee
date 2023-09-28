@@ -17,7 +17,7 @@ const { filters } = storeToRefs(useFilters())
         Filters
       </button>
       <template #popper>
-        <div class="w-full md:w-[25rem] h-[34rem]">
+        <div class="w-full md:w-[25rem] h-[35rem]">
           <SearchFiltersNew />
         </div>
       </template>
