@@ -14,10 +14,10 @@ const { filters } = storeToRefs(useFilters())
       <button
         class="base-button text-xl"
       >
-        Filters
+        {{ $t('filters.title') }}
       </button>
       <template #popper>
-        <div class="w-full md:w-[25rem] h-[35rem]">
+        <div class="w-[18rem] md:w-[25rem] h-[35rem]">
           <SearchFiltersNew />
         </div>
       </template>
