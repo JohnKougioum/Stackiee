@@ -39,7 +39,7 @@ function semesterCoursesLength(semester: number) {
           v-for="index in 10"
           :key="index"
           class="py-3 w-full relative cursor-pointer border-secondary-gray border-b-[1px] last:border-b-0"
-          :class="{ 'all-selected bg-opacity-20': isWholeSemesterSelected(index) }"
+          :class="{ 'text-white bg-pale-green': isWholeSemesterSelected(index) }"
           @click="showSemesterClasses(index)"
         >
           <div class="flex justify-center items-center h-full">
@@ -71,10 +71,3 @@ function semesterCoursesLength(semester: number) {
     </div>
   </Transition>
 </template>
-
-<style lang="postcss" scoped>
-.all-selected {
-  background-color: #b2d8ce;
-  color: white;
-}
-</style>
