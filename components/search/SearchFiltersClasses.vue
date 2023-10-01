@@ -22,6 +22,7 @@ function selectAll(event: InputEvent, semester: number) {
 
     tempFilters.value.push(...Object.keys(classes[semester].courses))
     tempFilters.value = [...new Set(tempFilters.value)]
+    allClassesSelected.value = true
   }
   else {
     for (const checkbox of checkboxes)
