@@ -55,6 +55,8 @@
       "home": "Home",
       "search": "Search"
     },
+    "comments": "Comments",
+    "copyLink" : "Copy Link",
     "noMorePosts": "No more posts",
     "settings": {
       "title": "Settings",
@@ -81,6 +83,7 @@
         "8": "8th Semester",
         "9": "9th Semester",
         "10": "10th Semester"
-      }
+      },
+      "showMore": "Show More"
     }
 }

@@ -41,8 +41,8 @@ function go(evt: MouseEvent | KeyboardEvent) {
     </div>
     <div class="mt-2 h-5 flex justify-between items-center">
       <div class="flex items-center">
-        <button>
-          <CommonTooltip placement="bottom" content="Comments">
+        <button class="btn-icon">
+          <CommonTooltip placement="bottom" :content="$t('comments')">
             <div class="btn-icon">
               <Icon name="majesticons:comment-2-line" size="20" color="#70798C" />
             </div>
@@ -52,8 +52,8 @@ function go(evt: MouseEvent | KeyboardEvent) {
           {{ item._count.Comment }}
         </span>
       </div>
-      <button>
-        <CommonTooltip placement="bottom" content="Copy Link">
+      <button class="btn-icon">
+        <CommonTooltip placement="bottom" :content="$t('copyLink')">
           <div class="btn-icon">
             <Icon name="ph:link-simple-horizontal-duotone" size="24" color="#70798C" />
           </div>

@@ -36,14 +36,6 @@ export function usePaginator(
 export const useFilters = defineStore('filters', () => {
   const filters = ref<string[]>([])
   const tempFilters = ref<string[]>([])
-  const { t } = useI18n()
-
-  function applyFilters(selectedSemester: number, selectedCourses: number[] | []) {
-    // TODO: fix locales when switching languages
-    selectedCourses.length
-      ? filters.value = selectedCourses.map((course: number) => course.toString())
-      : filters.value = [`${t('filters.semester')} ${selectedSemester.toString()}`]
-  }
 
   function isWholeSemesterSelected(semester: number) {
     return Object.keys(classes[semester].courses).every((course: string) => tempFilters.value.includes(course.toString()))
@@ -63,13 +55,25 @@ export const useFilters = defineStore('filters', () => {
     tempFilters.value = []
   }
 
+  function applyFilters() {
+    Object.keys(classes).forEach((semester) => {
+      if (isWholeSemesterSelected(Number(semester))) {
+        tempFilters.value = tempFilters.value.filter(course => !Object.keys(classes[Number(semester)].courses).includes(course))
+        tempFilters.value.push(semester)
+      }
+    })
+    filters.value = [...tempFilters.value]
+    tempFilters.value = []
+  }
+  // TODO: tempFilters should be the same as filters when the users opens the filters
+
   return {
     filters,
     tempFilters,
-    applyFilters,
     isWholeSemesterSelected,
     coursesSelectedFromSemester,
     semesterClasses,
     resetTempFilters,
+    applyFilters,
   }
 })

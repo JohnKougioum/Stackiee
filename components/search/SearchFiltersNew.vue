@@ -1,5 +1,8 @@
 <script setup lang='ts'>
 import { storeToRefs } from 'pinia'
+import { classes } from '@/types/index'
+
+const semesters = Object.keys(classes).map(Number)
 
 const selectedSemester = ref<number | null>(null)
 function showSemesterClasses(semesterIndex: number) {
@@ -14,6 +17,7 @@ const {
   isWholeSemesterSelected,
   semesterClasses,
   resetTempFilters,
+  applyFilters,
 } = useFilters()
 
 const { coursesSelectedFromSemester } = storeToRefs(useFilters())
@@ -36,7 +40,7 @@ function semesterCoursesLength(semester: number) {
     <div v-if="!selectedSemester">
       <div>
         <div
-          v-for="index in 10"
+          v-for="index in semesters"
           :key="index"
           class="py-3 w-full relative cursor-pointer border-secondary-gray border-b-[1px] last:border-b-0"
           :class="{ 'text-white bg-pale-green': isWholeSemesterSelected(index) }"
@@ -61,7 +65,7 @@ function semesterCoursesLength(semester: number) {
         <button class="base-button mr-4 !bg-primary-red hover:opacity-70" @click="resetTempFilters">
           {{ $t('filters.clear') }}
         </button>
-        <button class="base-button">
+        <button class="base-button" @click="applyFilters">
           {{ $t('filters.apply') }}
         </button>
       </div>

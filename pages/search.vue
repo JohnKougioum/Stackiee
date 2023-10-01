@@ -14,6 +14,7 @@ onDeactivated(() => search?.inputRef?.blur())
 
 <template>
   <MainContent back>
+    <SearchFiltersWidget />
     <template v-if="!isExtraLargeScreen" #title>
       <span to="/search" class="timeline-title flex items-center gap-2" @click="$scrollToTop">
         <Icon name="ri:search-line" size="1.5em" />
