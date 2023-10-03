@@ -75,10 +75,15 @@ export const useFilters = defineStore('filters', () => {
     })
   }
 
+  let timeoutId: ReturnType<typeof setTimeout>
   function removeFiltersItem(item: string) {
-    filters.value = filters.value.filter(filter => filter !== item)
-    tempFilters.value = [...filters.value]
-    transformFiltersToTemp()
+    clearTimeout(timeoutId)
+
+    timeoutId = setTimeout(() => {
+      filters.value = filters.value.filter(filter => filter !== item)
+      tempFilters.value = [...filters.value]
+      transformFiltersToTemp()
+    }, 200)
   }
 
   return {

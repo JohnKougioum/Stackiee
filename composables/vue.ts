@@ -34,3 +34,11 @@ export function onReactivated(hook: Function, target?: ComponentInternalInstance
 export const onHydrated = (cb: () => unknown) => {
   watchOnce(isHydrated, () => cb(), { immediate: isHydrated.value })
 }
+
+// export function debounce(func: () => void, timeout = 300) {
+//   let timer: ReturnType<typeof setTimeout>
+//   return (...args: unknown[]) => {
+//     clearTimeout(timer)
+//     timer = setTimeout(() => { func.apply(this, args) }, timeout)
+//   }
+// }
