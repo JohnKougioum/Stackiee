@@ -2,6 +2,10 @@
 import { storeToRefs } from 'pinia'
 import { classes } from '@/types/index'
 
+const props = defineProps<{
+  hideFn?: () => void
+}>()
+
 const semesters = Object.keys(classes).map(Number)
 
 const selectedSemester = ref<number | null>(null)
@@ -24,6 +28,11 @@ const { coursesSelectedFromSemester } = storeToRefs(useFilters())
 
 function semesterCoursesLength(semester: number) {
   return Object.keys(semesterClasses(semester)).length
+}
+
+function applyFiltersAndHideDropdown() {
+  applyFilters()
+  props.hideFn?.()
 }
 </script>
 
@@ -65,7 +74,7 @@ function semesterCoursesLength(semester: number) {
         <button class="base-button mr-4 !bg-primary-red hover:opacity-70" @click="resetTempFilters">
           {{ $t('filters.clear') }}
         </button>
-        <button class="base-button" @click="applyFilters">
+        <button class="base-button" @click="applyFiltersAndHideDropdown">
           {{ $t('filters.apply') }}
         </button>
       </div>

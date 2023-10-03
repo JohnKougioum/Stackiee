@@ -63,9 +63,23 @@ export const useFilters = defineStore('filters', () => {
       }
     })
     filters.value = [...tempFilters.value]
-    tempFilters.value = []
+    transformFiltersToTemp()
   }
-  // TODO: tempFilters should be the same as filters when the users opens the filters
+
+  function transformFiltersToTemp() {
+    Object.keys(classes).forEach((semester) => {
+      if (filters.value.includes(semester)) {
+        tempFilters.value = tempFilters.value.filter(item => semester !== item)
+        tempFilters.value.push(...Object.keys(classes[Number(semester)].courses))
+      }
+    })
+  }
+
+  function removeFiltersItem(item: string) {
+    filters.value = filters.value.filter(filter => filter !== item)
+    tempFilters.value = [...filters.value]
+    transformFiltersToTemp()
+  }
 
   return {
     filters,
@@ -75,5 +89,6 @@ export const useFilters = defineStore('filters', () => {
     semesterClasses,
     resetTempFilters,
     applyFilters,
+    removeFiltersItem,
   }
 })

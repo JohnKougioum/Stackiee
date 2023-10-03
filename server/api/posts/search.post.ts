@@ -23,24 +23,35 @@ export default defineEventHandler(async (event) => {
       where: {
         AND: [
           {
-            body: {
-              contains: searchRequest.searchQuery,
-              mode: 'insensitive',
-            },
-            ...searchRequest.semesters.length && {
-              semester: {
-                in: Number(searchRequest.semesters),
+            ...searchRequest.searchQuery && {
+              body: {
+                contains: searchRequest.searchQuery,
+                mode: 'insensitive',
               },
             },
-            ...searchRequest.courses.length && {
-              course: {
-                in: searchRequest.courses,
+          },
+          {
+            OR: [
+              {
+                ...searchRequest.semesters.length && {
+                  semester: {
+                    in: searchRequest.semesters.map(Number),
+                  },
+                },
               },
-            },
+              {
+                ...searchRequest.courses.length && {
+                  course: {
+                    in: searchRequest.courses,
+                  },
+                },
+              },
+            ],
           },
         ],
       },
     }
+
     const posts = await prisma.post.findMany({
       ...prismaWhereQuery,
       include: {

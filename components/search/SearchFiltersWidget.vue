@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { storeToRefs } from 'pinia'
 const { filters } = storeToRefs(useFilters())
+const { removeFiltersItem } = useFilters()
 
 function getChipText(chip: string) {
   const { t } = useI18n()
@@ -22,7 +23,7 @@ const maxHeightComputed = computed(() => {
   <div class="mt-2 flex flex-col-reverse sm:flex-row justify-between pr-2 md:pr-0">
     <div class="flex gap-1">
       <div ref="collapseEl" class="ml-4 flex gap-2 flex-wrap collapse-body" :style="maxHeightComputed">
-        <SearchFiltersChips v-for="item in filters" :key="item">
+        <SearchFiltersChips v-for="item in filters" :key="item" @delete-action="removeFiltersItem(item)">
           {{ getChipText(item) }}
         </SearchFiltersChips>
       </div>
@@ -38,9 +39,9 @@ const maxHeightComputed = computed(() => {
       >
         {{ $t('filters.title') }}
       </button>
-      <template #popper>
+      <template #popper="{ hide }">
         <div class="w-[18rem] md:w-[25rem] h-[35rem]">
-          <SearchFiltersNew />
+          <SearchFiltersNew :hide-fn="hide" />
         </div>
       </template>
     </CommonDropdown>
