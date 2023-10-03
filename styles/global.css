@@ -7,7 +7,7 @@
 }
 
 .base-chip {
-    @apply py-1 px-2 flex gap-1 rounded-2xl capitalize select-none bg-gray-300 text-white hover:bg-gray-200 duration-100;
+    @apply h-fit py-1 px-2 flex gap-1 rounded-2xl capitalize select-none bg-primary-dark text-white duration-100;
 }
 
 .divider-vertical{

@@ -3,17 +3,17 @@
 import { DynamicScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
-const { items, pending, nextPage } = $defineProps<{
+const props = defineProps<{
   items: Array<any>
   pending: boolean
   nextPage: boolean
 }>()
 
-const { page } = defineModel<{
-  page: number
-}>()
+const { pending, nextPage } = toRefs(props)
 
-const { endAnchor } = usePaginator(page, $$(pending), $$(nextPage))
+const page = defineModel<number>('page')
+
+const { endAnchor } = usePaginator(page, pending, nextPage)
 </script>
 
 <template>
