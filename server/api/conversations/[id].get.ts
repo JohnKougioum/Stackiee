@@ -34,13 +34,22 @@ export default defineEventHandler(async (event) => {
         },
       },
     })
-  
+
+    const isUserPartOfConversation = conversation.participants.some(item => item.userId === user.id)
+    if (!isUserPartOfConversation) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'You are not part of this conversation!',
+      })
+    }
+
     return {
       statusCode: 200,
       body: conversation,
     }
   }
   catch (error: any) {
+    setResponseStatus(event, error.statusCode)
     return {
       statusCode: error.statusCode,
       body: error.statusMessage,
