@@ -91,10 +91,10 @@ export default defineEventHandler(async (event) => {
     }
   }
   catch (error) {
-    setResponseStatus(event, error.statusCode)
-    return {
-      statusCode: error.statusCode,
-      body: error.statusMessage,
-    }
+    console.log(error)
+    throw createError({
+      statusCode: 403,
+      statusMessage: 'Invalid Payload',
+    })
   }
 })

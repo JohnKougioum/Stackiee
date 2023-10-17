@@ -29,22 +29,12 @@ export default defineEventHandler(async (event) => {
         participants: {},
       },
     })
-
     if (!conversation) {
       throw createError({
         statusCode: 400,
         statusMessage: 'There is not conversation with the given ID',
       })
     }
-
-    const isUserPartOfConversation = conversation.participants.some(item => item.userId === user.id)
-    if (!isUserPartOfConversation) {
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'You are not part of this conversation!',
-      })
-    }
-
     const conversationAdmin = conversation.participants.find(participant => participant.isAdmin === true)
     if (conversationAdmin?.userId !== user.id) {
       throw createError({
@@ -63,7 +53,7 @@ export default defineEventHandler(async (event) => {
     })
 
     const usersToRemove = tempConversationParticipants.filter(item => !participants.includes(item))
-    const usersToAdd = participants.filter(uid =>
+    const usersToAdd = participants.filter((uid) =>
       !tempConversationParticipants.includes(uid) && uid !== user.id,
     )
 
@@ -76,7 +66,7 @@ export default defineEventHandler(async (event) => {
           },
         },
       })
-      console.log('response: ', x)
+      console.log("response: ", x)
     }
 
     if (usersToAdd.length) {
@@ -87,7 +77,7 @@ export default defineEventHandler(async (event) => {
         data: {
           participants: {
             createMany: {
-              data: usersToAdd.map(id => ({
+              data: usersToAdd.map((id) => ({
                 userId: id,
                 hasSeenLatestMessage: id === user.id,
                 isAdmin: id === user.id,
@@ -96,7 +86,7 @@ export default defineEventHandler(async (event) => {
           },
         },
       })
-      console.log('response: ', x1)
+      console.log("response: ", x1)
     }
 
     return {
@@ -108,7 +98,6 @@ export default defineEventHandler(async (event) => {
     }
   }
   catch (error: any) {
-    setResponseStatus(event, error.statusCode)
     return {
       statusCode: error.statusCode,
       body: error.statusMessage,
