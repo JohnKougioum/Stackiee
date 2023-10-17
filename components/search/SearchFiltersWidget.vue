@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { storeToRefs } from 'pinia'
+
 const { filters } = storeToRefs(useFilters())
 const { removeFiltersItem } = useFilters()
 
