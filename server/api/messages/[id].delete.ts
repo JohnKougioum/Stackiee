@@ -12,20 +12,53 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const user = await prisma.user.findUniqueOrThrow({
-    where: {
-      uid: event.context.uid.uid,
-    },
-  })
+  try {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        uid: event.context.uid.uid,
+      },
+    })
 
-  const messages = await prisma.message.deleteMany({
-    where: {
-      conversationId: conversationID,
-    },
-  })
+    const conversation = await prisma.conversation.findUnique ({
+      where: {
+        id: conversationID,
+      },
+      include: {
+        participants: {},
+      },
+    })
 
-  return {
-    statusCode: 200,
-    body: messages,
+    if (!conversation) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'There is not conversation with the given ID',
+      })
+    }
+
+    const isUserPartOfConversation = conversation.participants.some(item => item.userId === user.id)
+    if (!isUserPartOfConversation) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'You are not part of this conversation!',
+      })
+    }
+
+    const messages = await prisma.message.deleteMany({
+      where: {
+        conversationId: conversationID,
+      },
+    })
+
+    return {
+      statusCode: 200,
+      body: messages,
+    }
+  }
+  catch (error) {
+    setResponseStatus(event, error.statusCode)
+    return {
+      statusCode: error.statusCode,
+      body: error.statusMessage,
+    }
   }
 })
