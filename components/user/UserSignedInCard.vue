@@ -1,9 +1,9 @@
 <script setup lang='ts'>
-const { data: user, pending } = await useLazyFetch('/api/user/info', {
+const { data: user, pending } = await useFetch('/api/user/info', {
   method: 'GET',
   credentials: 'include',
-  server: false,
 })
+userId.value = user.value?.data.uid || null
 </script>
 
 <template>

@@ -56,7 +56,7 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
 
 .padding-transition{
   transition-duration: .15s;
-    transition-property: padding;
-    transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-property: padding;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
 }
 </style>

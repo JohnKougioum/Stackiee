@@ -3,6 +3,8 @@ import { onActivated, onDeactivated, ref } from 'vue'
 
 export const isHydrated = ref(false)
 
+export const userId = ref<string | null>(null)
+
 /**
  * ### Whether the current component is running in the background
  *
@@ -21,7 +23,7 @@ export function useDeactivated() {
  *
  * for handling problems caused by the keepalive function
  */
-export function onReactivated(hook: Function, target?: ComponentInternalInstance | null): void {
+export function onReactivated(hook: () => void, target?: ComponentInternalInstance | null): void {
   const initial = ref(true)
   onActivated(() => {
     if (initial.value)
@@ -31,7 +33,7 @@ export function onReactivated(hook: Function, target?: ComponentInternalInstance
   onDeactivated(() => initial.value = false)
 }
 
-export const onHydrated = (cb: () => unknown) => {
+export function onHydrated(cb: () => unknown) {
   watchOnce(isHydrated, () => cb(), { immediate: isHydrated.value })
 }
 

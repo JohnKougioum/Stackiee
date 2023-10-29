@@ -86,3 +86,7 @@ export function displayUsernameLocale(name: string, nameEL: string, shouldLowerc
       ? nameEL.toLowerCase()
       : nameEL
 }
+
+export function removeAccents(str: string) {
+  return str.normalize('NFD').replace(/[\u0300-\u036F]/g, '')
+}

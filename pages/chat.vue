@@ -1,7 +1,49 @@
 <script setup lang='ts'>
+definePageMeta({
+  wideLayout: true,
+})
 
+useSeoMeta({
+  title: 'Chat',
+  description: 'Chat pageasdfasdf',
+})
+
+const { data, pending } = await useLazyFetch('/api/conversations/all')
+
+const route = useRoute()
+const isRootPath = computedEager(() => route.name === 'chat')
 </script>
 
 <template>
-  chat
+  <div class="min-h-screen flex">
+    <div class="border-r-2" :class="isRootPath ? 'block lg:flex-none flex-1' : 'hidden lg:block'">
+      <MainContent>
+        <template #title>
+          <div class="timeline-title flex items-center gap-2" @click="$scrollToTop">
+            <Icon name="ri:settings-3-line" size="1.5" />
+            <span class="text-xl font-bold">{{ $t('nav.messages') }}</span>
+          </div>
+        </template>
+        <div class="xl:w-[24.25rem] lg:w-[19.5rem]">
+          <TimelineSkeleton v-if="pending" />
+          <template v-else>
+            <NuxtLink
+              v-for="chat in data?.body"
+              :key="chat.id"
+              :to="`/chat/${chat.id}`"
+            >
+              <ChatName
+                :name="chat.name"
+                :last-message-date="chat.updatedAt"
+                :participants="[...chat.participants]"
+              />
+            </NuxtLink>
+          </template>
+        </div>
+      </MainContent>
+    </div>
+    <div class="flex-1" :class="isRootPath ? 'hidden lg:block' : 'block'">
+      <NuxtPage />
+    </div>
+  </div>
 </template>

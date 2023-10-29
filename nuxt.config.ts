@@ -34,6 +34,7 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/settings/**': { prerender: false },
     '/login/auth': { prerender: false, ssr: false },
+    '/chat/**': { prerender: false, ssr: false },
   },
   app: {
     keepalive: true,
