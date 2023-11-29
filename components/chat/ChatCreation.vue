@@ -28,14 +28,14 @@ const { execute } = await useAsyncData(
   { immediate: false },
 )
 
-const debouncedSearchString = refDebounced(searchString, 500)
+const debouncedSearchString = refDebounced(searchString, 500, { maxWait: 1500 })
 const noUsersMessage = computed(() => {
   if (pending.value)
     return ''
   return !debouncedSearchString.value ? 'searchForUsers' : 'noUsersFound'
 })
 
-watchDebounced(searchString, async () => await execute(), { debounce: 500, maxWait: 1000 })
+watch(debouncedSearchString, async () => await execute())
 </script>
 
 <template>
