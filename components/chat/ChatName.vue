@@ -25,7 +25,7 @@ const timeAgo = useTimeAgo(props.lastMessageDate, timeAgoOptions)
 </script>
 
 <template>
-  <div class="border-[1px] border-primary-dark rounded-md m-4 px-2">
+  <div class="border-[1px] border-primary-dark rounded-md my-4 mx-2 px-2">
     <div class="flex justify-between">
       <span class="capitalize inline-block w-3/4 overflow-hidden whitespace-nowrap text-ellipsis">
         {{ getConversationName() }}

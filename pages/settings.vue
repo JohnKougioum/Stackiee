@@ -14,7 +14,7 @@ const isRootPath = computedEager(() => route.name === 'settings')
       <MainContent>
         <template #title>
           <div class="timeline-title flex items-center gap-2" @click="$scrollToTop">
-            <Icon name="ri:settings-3-line" size="1.5" />
+            <Icon name="ri:settings-3-line" size="1.5rem" />
             <span class="text-xl font-bold">{{ $t('settings.title') }}</span>
           </div>
         </template>

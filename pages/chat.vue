@@ -19,9 +19,16 @@ const isRootPath = computedEager(() => route.name === 'chat')
     <div class="border-r-2" :class="isRootPath ? 'block lg:flex-none flex-1' : 'hidden lg:block'">
       <MainContent>
         <template #title>
-          <div class="timeline-title flex items-center gap-2" @click="$scrollToTop">
-            <Icon name="ri:settings-3-line" size="1.5" />
-            <span class="text-xl font-bold">{{ $t('nav.messages') }}</span>
+          <div class="w-full flex justify-between items-center">
+            <div class="timeline-title flex items-center gap-2" @click="$scrollToTop">
+              <Icon name="majesticons:messages-line" size="1.5rem" />
+              <span class="text-xl font-bold">{{ $t('nav.messages') }}</span>
+            </div>
+            <div>
+              <NuxtLink class="base-button" to="/chat/create">
+                new
+              </NuxtLink>
+            </div>
           </div>
         </template>
         <div class="xl:w-[24.25rem] lg:w-[19.5rem]">

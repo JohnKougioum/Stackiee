@@ -92,5 +92,7 @@
       "select_a_chat": "Select a conversation",
       "or_create_a_new_one": "or create a new one",
       "new_chat": "New Chat"
-    }
+    },
+    "searchForUsers": "Search for users",
+    "noUsersFound": "No users found"
 }
