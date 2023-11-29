@@ -4,6 +4,7 @@ import type { User } from '@prisma/client'
 const searchString = ref('')
 const users = ref<User[]>([])
 
+let abortController = new AbortController()
 const pending = ref(false)
 const { execute } = await useAsyncData(
   async () => await $fetch('/api/user/search', {
@@ -12,6 +13,12 @@ const { execute } = await useAsyncData(
     },
     method: 'POST',
     onRequest: () => {
+      if (!searchString.value.trim()) {
+        abortController.abort()
+        abortController = new AbortController()
+        users.value = []
+      }
+
       pending.value = true
     },
     onResponse: ({ response }) => {
@@ -24,6 +31,7 @@ const { execute } = await useAsyncData(
     onResponseError: () => {
       pending.value = false
     },
+    signal: abortController.signal,
   }),
   { immediate: false },
 )
@@ -32,7 +40,7 @@ const debouncedSearchString = refDebounced(searchString, 500, { maxWait: 1500 })
 const noUsersMessage = computed(() => {
   if (pending.value)
     return ''
-  return !debouncedSearchString.value ? 'searchForUsers' : 'noUsersFound'
+  return !debouncedSearchString.value.trim() ? 'searchForUsers' : 'noUsersFound'
 })
 
 watch(debouncedSearchString, async () => await execute())
