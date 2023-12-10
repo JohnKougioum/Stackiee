@@ -47,6 +47,7 @@
       "semester": "Select Semester",
       "course": "Select Course"
     },
+    "codeBlockHint": "*You can hover at right top corner of the code block to select a language for highlighting.",
     "search": "Search",
     "searchedFor": "Showing results for: ",
     "publish": "Publish",

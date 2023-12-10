@@ -5,37 +5,35 @@ const shiki = ref<Highlighter>()
 const registeredLang = ref(new Map<string, boolean>())
 let shikiImport: Promise<void> | undefined
 
-export function useHighlighter(lang: Lang) {
+export function useHighlighter(lang: Lang, loadLanguagesDynamically = false) {
   if (!shikiImport) {
     shikiImport = import('shiki-es')
       .then(async (r) => {
         r.setCDN('https://unpkg.com/shiki/')
         shiki.value = await r.getHighlighter({
-          themes: [
-            'vitesse-dark',
-            'vitesse-light',
-          ],
-          langs: [
-            'c',
-            'cpp',
-            'csharp',
-            'css',
-            'bash',
-            'html',
-            'java',
-            'javascript',
-            'jsx',
-            'kotlin',
-            'python',
-            'rust',
-            'svelte',
-            'swift',
-            'tsx',
-            'typescript',
-            'vue-html',
-            'vue',
-            'php',
-          ],
+          theme: 'github-dark',
+          langs: loadLanguagesDynamically
+            ? [lang]
+            : ['c',
+                'cpp',
+                'csharp',
+                'css',
+                'bash',
+                'html',
+                'java',
+                'javascript',
+                'jsx',
+                'kotlin',
+                'python',
+                'rust',
+                'svelte',
+                'swift',
+                'tsx',
+                'typescript',
+                'vue-html',
+                'vue',
+                'php',
+              ],
         })
       })
   }
@@ -61,7 +59,7 @@ export function useHighlighter(lang: Lang) {
 }
 
 export function useShikiTheme() {
-  return useColorMode().value === 'dark' ? 'vitesse-dark' : 'vitesse-light'
+  return 'github-dark'
 }
 
 const HTML_ENTITIES = {
@@ -77,7 +75,7 @@ function escapeHtml(text: string) {
 }
 
 export function highlightCode(code: string, lang: Lang) {
-  const shiki = useHighlighter(lang)
+  const shiki = useHighlighter(lang, true)
   if (!shiki)
     return escapeHtml(code)
 

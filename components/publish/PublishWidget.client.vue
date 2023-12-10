@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import stringLength from 'string-length'
 import { EditorContent } from '@tiptap/vue-3'
+
 const props = withDefaults(defineProps<{
   shouldExpand?: boolean
   buttonText: string
@@ -51,12 +52,28 @@ async function publish() {
   emits('publish', htmlToText(editor.value?.getHTML() || ''))
   content.value = ''
 }
+
+const showCodeBlockHint = ref(false)
+
+function shouldShowCodeBlockHint() {
+  const codeBlockHintLocalStorage = localStorage.getItem('showCodeBlockHint')
+  if (codeBlockHintLocalStorage)
+    return
+
+  showCodeBlockHint.value = true
+  localStorage.setItem('showCodeBlockHint', 'true')
+}
 </script>
 
 <template>
   <div>
     <div class="border-[1px] border-primary-dark rounded-xl">
-      <PublishEditorTools v-if="editor" :editor="editor" class="border-b-[1px] border-primary-dark" />
+      <PublishEditorTools
+        v-if="editor"
+        :editor="editor"
+        class="border-b-[1px] border-primary-dark"
+        @show-code-block-hint="shouldShowCodeBlockHint"
+      />
       <div class="p-2">
         <EditorContent :editor="editor" />
       </div>
@@ -70,6 +87,19 @@ async function publish() {
       >
         {{ buttonText }}
       </button>
+    </div>
+    <div v-if="showCodeBlockHint" class="pt-10">
+      <div class="py-2 px-4 bg-secondary-gray bg-opacity-50 rounded-xl flex justify-between gap-4 items-center">
+        <div>
+          <Icon name="majesticons:info-circle" size="1.5rem" color="#e69d17" />
+        </div>
+        <div>
+          {{ $t('codeBlockHint') }}
+        </div>
+        <div class="cursor-pointer">
+          <Icon name="majesticons:close" size="1.7rem" @click="showCodeBlockHint = false" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
