@@ -44,6 +44,27 @@ const noUsersMessage = computed(() => {
 })
 
 watch(debouncedSearchString, async () => await execute())
+
+const selectedUsers = ref<{
+  uid: string
+  fullName: string
+  fullNameEL: string
+}[]>([])
+
+function addUserToList(user: User | { uid: string; fullName: string; fullNameEL: string }) {
+  if (selectedUsers.value.includes(user)) {
+    selectedUsers.value = selectedUsers.value.filter(u => u.uid !== user.uid)
+  }
+  else {
+    selectedUsers.value.push({
+      uid: user.uid,
+      fullName: user.fullName,
+      fullNameEL: user.fullNameEL,
+    })
+  }
+}
+
+const isUserSelected = computed(() => (user: User) => selectedUsers.value.some(u => u.uid === user.uid))
 </script>
 
 <template>
@@ -64,29 +85,49 @@ watch(debouncedSearchString, async () => await execute())
       </div>
     </div>
     <div class="border-t-[1px] border-secondary-gray">
-      <div class="p-2">
-        <span class="text-primary-gray">{{ $t('users') }}</span>
-        <div class="mt-2 h-[18rem] overflow-auto">
-          <CommonLoader v-if="pending" class="text-primary-dark" />
-          <div v-else>
-            <div v-if="!users.length">
-              <div class="mt-20 text-center text-primary-gray">
-                {{ $t(noUsersMessage) }}
-              </div>
+      <div class="p-2 h-[20rem] overflow-auto">
+        <div v-if="selectedUsers.length">
+          <span class="text-primary-gray">{{ $t('selectedUsers') }}</span>
+          <div class="mt-2">
+            <div v-for="selectedUser in selectedUsers" :key="selectedUser.uid" class="mt-3 first:mt-0">
+              <label class="flex items-center gap-2 p-2" :for="selectedUser.uid">
+                <CommonCheckbox
+                  :id="selectedUser.uid"
+                  :checked="true"
+                  @change="addUserToList(selectedUser)"
+                />
+                <span class="flex-1 ml-4 capitalize">
+                  {{ displayUsernameLocale(selectedUser.fullName, selectedUser.fullNameEL, true) }}
+                </span>
+              </label>
             </div>
-            <template v-else>
-              <div v-for="user in users" :key="user.id" class="mt-3 first:mt-0">
-                <label class="flex items-center gap-2 p-2" :for="user.id">
-                  <CommonCheckbox
-                    :id="user.id"
-                    :checked="false"
-                  />
-                  <span class="flex-1 ml-4 capitalize">
-                    {{ displayUsernameLocale(user.fullName, user.fullNameEL, true) }}
-                  </span>
-                </label>
+          </div>
+        </div>
+        <div>
+          <span class="text-primary-gray">{{ $t('users') }}</span>
+          <div class="mt-2">
+            <CommonLoader v-if="pending" class="text-primary-dark" />
+            <div v-else>
+              <div v-if="!users.length">
+                <div class="mt-10 mb-20 text-center text-primary-gray">
+                  {{ $t(noUsersMessage) }}
+                </div>
               </div>
-            </template>
+              <template v-else>
+                <div v-for="user in users" :key="user.id" class="mt-3 first:mt-0">
+                  <label class="flex items-center gap-2 p-2" :for="user.id">
+                    <CommonCheckbox
+                      :id="user.id"
+                      :checked="isUserSelected(user)"
+                      @change="addUserToList(user)"
+                    />
+                    <span class="flex-1 ml-4 capitalize">
+                      {{ displayUsernameLocale(user.fullName, user.fullNameEL, true) }}
+                    </span>
+                  </label>
+                </div>
+              </template>
+            </div>
           </div>
         </div>
       </div>

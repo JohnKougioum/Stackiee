@@ -43,6 +43,7 @@
       "signOut": "Sign Out"
     },
     "users": "Users",
+    "selectedUsers": "Selected Users",
     "select": {
       "semester": "Select Semester",
       "course": "Select Course"
