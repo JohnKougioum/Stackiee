@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
   const requestBody = await readBody(event)
-  const participantIds = requestBody.userIDs.sort()
+  const participantIds: string[] = requestBody.userIDs.sort()
 
   const user = await prisma.user.findUniqueOrThrow({
     where: {
@@ -74,7 +74,7 @@ export default defineEventHandler(async (event) => {
           name: 'default name',
           participants: {
             createMany: {
-              data: participantIds.map((id: String) => ({
+              data: participantIds.map((id: string) => ({
                 userId: id,
                 hasSeenLatestMessage: id === user.id,
                 isAdmin: id === user.id,

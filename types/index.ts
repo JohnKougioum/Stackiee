@@ -476,3 +476,10 @@ export const classes: Classes = {
     },
   },
 } as const
+
+export interface ThinnedUser {
+  id: string
+  uid: string
+  fullName: string
+  fullNameEL: string
+}

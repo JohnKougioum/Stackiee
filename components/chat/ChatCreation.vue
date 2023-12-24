@@ -1,5 +1,16 @@
 <script setup lang='ts'>
 import type { User } from '@prisma/client'
+import type { ThinnedUser } from '~/types/index'
+
+withDefaults(defineProps<{
+  buttonText?: string
+}>(), {
+  buttonText: 'create',
+})
+
+defineEmits<{
+  (event: 'actionEvent', users: ThinnedUser[]): void
+}>()
 
 const searchString = ref('')
 const users = ref<User[]>([])
@@ -45,18 +56,15 @@ const noUsersMessage = computed(() => {
 
 watch(debouncedSearchString, async () => await execute())
 
-const selectedUsers = ref<{
-  uid: string
-  fullName: string
-  fullNameEL: string
-}[]>([])
+const selectedUsers = ref<ThinnedUser[]>([])
 
-function addUserToList(user: User | { uid: string; fullName: string; fullNameEL: string }) {
+function addUserToList(user: User | ThinnedUser) {
   if (selectedUsers.value.includes(user)) {
-    selectedUsers.value = selectedUsers.value.filter(u => u.uid !== user.uid)
+    selectedUsers.value = selectedUsers.value.filter(u => u.id !== user.id)
   }
   else {
     selectedUsers.value.push({
+      id: user.id,
       uid: user.uid,
       fullName: user.fullName,
       fullNameEL: user.fullNameEL,
@@ -64,15 +72,15 @@ function addUserToList(user: User | { uid: string; fullName: string; fullNameEL:
   }
 }
 
-const isUserSelected = computed(() => (user: User) => selectedUsers.value.some(u => u.uid === user.uid))
+const isUserSelected = computed(() => (user: User) => selectedUsers.value.some(u => u.id === user.id))
 </script>
 
 <template>
   <div class="min-w-0 sm:min-w-[25rem]">
-    <div class="p-2 mb-2">
+    <div class="p-2 mb-2 flex gap-2 items-center">
       <div
-        class="border-[1px] h-10 lg:ms-1 lg:me-5 rounded-xl flex flex-row
-      items-center gap-3 px-4 focus-within:ring-1
+        class="border-[1px] flex-1 h-10 lg:ms-1 lg:me-5 rounded-xl flex flex-row
+      items-center gap-3 px-2 md:px-4 focus-within:ring-1
       focus-within:ring-base-orange focus-within:border-transparent"
       >
         <input
@@ -83,6 +91,9 @@ const isUserSelected = computed(() => (user: User) => selectedUsers.value.some(u
           type="text"
         >
       </div>
+      <button class="base-button h-10" @click="$emit('actionEvent', selectedUsers)">
+        {{ $t(buttonText) }}
+      </button>
     </div>
     <div class="border-t-[1px] border-secondary-gray">
       <div class="p-2 h-[20rem] overflow-auto">
