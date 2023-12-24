@@ -6,7 +6,7 @@ const props = defineProps<{
 }>()
 
 const timeAgoOptions = useTimeAgoOptions(true)
-const timeAgo = useTimeAgo(props.item.createdAt, timeAgoOptions)
+const timeAgo = computed(() => useTimeAgo(props.item.createdAt, timeAgoOptions))
 
 const el = ref<HTMLElement>()
 const router = useRouter()
@@ -33,8 +33,9 @@ function go(evt: MouseEvent | KeyboardEvent) {
     ref="el"
     tabindex="0"
     :user="item.User"
-    :time-ago="timeAgo"
-    @click="onclick" @keydown.enter="onclick"
+    :time-ago="unref(timeAgo)"
+    @click="onclick"
+    @keydown.enter="onclick"
   >
     <div class="mt-1 mb-4 cursor-pointer">
       <ContentRenderer :body="item.body" />
