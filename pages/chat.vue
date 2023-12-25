@@ -5,10 +5,10 @@ definePageMeta({
 
 useSeoMeta({
   title: 'Chat',
-  description: 'Chat pageasdfasdf',
+  description: 'Chat page',
 })
 
-const { data, pending } = await useLazyFetch('/api/conversations/all')
+const { chats, isChatsListLoading } = await fetchChats()
 
 const route = useRoute()
 const isRootPath = computedEager(() => route.name === 'chat')
@@ -25,23 +25,23 @@ const isRootPath = computedEager(() => route.name === 'chat')
               <span class="text-xl font-bold">{{ $t('nav.messages') }}</span>
             </div>
             <div>
-              <NuxtLink class="base-button" to="/chat/create">
-                new
+              <NuxtLink class="base-button text-xl" to="/chat/create">
+                {{ $t('create') }}
               </NuxtLink>
             </div>
           </div>
         </template>
         <div class="xl:w-[24.25rem] lg:w-[19.5rem]">
-          <TimelineSkeleton v-if="pending" />
+          <TimelineSkeleton v-if="isChatsListLoading" />
           <template v-else>
             <NuxtLink
-              v-for="chat in data?.body"
+              v-for="chat in chats"
               :key="chat.id"
               :to="`/chat/${chat.id}`"
             >
               <ChatName
                 :name="chat.name"
-                :last-message-date="chat.updatedAt"
+                :last-message-date="chat.updatedAt.toString()"
                 :participants="[...chat.participants]"
               />
             </NuxtLink>

@@ -2,16 +2,14 @@
 import type { ThinnedUser } from '~/types'
 
 const visible = ref(true)
-
-const router = useRouter()
 let isRedirecting = false
 
-function close() {
+async function close() {
   if (isRedirecting) {
     isRedirecting = false
     return
   }
-  router.push({ name: 'chat' })
+  await navigateTo('/chat')
 }
 onActivated(() => {
   visible.value = true
@@ -26,12 +24,13 @@ async function createChat(users: ThinnedUser[]) {
   })
   isRedirecting = true
   await navigateTo(`/chat/${data.value?.conversation_id}`)
+  await fetchChats()
 }
 </script>
 
 <template>
   <ChatCreatePlaceholder />
-  <ModalDialog v-model="visible" use-v-if @close="close">
+  <ModalDialog v-model="visible" use-v-if class="overflow-y-auto overflow-x-hidden" @close="close">
     <ChatCreation @action-event="createChat" />
   </ModalDialog>
 </template>
