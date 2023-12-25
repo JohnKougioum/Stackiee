@@ -61,7 +61,7 @@ function close() {
           <div class="flex-1 flex items-center justify-center p-4">
             <div
               class="dialog-main rounded-md pointer-events-auto shadow-lg isolate bg-base border-[1px] border-secondary-gray max-h-full
-                 overscroll-contain touch-pan-y touch-pan-x"
+                 overscroll-contain touch-pan-y touch-pan-x overflow-y-auto overflow-x-hidden"
               v-bind="$attrs"
             >
               <slot />

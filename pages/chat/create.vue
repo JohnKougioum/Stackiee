@@ -30,7 +30,7 @@ async function createChat(users: ThinnedUser[]) {
 
 <template>
   <ChatCreatePlaceholder />
-  <ModalDialog v-model="visible" use-v-if class="overflow-y-auto overflow-x-hidden" @close="close">
+  <ModalDialog v-model="visible" use-v-if @close="close">
     <ChatCreation @action-event="createChat" />
   </ModalDialog>
 </template>
