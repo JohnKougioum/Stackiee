@@ -68,19 +68,6 @@ export interface IhuApiProfile {
   profilePhoto: string
 }
 
-export interface ChatParticipant {
-  id: string
-  userId: string
-  isAdmin: boolean
-  conversationId: string
-  hasSeenLatestMessage: boolean
-  user: {
-    fullNameEL: string
-    fullName: string
-    uid: string
-  }
-}
-
 interface ClassItem {
   courses: {
     [key: number]: {

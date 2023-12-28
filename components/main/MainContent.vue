@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 defineProps<{
   back?: boolean
+  fullHeight?: boolean
 }>()
 
 const container = ref()
@@ -17,7 +18,7 @@ const containerClass = computed(() => {
 </script>
 
 <template>
-  <div ref="container" :class="containerClass">
+  <div ref="container" :class="{ containerClass, 'h-full': fullHeight }">
     <div class="sticky top-0 z-10 backdrop-blur bg-base bg-opacity-70 border-b-[1px]">
       <div class="flex justify-between px-5 py-2" :class="{ 'xl:hidden': $route.name !== 'tag' }">
         <div class="flex gap-3 items-center py-2 w-full">
@@ -36,7 +37,12 @@ const containerClass = computed(() => {
       </div>
     </div>
     <div :class="{ 'xl:block': $route.name !== 'tag' }" class="hidden h-6" />
-    <div class="m-auto" :class="isHydrated && wideLayout ? 'xl:w-full sm:max-w-600px' : 'sm:max-w-600px md:shrink-0'">
+    <div
+      class="m-auto"
+      :class="[
+        isHydrated && wideLayout ? 'w-full sm:max-w-600px' : 'sm:max-w-600px md:shrink-0',
+        { 'h-[calc(100%-60px)] xl:h-[calc(100%-30px)]': fullHeight }]"
+    >
       <slot />
     </div>
   </div>

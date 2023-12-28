@@ -13,6 +13,7 @@ module.exports = {
         'primary-orange-ignore:': '#E29578',
         'primary-red': '#E76161',
         'pale-green': '#B2D8CE',
+        'off-white': '#FDFDFD',
       },
       fontSize: {
         'size-base': '1rem',

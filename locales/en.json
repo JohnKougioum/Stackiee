@@ -96,6 +96,9 @@
       "new_chat": "New Chat"
     },
     "create": "Create",
+    "searchForChat": "Search for a specific conversation",
     "searchForUsers": "Search for users",
-    "noUsersFound": "No users found"
+    "noUsersFound": "No users found",
+    "participants": "Participants",
+    "whiteboard": "Whiteboard"
 }

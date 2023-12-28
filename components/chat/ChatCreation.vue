@@ -18,6 +18,7 @@ const users = ref<User[]>([])
 let abortController = new AbortController()
 const pending = ref(false)
 const { execute } = await useAsyncData(
+
   async () => await $fetch('/api/user/search', {
     body: {
       searchString: searchString.value,
@@ -33,7 +34,7 @@ const { execute } = await useAsyncData(
       pending.value = true
     },
     onResponse: ({ response }) => {
-      users.value = response._data.data
+      users.value = response._data.data.filter((user: User) => user.id !== userObject.value?.id)
       pending.value = false
     },
     onRequestError: () => {
@@ -91,7 +92,7 @@ const isUserSelected = computed(() => (user: User) => selectedUsers.value.some(u
           type="text"
         >
       </div>
-      <button class="base-button h-10" @click="$emit('actionEvent', selectedUsers)">
+      <button class="base-button h-10" :disabled="selectedUsers.length <= 0" @click="$emit('actionEvent', selectedUsers)">
         {{ $t(buttonText) }}
       </button>
     </div>

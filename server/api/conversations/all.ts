@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
               fullNameEL: true,
               fullName: true,
               uid: true,
+              id: true,
             },
           },
         },

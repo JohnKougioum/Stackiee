@@ -1,9 +1,10 @@
 import type { ComponentInternalInstance } from 'vue'
 import { onActivated, onDeactivated, ref } from 'vue'
+import type { User } from '@prisma/client'
 
 export const isHydrated = ref(false)
 
-export const userId = ref<string | null>(null)
+export const userObject = ref<User | null>(null)
 
 /**
  * ### Whether the current component is running in the background

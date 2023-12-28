@@ -18,7 +18,7 @@ onActivated(() => {
 async function createChat(users: ThinnedUser[]) {
   const { data } = await useFetch<{ status: string; conversation_id: string }>('/api/conversations/create', {
     body: {
-      userIDs: users.map(user => user.id),
+      userIDs: [userObject.value?.id, ...users.map(user => user.id)],
     },
     method: 'POST',
   })

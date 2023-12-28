@@ -3,7 +3,7 @@ const { data: user, pending } = await useFetch('/api/user/info', {
   method: 'GET',
   credentials: 'include',
 })
-userId.value = user.value?.data.uid || null
+userObject.value = user.value?.data || null
 </script>
 
 <template>

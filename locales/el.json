@@ -96,6 +96,10 @@
       "new_chat": "Νέα Συνομιλία"
     },
     "create": "Δημιουργία",
+    "searchForChat": "Αναζήτηση για κάποια συγκεγκριμένη συνομιλία",
     "searchForUsers": "Αναζήτηση Χρηστών",
-    "noUsersFound": "Δεν βρέθηκαν χρήστες"
+    "noUsersFound": "Δεν βρέθηκαν χρήστες",
+    "participants": "Συμμετέχοντες",
+    "whiteboard": "Whiteboard"
+
 }

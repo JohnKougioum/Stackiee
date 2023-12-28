@@ -28,13 +28,16 @@ export default defineEventHandler(async (event) => {
             user: {
               select: {
                 fullNameEL: true,
+                fullName: true,
+                uid: true,
+                id: true,
               },
             },
           },
         },
       },
     })
-  
+
     return {
       statusCode: 200,
       body: conversation,
