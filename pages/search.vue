@@ -1,15 +1,15 @@
 <script setup lang='ts'>
 const route = useRoute()
-const search = $ref<{ inputRef?: HTMLInputElement }>()
+const search = ref<{ inputRef?: HTMLInputElement }>()
 
 watchEffect(() => {
-  if (isMediumOrLargeScreen && route.name === 'explore' && search?.inputRef)
-    search?.inputRef?.focus()
+  if (isMediumOrLargeScreen && route.name === 'explore' && search.value?.inputRef)
+    search.value?.inputRef?.focus()
 })
 onActivated(() => {
-  search?.inputRef?.focus()
+  search.value?.inputRef?.focus()
 })
-onDeactivated(() => search?.inputRef?.blur())
+onDeactivated(() => search.value?.inputRef?.blur())
 </script>
 
 <template>

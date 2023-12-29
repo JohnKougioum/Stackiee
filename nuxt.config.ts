@@ -18,16 +18,8 @@ export default defineNuxtConfig({
   macros: {
     defineModels: false,
   },
-  typescript: {
-    tsConfig: {
-      vueCompilerOptions: {
-        experimentalRfc436: true,
-      },
-    },
-  },
   experimental: {
     payloadExtraction: false,
-    reactivityTransform: true,
   },
   routeRules: {
     // Static generation

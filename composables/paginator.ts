@@ -8,7 +8,7 @@ export function usePaginator(
   next: Ref<boolean>) {
   const endAnchor = ref<HTMLDivElement>()
   const bound = reactive(useElementBounding(endAnchor))
-  const isInScreen = $computed(() => bound.top < window.innerHeight * 2)
+  const isInScreen = computed(() => bound.top < window.innerHeight * 2)
   const deactivated = useDeactivated()
 
   if (process.client) {
@@ -16,9 +16,9 @@ export function usePaginator(
       bound.update()
     }, 1000)
 
-    watch(() => isInScreen, () => {
+    watch(isInScreen, () => {
       if (
-        isInScreen
+        isInScreen.value
         && deactivated.value === false
         && !pending.value
         && next.value
