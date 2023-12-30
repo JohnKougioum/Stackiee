@@ -44,6 +44,15 @@ function close() {
   visible.value = false
   emit('close')
 }
+
+useEventListener('keydown', (e: KeyboardEvent) => {
+  if (!visible.value)
+    return
+  if (e.key === 'Escape') {
+    close()
+    e.preventDefault()
+  }
+})
 </script>
 
 <template>

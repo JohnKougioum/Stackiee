@@ -5,11 +5,12 @@ const visible = ref(true)
 let isRedirecting = false
 
 async function close() {
+  const router = useRouter()
   if (isRedirecting) {
     isRedirecting = false
     return
   }
-  await navigateTo('/chat')
+  router.back()
 }
 onActivated(() => {
   visible.value = true
