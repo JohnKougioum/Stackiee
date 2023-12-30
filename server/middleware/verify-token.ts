@@ -13,13 +13,13 @@ export default defineEventHandler(async (event) => {
     await sendRedirect(event, '/login', 401)
   }
 
-  jwt.verify(token, useRuntimeConfig().token_secret, (err, uid) => {
+  jwt.verify(token, useRuntimeConfig().token_secret, async (err, uid) => {
     if (err) {
-      throw createError({
-        statusCode: 403,
-        message: 'Invalid token',
-      })
+      deleteCookie(event, 'loggedIn')
+      await sendRedirect(event, '/login', 401)
     }
-    event.context.uid = uid
+    else {
+      event.context.uid = uid
+    }
   })
 })
