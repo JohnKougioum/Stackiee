@@ -5,7 +5,7 @@
   </NuxtLayout>
 </template>
 
-<style>
+<style lang="postcss">
 html,
 body,
 #__nuxt {

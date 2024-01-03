@@ -4,6 +4,11 @@ import type { FullConversationType } from '~/composables/chat'
 const chatId = useRoute().params.id
 
 const { data, pending } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
+
+const inputText = ref('')
+function sentMessage() {
+  inputText.value = ''
+}
 </script>
 
 <template>
@@ -29,9 +34,18 @@ const { data, pending } = await useFetch<{ statusCode: number; body: FullConvers
         </div>
       </div>
       <div class="flex-1 rounded-2xl bg-off-white border-primary" />
-      <div class="rounded-2xl py-2 bg-off-white border-primary">
-        <input type="text">
-      </div>
+      <form class="rounded-2xl py-2 bg-off-white border-primary w-full flex items-center gap-3 px-2" @submit.prevent="sentMessage">
+        <div class="flex-1">
+          <input
+            v-model="inputText"
+            type="text" class="outline-none text-size-base w-full h-full bg-transparent"
+            :placeholder="$t('chat.sentMessage')"
+          >
+        </div>
+        <button type="submit">
+          <Icon name="majesticons:send" size="1.5rem" class="text-base-orange cursor-pointer hover:text-base-orange-darker" />
+        </button>
+      </form>
     </div>
   </MainContent>
 </template>
