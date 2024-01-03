@@ -5,8 +5,10 @@ const chatId = useRoute().params.id
 
 const { data, pending } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
 
+const { $socket } = useNuxtApp()
 const inputText = ref('')
 function sentMessage() {
+  $socket.emit('message', { chatId, message: inputText.value })
   inputText.value = ''
 }
 </script>
