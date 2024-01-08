@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import PartySocket from 'partysocket'
 import type { FullConversationType } from '~/composables/chat'
 
 const chatId = useRoute().params.id
@@ -6,9 +7,27 @@ const chatId = useRoute().params.id
 const { data, pending } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
 
 const inputText = ref('')
-function sentMessage() {
+async function sentMessage() {
+  const text = inputText.value
   inputText.value = ''
+  const { data, error } = await useFetch('/api/messages/create', {
+    method: 'POST',
+    body: {
+      conversation_id: chatId,
+      body: text,
+    },
+  })
 }
+
+const ws = new PartySocket({
+  host: '127.0.0.1:1999',
+  room: 'chat',
+  id: userObject.value?.id,
+})
+
+ws.addEventListener('message', (event) => {
+  console.log(JSON.parse(event.data))
+})
 </script>
 
 <template>

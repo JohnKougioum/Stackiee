@@ -22,7 +22,6 @@ export default defineNuxtConfig({
     payloadExtraction: false,
   },
   routeRules: {
-    // Static generation
     '/': { prerender: true },
     '/settings/**': { prerender: false },
     '/login/auth': { prerender: false, ssr: false },

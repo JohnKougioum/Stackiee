@@ -3,6 +3,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --port=8080",
+    "socket": "npx partykit dev partykit/server.ts",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -30,6 +31,8 @@
     "@vueuse/core": "^10.2.1",
     "floating-vue": "2.0.0-beta.24",
     "jsonwebtoken": "^9.0.0",
+    "partykit": "^0.0.65",
+    "partysocket": "^0.0.20",
     "pinia": "^2.0.34",
     "postcss-nested": "^6.0.1",
     "shiki": "^0.14.3",

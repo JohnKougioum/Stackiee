@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { classes } from '@/types/index'
+
 definePageMeta({
   title: 'Compose',
   description: 'Compose a new post',
@@ -51,7 +52,7 @@ async function publishPost(postBody: string) {
       </option>
       <template v-if="semester">
         <option v-for="(lecture, index) of lectures" :key="lecture.nameEL" :value="index">
-          {{ lecture.nameEL }}
+          {{ displayUsernameLocale(lecture.nameEN, lecture.nameEL) }}
         </option>
       </template>
     </select>
