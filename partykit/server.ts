@@ -1,24 +1,24 @@
 import type * as Party from 'partykit/server'
+import type { Message } from '@prisma/client'
 
 export default class WebSocketServer implements Party.Server {
   constructor(readonly room: Party.Room) {}
-  async onConnect(connection: Party.Connection) {
-    // welcome the new joiner
-    connection.send(`Welcome, ${connection.id}`)
-    // let everyone else know that a new connection joined
-    this.room.broadcast(`Heads up! ${connection.id} joined the party!`, [
-      connection.id,
-    ])
-  }
+  // async onConnect(connection: Party.Connection) {
+  // }
 
   // handling incoming requests
   async onRequest(request: Party.Request) {
     // push new message
     if (request.method === 'POST') {
-      const payload = await request.json<{ message: string }>()
-      this.room.broadcast(payload.message)
+      const payload = await request.json<{ message: Message & {
+        sender: {
+          id: string
+          uid: string
+        } } }>()
+      this.room.broadcast(JSON.stringify(payload.message))
       return new Response('OK')
     }
+    return new Response('Not found', { status: 404 })
   }
 
   // when a client disconnects
