@@ -101,6 +101,7 @@
     "searchForUsers": "Αναζήτηση Χρηστών",
     "noUsersFound": "Δεν βρέθηκαν χρήστες",
     "participants": "Συμμετέχοντες",
-    "whiteboard": "Whiteboard"
+    "whiteboard": "Whiteboard",
+    "somethingWentWrong": "Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε αργότερα."
 
 }

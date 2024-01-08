@@ -101,5 +101,6 @@
     "searchForUsers": "Search for users",
     "noUsersFound": "No users found",
     "participants": "Participants",
-    "whiteboard": "Whiteboard"
+    "whiteboard": "Whiteboard",
+    "somethingWentWrong": "Something went wrong. Please try again later."
 }
