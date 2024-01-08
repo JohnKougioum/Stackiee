@@ -8,7 +8,6 @@ export default class WebSocketServer implements Party.Server {
 
   // handling incoming requests
   async onRequest(request: Party.Request) {
-    // push new message
     if (request.method === 'POST') {
       const payload = await request.json<{ message: Message & {
         sender: {
