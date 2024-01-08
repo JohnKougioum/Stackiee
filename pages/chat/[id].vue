@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import PartySocket from 'partysocket'
 import type { FullConversationType } from '~/composables/chat'
 
 const chatId = useRoute().params.id
@@ -9,6 +10,13 @@ const inputText = ref('')
 function sentMessage() {
   inputText.value = ''
 }
+const ws = new PartySocket({
+  host: 'localhost:1999',
+  room: 'chat',
+  id: userObject.value?.id,
+})
+
+await useFetch('/api/conversations/test')
 </script>
 
 <template>
