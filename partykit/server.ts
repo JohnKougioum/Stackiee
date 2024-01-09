@@ -14,7 +14,11 @@ export default class WebSocketServer implements Party.Server {
           id: string
           uid: string
         } } }>()
-      this.room.broadcast(JSON.stringify(payload.message))
+      for (const connection of this.room.getConnections()) {
+        if (connection.id === payload.message.senderId)
+          continue
+        connection.send(JSON.stringify(payload.message))
+      }
       return new Response('OK')
     }
     return new Response('Not found', { status: 404 })
