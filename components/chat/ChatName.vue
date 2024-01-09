@@ -1,10 +1,11 @@
 <script setup lang='ts'>
-import type { ConversationParticipant, User } from '@prisma/client'
+import type { ConversationParticipant } from '@prisma/client'
+import type { ThinnedUser } from '~/types/index'
 
 const props = withDefaults(defineProps<{
   name: string
   lastMessageDate?: string
-  participants: Array<ConversationParticipant & { user: User }>
+  participants: Array<ConversationParticipant & { user: ThinnedUser }>
   showTimeAgo?: boolean
 }>(), {
   showTimeAgo: true,

@@ -8,6 +8,7 @@ module.exports = {
         'primary-dark': '#252323',
         'primary-gray': '#70798C',
         'secondary-gray': '#D9D9D9',
+        'light-gray': '#E8E8E8',
         'base-orange': '#E29578',
         'base-orange-darker': '#C87353',
         'primary-orange-ignore:': '#E29578',

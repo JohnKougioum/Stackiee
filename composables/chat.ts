@@ -1,7 +1,8 @@
 import { ref } from 'vue'
-import type { Conversation, ConversationParticipant, User } from '@prisma/client'
+import type { Conversation, ConversationParticipant } from '@prisma/client'
+import type { ThinnedUser } from '~/types/index'
 
-export type FullConversationType = Conversation & { participants: Array<ConversationParticipant & { user: User }> }
+export type FullConversationType = Conversation & { participants: Array<ConversationParticipant & { user: ThinnedUser }> }
 
 const chats = ref < Array<FullConversationType>>([])
 const isChatsListLoading = ref(false)
