@@ -68,7 +68,20 @@ export interface IhuApiProfile {
   profilePhoto: string
 }
 
-export const classes = {
+interface ClassItem {
+  courses: {
+    [key: number]: {
+      nameEL: string
+      nameEN: string
+    }
+  }
+}
+
+interface Classes {
+  [key: number]: ClassItem
+}
+
+export const classes: Classes = {
   1: {
     courses: {
       1101: {
@@ -286,8 +299,6 @@ export const classes = {
     },
   },
   8: {
-    nameEL: '',
-    nameEN: '',
     courses: {
       1801: {
         nameEL: 'Ασφάλεια Πληροφοριακών Συστημάτων',

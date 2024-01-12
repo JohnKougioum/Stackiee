@@ -6,8 +6,8 @@ const prisma = new PrismaClient()
 const postSearchSchema = z.object({
   page: z.number(),
   searchQuery: z.string().nullable().optional(),
-  semester: z.number().nullable().optional(),
-  course: z.string().nullable().optional(),
+  semesters: z.string().array().nullable().optional(),
+  courses: z.string().array().nullable().optional(),
 })
 
 export default defineEventHandler(async (event) => {
@@ -19,23 +19,41 @@ export default defineEventHandler(async (event) => {
 
     const startIndex = (searchRequest.page - 1) * limit
 
-    const posts = await prisma.post.findMany({
+    const prismaWhereQuery = {
       where: {
         AND: [
           {
-            body: {
-              contains: searchRequest.searchQuery,
-              mode: 'insensitive',
+            ...searchRequest.searchQuery && {
+              body: {
+                contains: searchRequest.searchQuery,
+                mode: 'insensitive',
+              },
             },
-            semester: {
-              equals: searchRequest.semester,
-            },
-            course: {
-              equals: searchRequest.course,
-            },
+          },
+          {
+            OR: [
+              {
+                ...searchRequest.semesters.length && {
+                  semester: {
+                    in: searchRequest.semesters.map(Number),
+                  },
+                },
+              },
+              {
+                ...searchRequest.courses.length && {
+                  course: {
+                    in: searchRequest.courses,
+                  },
+                },
+              },
+            ],
           },
         ],
       },
+    }
+
+    const posts = await prisma.post.findMany({
+      ...prismaWhereQuery,
       include: {
         User: true,
         _count: {
@@ -51,7 +69,7 @@ export default defineEventHandler(async (event) => {
       take: limit,
     })
 
-    const postsCount = await prisma.post.count()
+    const postsCount = await prisma.post.count({ where: prismaWhereQuery.where })
 
     if (!posts) {
       throw createError({

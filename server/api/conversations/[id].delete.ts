@@ -25,18 +25,11 @@ export default defineEventHandler(async (event) => {
         participants: {},
       },
     })
-    const isUserPartOfConversation = conversation.participants.some(item => item.userId === user.id)
-    if (!isUserPartOfConversation) {
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'You are not part of this conversation!',
-      })
-    }
     const conversationAdmin = conversation.participants.find(participant => participant.isAdmin === true)
     if (conversationAdmin?.userId !== user.id) {
       throw createError({
-        statusCode: 401,
-        statusMessage: 'Only the admin of the conversation have the authority to delete the conversation.',
+        statusCode: 400,
+        statusMessage: 'Only conversation admins have the authority to delete a conversation.',
       })
     }
     else {
@@ -71,7 +64,6 @@ export default defineEventHandler(async (event) => {
     }
   }
   catch (error: any) {
-    setResponseStatus(event, error.statusCode)
     return {
       statusCode: error.statusCode,
       body: error.statusMessage,

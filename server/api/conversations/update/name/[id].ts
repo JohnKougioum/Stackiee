@@ -15,65 +15,62 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const user = await prisma.user.findUniqueOrThrow({
-      where: {
-        uid: event.context.uid.uid,
-      },
-    })
-    const conversation = await prisma.conversation.findUnique ({
-      where: {
-        id: conversationID,
-      },
-      include: {
-        participants: {},
-      },
-    })
-
-    if (!conversation) {
+    if (true) {
       throw createError({
-        statusCode: 404,
+        statusCode: 400,
         statusMessage: 'There is not conversation with the given ID',
       })
     }
-
-    const isUserPartOfConversation = conversation.participants.some(item => item.userId === user.id)
-
-    if (!isUserPartOfConversation) {
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'You are not part of this conversation!',
-      })
-    }
-
-    if (conversation.participants.length > 2) {
-      const conversationAdmin = conversation.participants.find(participant => participant.isAdmin === true)
-      if (conversationAdmin?.userId !== user.id) {
-        throw createError({
-          statusCode: 401,
-          statusMessage: 'Only conversation admins have the authority to delete a conversation.',
-        })
-      }
-    }
-
-    const newConversation = await prisma.conversation.update({
-      where: {
-        id: conversationID,
-      },
-      data: {
-        name: newName,
-      },
-    })
-
-    return {
-      statusCode: 200,
-      body: newConversation,
-    }
   }
   catch (error) {
-    setResponseStatus(event, error.statusCode)
+    setResponseStatus(event, 406)
     return {
-      statusCode: error.statusCode,
-      statusMessage: error.statusMessage,
+      statusCode: 406,
+      statusMessage: 'test',
     }
+  }
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      uid: event.context.uid.uid,
+    },
+  })
+  const conversation = await prisma.conversation.findUniqueOrThrow({
+    where: {
+      id: conversationID,
+    },
+    include: {
+      participants: {},
+    },
+  })
+
+  if (!conversation) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'There is not conversation with the given ID',
+    })
+  }
+
+  if (conversation.participants.length > 2) {
+    const conversationAdmin = conversation.participants.find(participant => participant.isAdmin === true)
+    if (conversationAdmin?.userId !== user.id) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Only conversation admins have the authority to delete a conversation.',
+      })
+    }
+  }
+
+  const newConversation = await prisma.conversation.update({
+    where: {
+      id: conversationID,
+    },
+    data: {
+      name: newName,
+    },
+  })
+
+  return {
+    statusCode: 200,
+    body: newConversation,
   }
 })

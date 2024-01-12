@@ -24,30 +24,6 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const conversation = await prisma.conversation.findUnique ({
-      where: {
-        id: conversationID,
-      },
-      include: {
-        participants: {},
-      },
-    })
-
-    if (!conversation) {
-      throw createError({
-        statusCode: 404,
-        statusMessage: 'There is not conversation with the given ID',
-      })
-    }
-
-    const isUserPartOfConversation = conversation.participants.some(item => item.userId === user.id)
-    if (!isUserPartOfConversation) {
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'You are not part of this conversation!',
-      })
-    }
-
     const newMessage = await prisma.message.create({
       data: {
         senderId: senderID,
@@ -57,15 +33,22 @@ export default defineEventHandler(async (event) => {
       include: messagePopulated,
     })
 
+    const participant = await prisma.conversationParticipant.findFirst({
+      where: {
+        userId: user.id,
+        conversationId: conversationID,
+      },
+    })
+
+    if (!participant)
+      throw createError('Participant does not exist')
+
     return {
       message: newMessage,
     }
   }
   catch (error) {
-    setResponseStatus(event, error.statusCode)
-    return {
-      statusCode: error.statusCode,
-      body: error.statusMessage,
-    }
+    console.log('send message error', error)
+    throw createError('Error sending message')
   }
 })
