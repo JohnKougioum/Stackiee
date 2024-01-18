@@ -10,18 +10,23 @@ const inputText = ref('')
 const messagesContainer = ref()
 
 async function sendMessage() {
+  if (!inputText.value.trim())
+    return
   const text = inputText.value
   inputText.value = ''
-  const { data, error } = await useFetch('/api/messages/create', {
-    method: 'POST',
-    body: {
-      conversation_id: chatId,
-      body: text,
-    },
-  })
-  if (error.value)
-    return
-  messagesContainer.value?.addMessage(data.value?.body)
+  try {
+    const data = await $fetch('/api/messages/create', {
+      method: 'POST',
+      body: {
+        conversationId: chatId,
+        body: text,
+      },
+    })
+    messagesContainer.value?.addMessage(data?.body)
+  }
+  catch (error) {
+
+  }
 }
 
 const ws = new PartySocket({
@@ -31,7 +36,7 @@ const ws = new PartySocket({
 })
 
 ws.addEventListener('message', (event) => {
-  console.log(JSON.parse(event.data))
+  messagesContainer.value?.addMessage(JSON.parse(event.data))
 })
 </script>
 

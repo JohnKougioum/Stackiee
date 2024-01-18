@@ -17,14 +17,14 @@ onActivated(() => {
 })
 
 async function createChat(users: ThinnedUser[]) {
-  const { data } = await useFetch<{ status: string; conversation_id: string }>('/api/conversations/create', {
+  const data = await $fetch<{ status: string; conversation_id: string }>('/api/conversations/create', {
     body: {
       userIDs: [userObject.value?.id, ...users.map(user => user.id)],
     },
     method: 'POST',
   })
   isRedirecting = true
-  await navigateTo(`/chat/${data.value?.conversation_id}`)
+  await navigateTo(`/chat/${data?.conversation_id}`)
   await fetchChats()
 }
 </script>

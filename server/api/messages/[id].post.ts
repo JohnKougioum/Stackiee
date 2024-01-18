@@ -4,10 +4,11 @@ const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
   const conversationID = event.context.params?.id
+  const { lastDate } = await readBody(event)
 
   if (!conversationID) {
     throw createError({
-      statusCode: 400,
+      statusCode: 403,
       statusMessage: 'Missing conversation ID',
     })
   }
@@ -34,10 +35,19 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  const lookupBeforeDate = lastDate ? new Date(lastDate) : new Date()
+
   const messages = await prisma.message.findMany({
     where: {
       conversationId: conversationID,
+      createdAt: {
+        lt: lookupBeforeDate,
+      },
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: 20,
   })
 
   return {
