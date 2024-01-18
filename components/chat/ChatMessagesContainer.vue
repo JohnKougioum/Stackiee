@@ -36,7 +36,7 @@ const { pending } = await useFetch(`/api/messages/${props.chatId}`, {
     messages.value.unshift(...data.body.reverse())
     if (chatContainer.value?.scrollHeight) {
       const scrollerHeight = await getScrollerHeight()
-      chatContainer.value.scrollTop += scrollerHeight - lastScrollHeight[0]
+      chatContainer.value.scrollTop = scrollerHeight - lastScrollHeight[0]
       lastScrollHeight.length = 0
     }
   },
@@ -100,7 +100,7 @@ watch(isScrolledTop, async () => {
 <template>
   <div ref="chatContainer" class="flex-grow basis-0 overflow-auto p-1">
     <div v-if="pending">
-      loading ...
+      <CommonLoader />
     </div>
     <template v-if="messages.length">
       <DynamicScroller
