@@ -21,7 +21,7 @@ defineEmits<{
     <div>
       <Icon v-if="participant.isAdmin" name="eos-icons:admin" size="1.3rem" />
       <Icon
-        v-if="showRemove"
+        v-if="showRemove && participant.userId !== userObject?.id"
         name="ic:sharp-person-remove"
         size="1.3rem"
         class="ml-2 cursor-pointer"
