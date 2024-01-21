@@ -10,9 +10,14 @@ const modelValue = defineModel<string>()
     <div class="rounded-2xl bg-off-white border-primary p-3 flex items-center gap-2">
       <slot name="title" />
       <div class="flex items-center gap-2">
-        <CommonTooltip placement="bottom" :content="$t('participants')">
-          <img src="~/assets/UserGroupPlus.svg" class="h-8 w-8 fill-primary-dark cursor-pointer">
-        </CommonTooltip>
+        <CommonDropdown position="bottom" :hide-arrow="true">
+          <CommonTooltip placement="bottom" :content="$t('participants')">
+            <img src="~/assets/UserGroupPlus.svg" class="h-8 w-8 fill-primary-dark cursor-pointer">
+          </CommonTooltip>
+          <template #popper>
+            <slot name="participantsDropdown" />
+          </template>
+        </CommonDropdown>
         <CommonTooltip placement="bottom" :content="$t('whiteboard')">
           <Icon class="cursor-pointer" name="fluent:whiteboard-16-regular" size="1.8rem" />
         </CommonTooltip>

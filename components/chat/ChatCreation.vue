@@ -2,8 +2,9 @@
 import type { User } from '@prisma/client'
 import type { ThinnedUser } from '~/types/index'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   buttonText?: string
+  filterParticipants?: string[]
 }>(), {
   buttonText: 'create',
 })
@@ -34,7 +35,10 @@ const { execute } = await useAsyncData(
       pending.value = true
     },
     onResponse: ({ response }) => {
-      users.value = response._data.data.filter((user: User) => user.id !== userObject.value?.id)
+      users.value = response._data.data.filter((user: User) => props.filterParticipants?.length
+        ? !props.filterParticipants.includes(user.id)
+        : user.id !== userObject.value?.id,
+      )
       pending.value = false
     },
     onRequestError: () => {

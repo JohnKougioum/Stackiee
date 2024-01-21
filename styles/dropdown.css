@@ -1,14 +1,8 @@
 .v-popper--theme-dropdown .v-popper__inner {
-   @apply bg-base text-primary-dark rounded border border-secondary-gray shadow-sm;
-    box-shadow: 0 6px 30px #0000001a;
-    /* padding: 7px 12px 6px; */
-}
-.v-popper--theme-dropdown .v-popper__arrow-inner {
-    @apply border-base;
-  visibility: visible;
+   @apply bg-off-white text-primary-dark rounded-md shadow-lg border-[1px] border-primary-dark;
 }
 .v-popper--theme-dropdown .v-popper__arrow-outer {
-  @apply border-secondary-gray;
+  @apply border-primary-dark;
 }
 .v-popper--theme-tooltip .v-popper__inner {
   @apply bg-base text-primary-dark rounded border border-secondary-gray shadow-sm;

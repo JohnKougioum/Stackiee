@@ -1,10 +1,11 @@
 <script setup lang='ts'>
 import PartySocket from 'partysocket'
 import type { FullConversationType } from '~/composables/chat'
+import { SocketEvents } from '~/types'
 
 const chatId = useRoute().params.id as string
 
-const { data: conversationResponse } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
+const { data: conversationResponse, refresh } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
 
 const inputText = ref('')
 const messagesContainer = ref()
@@ -35,8 +36,13 @@ const ws = new PartySocket({
   id: userObject.value?.id,
 })
 
-ws.addEventListener('message', (event) => {
-  messagesContainer.value?.addMessage(JSON.parse(event.data))
+ws.addEventListener('message', async (event) => {
+  const data = JSON.parse(event.data) as { eventName: number; message: any }
+  if (data.eventName === SocketEvents.NewMessage)
+    messagesContainer.value?.addMessage(data.message)
+
+  if (data.eventName === SocketEvents.ConversationUpdated)
+    await refresh()
 })
 </script>
 
@@ -55,6 +61,14 @@ ws.addEventListener('message', (event) => {
         <template v-if="conversationResponse?.body?.participants.length">
           <ChatMessagesContainer ref="messagesContainer" :chat-id="chatId" :participants="conversationResponse?.body?.participants" />
         </template>
+      </template>
+      <template #participantsDropdown>
+        <ChatParticipantsDropdown
+          v-if="conversationResponse?.body.participants.length"
+          :participants="conversationResponse?.body.participants"
+          :chat-id="chatId"
+          :ws="ws"
+        />
       </template>
     </ChatLayout>
   </MainContent>

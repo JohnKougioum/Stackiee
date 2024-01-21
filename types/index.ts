@@ -470,3 +470,8 @@ export interface ThinnedUser {
   fullName: string
   fullNameEL: string
 }
+
+export enum SocketEvents {
+  NewMessage,
+  ConversationUpdated,
+}

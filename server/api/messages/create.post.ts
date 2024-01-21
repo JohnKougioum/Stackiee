@@ -54,8 +54,6 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // TODO: check if body is empty
-
   try {
     const newMessage = await prisma.message.create({
       data: {

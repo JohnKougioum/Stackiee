@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 export interface Props {
   useVIf?: boolean
+  customZIndex?: number
 }
 const props = withDefaults(defineProps<Props>(), {
   useVIf: true,
@@ -63,6 +64,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
         v-show="isVShow"
         aria-modal="true"
         class="fixed inset-0 overflow-y-auto scrollbar-hide overscroll-none z-50"
+        :style="{ zIndex: customZIndex }"
       >
         <div class="dialog-mask absolute inset-0 z-0 bg-transparent opacity-100 backdrop-filter backdrop-blur-sm touch-none" />
         <div class="dialog-mask absolute inset-0 z-0 bg-black bg-opacity-50 touch-none h-[calc(100%+0.5px)]" @click="close" />

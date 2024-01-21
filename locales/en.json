@@ -94,7 +94,8 @@
       "select_a_chat": "Select a conversation",
       "or_create_a_new_one": "or create a new one",
       "new_chat": "New Chat",
-      "sentMessage": "Sent a message"
+      "sentMessage": "Sent a message",
+      "addParticipant": "Add participant"
     },
     "create": "Create",
     "searchForChat": "Search for a specific conversation",
