@@ -6,6 +6,7 @@ import { SocketEvents } from '~/types'
 const chatId = useRoute().params.id as string
 
 const { data: conversationResponse, refresh } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
+!Object.keys(conversationResponse.value!).length && await navigateTo('/chat')
 
 const inputText = ref('')
 const messagesContainer = ref()
@@ -55,7 +56,7 @@ ws.addEventListener('message', async (event) => {
     </template>
     <ChatLayout v-model="inputText" @submit="sendMessage">
       <template #title>
-        <ChatName class="flex-1" :name="conversationResponse!.body.name" :participants="conversationResponse!.body.participants" />
+        <ChatName v-if="conversationResponse!.body.name" class="flex-1" :name="conversationResponse!.body.name" :participants="conversationResponse!.body.participants" />
       </template>
       <template #messages>
         <template v-if="conversationResponse?.body?.participants.length">

@@ -7,21 +7,20 @@ useSeoMeta({
   title: 'Chat',
   description: 'Chat page',
 })
-
 const { chats, isChatsListLoading } = await fetchChats()
 
 const route = useRoute()
 const isRootPath = computedEager(() => route.name === 'chat')
 
-const filteredChats = ref(chats.value)
-function filterChatInput(value: string) {
-  filteredChats.value = [...chats.value].filter(chat =>
-    chat.name.toLowerCase().includes(value.toLowerCase())
+const filterInputText = ref('')
+const filteredChats = computed(() => {
+  return chats.value.filter(chat =>
+    chat.name.toLowerCase().includes(filterInputText.value.toLowerCase())
     || chat.participants.some(participant =>
-      participant.user.fullName.toLowerCase().includes(value.toLowerCase())
-      || participant.user.fullNameEL.toLowerCase().includes(removeAccents(value.toLowerCase()))),
+      participant.user.fullName.toLowerCase().includes(filterInputText.value.toLowerCase())
+      || participant.user.fullNameEL.toLowerCase().includes(removeAccents(filterInputText.value.toLowerCase()))),
   )
-}
+})
 </script>
 
 <template>
@@ -44,10 +43,10 @@ function filterChatInput(value: string) {
       focus-within:ring-base-orange focus-within:border-transparent"
             >
               <input
+                v-model="filterInputText"
                 type="text" class="outline-none text-size-base w-full h-full bg-transparent
               rounded-md pr-4 ml-1"
                 :placeholder="$t('searchForChat')"
-                @input="filterChatInput(($event.target as HTMLInputElement).value)"
               >
             </div>
             <NuxtLink class="base-button text-xl" to="/chat/create">
