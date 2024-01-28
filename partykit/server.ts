@@ -4,8 +4,7 @@ import { SocketEvents } from '~/types'
 
 export default class WebSocketServer implements Party.Server {
   constructor(readonly room: Party.Room) {}
-  // async onConnect(connection: Party.Connection) {
-  // }
+  // options: Party.ServerOptions = { hibernate: true }
 
   // handling incoming requests
   async onRequest(request: Party.Request) {
@@ -15,6 +14,7 @@ export default class WebSocketServer implements Party.Server {
           id: string
           uid: string
         } } }>()
+
       for (const connection of this.room.getConnections()) {
         if (connection.id === payload.message.senderId)
           continue

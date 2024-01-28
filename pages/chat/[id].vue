@@ -2,11 +2,14 @@
 import PartySocket from 'partysocket'
 import type { FullConversationType } from '~/composables/chat'
 import { SocketEvents } from '~/types'
+import { isModalInChatOpen } from '~/composables/modal'
 
 const chatId = useRoute().params.id as string
 
 const { data: conversationResponse, refresh } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
 !Object.keys(conversationResponse.value!).length && await navigateTo('/chat')
+const isUserAdmin = computed(() => conversationResponse.value?.body.participants
+  .some(participant => participant.isAdmin && participant.userId === userObject.value?.id) || false)
 
 const inputText = ref('')
 const messagesContainer = ref()
@@ -31,13 +34,7 @@ async function sendMessage() {
   }
 }
 
-const ws = new PartySocket({
-  host: '127.0.0.1:1999',
-  room: 'chat',
-  id: userObject.value?.id,
-})
-
-ws.addEventListener('message', async (event) => {
+socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
   const data = JSON.parse(event.data) as { eventName: number; message: any }
   if (data.eventName === SocketEvents.NewMessage)
     messagesContainer.value?.addMessage(data.message)
@@ -68,9 +65,16 @@ ws.addEventListener('message', async (event) => {
           v-if="conversationResponse?.body.participants.length"
           :participants="conversationResponse?.body.participants"
           :chat-id="chatId"
-          :ws="ws"
+          :is-user-admin="isUserAdmin"
         />
+      </template>
+      <template #chat-settings>
+        <ChatSettings :is-user-admin="isUserAdmin" />
       </template>
     </ChatLayout>
   </MainContent>
+  <ModalDialog v-model="isModalInChatOpen" :custom-z-index="10001" use-v-if>
+    <ChatAddUsers v-if="isParticipantsDropdownOpen" :participants="conversationResponse?.body.participants!" :chat-id="chatId" />
+    <ChatRenameDialog v-if="isChatRenameOpen" :chat-id="chatId" />
+  </ModalDialog>
 </template>

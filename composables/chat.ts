@@ -12,6 +12,10 @@ export async function fetchChats() {
   isChatsListLoading.value = false
 
   chats.value = data?.body || []
+  chats.value.forEach((chat) => {
+    setSocket(chat.id)
+  })
+
   return {
     chats,
     isChatsListLoading,

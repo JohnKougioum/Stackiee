@@ -10,7 +10,7 @@ const modelValue = defineModel<string>()
     <div class="rounded-2xl bg-off-white border-primary p-3 flex items-center gap-2">
       <slot name="title" />
       <div class="flex items-center gap-2">
-        <CommonDropdown position="bottom" :hide-arrow="true">
+        <CommonDropdown placement="bottom">
           <CommonTooltip placement="bottom" :content="$t('participants')">
             <img src="~/assets/UserGroupPlus.svg" class="h-8 w-8 fill-primary-dark cursor-pointer">
           </CommonTooltip>
@@ -21,9 +21,14 @@ const modelValue = defineModel<string>()
         <CommonTooltip placement="bottom" :content="$t('whiteboard')">
           <Icon class="cursor-pointer" name="fluent:whiteboard-16-regular" size="1.8rem" />
         </CommonTooltip>
-        <CommonTooltip placement="bottom" :content="$t('settings.title')">
-          <Icon class="cursor-pointer" name="iconamoon:options-duotone" size="1.8rem" />
-        </CommonTooltip>
+        <CommonDropdown placement="bottom">
+          <CommonTooltip placement="bottom" :content="$t('settings.title')">
+            <Icon class="cursor-pointer" name="iconamoon:options-duotone" size="1.8rem" />
+          </CommonTooltip>
+          <template #popper>
+            <slot name="chat-settings" />
+          </template>
+        </CommonDropdown>
       </div>
     </div>
     <div class="flex-1 flex flex-col p-1 rounded-2xl bg-off-white border-primary">

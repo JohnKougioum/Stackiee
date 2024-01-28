@@ -95,8 +95,10 @@
       "or_create_a_new_one": "Ή δημιούργησε μια νέα",
       "new_chat": "Νέα Συνομιλία",
       "sentMessage": "Αποστολή Μηνύματος",
-      "addParticipant": "Προσθήκη χρήστη"
-
+      "addParticipant": "Προσθήκη χρήστη",
+      "renameConversation": "Μετονομασία Συνομιλίας",
+      "enterNewName": "Εισάγετε το νέο όνομα",
+      "rename": "Μετονομασία"
     },
     "create": "Δημιουργία",
     "searchForChat": "Αναζήτηση για κάποια συγκεγκριμένη συνομιλία",

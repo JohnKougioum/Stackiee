@@ -1,18 +1,13 @@
 <script setup lang='ts'>
 import type { ConversationParticipant } from '@prisma/client'
-import type PartySocket from 'partysocket'
 import { SocketEvents } from '~/types'
 import type { ThinnedUser } from '~/types'
 
 const props = defineProps<{
   participants: Array<ConversationParticipant & { user: ThinnedUser }>
   chatId: string
-  ws: PartySocket
+  isUserAdmin: boolean
 }>()
-
-const participantsIds = computed(() => props.participants.map(participant => participant.userId))
-const adminsList = computed(() => props.participants.filter(participant => participant.isAdmin))
-const isUserAdmin = computed(() => adminsList.value?.some(admin => admin.userId === userObject.value?.id))
 
 async function updateConversationsParticipantsCall(newParticipantsIdList: string[]) {
   await $fetch(`/api/conversations/update/participants/${props.chatId}`, {
@@ -21,7 +16,7 @@ async function updateConversationsParticipantsCall(newParticipantsIdList: string
       participantIDs: newParticipantsIdList,
     },
   })
-  props.ws.send(JSON.stringify({
+  socketsList.value?.get(props.chatId)?.send(JSON.stringify({
     eventName: SocketEvents.ConversationUpdated,
     message: '',
   }))
@@ -32,11 +27,8 @@ async function removeParticipant(id: string) {
   await updateConversationsParticipantsCall(newParticipantsIdList)
 }
 
-const visible = ref(false)
-async function addNewUsers(users: ThinnedUser[]) {
-  const newParticipantsIdList = [...props.participants.map(participant => participant.userId), ...users.map(user => user.id)]
-  await updateConversationsParticipantsCall(newParticipantsIdList)
-  visible.value = false
+function openModal() {
+  isParticipantsDropdownOpen.value = true
 }
 </script>
 
@@ -49,12 +41,9 @@ async function addNewUsers(users: ThinnedUser[]) {
       :show-remove="isUserAdmin"
       @remove-participant="removeParticipant"
     />
-    <div class="mt-2 select-none underline flex items-center justify-center gap-2 cursor-pointer" @click="visible = true">
+    <div class="mt-2 select-none underline flex items-center justify-center gap-2 cursor-pointer" @click="openModal">
       {{ $t('chat.addParticipant') }}
       <Icon name="ic:sharp-person-add-alt" size="1.3rem" />
     </div>
   </div>
-  <ModalDialog v-model="visible" :custom-z-index="10001" use-v-if>
-    <ChatCreation :filter-participants="participantsIds" @action-event="addNewUsers" />
-  </ModalDialog>
 </template>

@@ -14,21 +14,13 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  try {
-    if (true) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'There is not conversation with the given ID',
-      })
-    }
+  if (!newName) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Invalid conversation name',
+    })
   }
-  catch (error) {
-    setResponseStatus(event, 406)
-    return {
-      statusCode: 406,
-      statusMessage: 'test',
-    }
-  }
+
   const user = await prisma.user.findUniqueOrThrow({
     where: {
       uid: event.context.uid.uid,
@@ -52,6 +44,7 @@ export default defineEventHandler(async (event) => {
 
   if (conversation.participants.length > 2) {
     const conversationAdmin = conversation.participants.find(participant => participant.isAdmin === true)
+    // TODO: don't need to fetch the user from the db after we change the token to include the user id
     if (conversationAdmin?.userId !== user.id) {
       throw createError({
         statusCode: 400,
@@ -60,7 +53,7 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const newConversation = await prisma.conversation.update({
+  await prisma.conversation.update({
     where: {
       id: conversationID,
     },
@@ -71,6 +64,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     statusCode: 200,
-    body: newConversation,
+    body: 'Name updated successfully',
   }
 })

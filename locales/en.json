@@ -95,7 +95,10 @@
       "or_create_a_new_one": "or create a new one",
       "new_chat": "New Chat",
       "sentMessage": "Sent a message",
-      "addParticipant": "Add participant"
+      "addParticipant": "Add participant",
+      "renameConversation": "Rename conversation",
+      "enterNewName": "Enter new name",
+      "rename": "Rename"
     },
     "create": "Create",
     "searchForChat": "Search for a specific conversation",
