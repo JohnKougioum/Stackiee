@@ -14,13 +14,6 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  if (!newName) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Invalid conversation name',
-    })
-  }
-
   const user = await prisma.user.findUniqueOrThrow({
     where: {
       uid: event.context.uid.uid,

@@ -39,8 +39,11 @@ socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
   if (data.eventName === SocketEvents.NewMessage)
     messagesContainer.value?.addMessage(data.message)
 
-  if (data.eventName === SocketEvents.ConversationUpdated)
+  if (data.eventName === SocketEvents.ConversationUpdated) {
     await refresh()
+    if (conversationResponse.value?.body)
+      updateChat(conversationResponse.value?.body)
+  }
 })
 </script>
 
@@ -53,7 +56,7 @@ socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
     </template>
     <ChatLayout v-model="inputText" @submit="sendMessage">
       <template #title>
-        <ChatName v-if="conversationResponse!.body.name" class="flex-1" :name="conversationResponse!.body.name" :participants="conversationResponse!.body.participants" />
+        <ChatName class="flex-1" :name="conversationResponse!.body.name" :participants="conversationResponse!.body.participants" />
       </template>
       <template #messages>
         <template v-if="conversationResponse?.body?.participants.length">

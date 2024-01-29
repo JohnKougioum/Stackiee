@@ -12,9 +12,6 @@ function closeModal() {
 }
 
 async function rename() {
-  if (!inputText.value.trim())
-    return
-
   await $fetch(`/api/conversations/update/name/${props.chatId}`, {
     method: 'PUT',
     body: {

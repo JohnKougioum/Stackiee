@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
     else {
       const conversation = await prisma.conversation.create({
         data: {
-          name: 'default name',
+          name: '',
           participants: {
             createMany: {
               data: participantIds.map((id: string) => ({

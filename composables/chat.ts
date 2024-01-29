@@ -4,7 +4,7 @@ import type { ThinnedUser } from '~/types/index'
 
 export type FullConversationType = Conversation & { participants: Array<ConversationParticipant & { user: ThinnedUser }> }
 
-const chats = ref < Array<FullConversationType>>([])
+export const chats = ref < Array<FullConversationType>>([])
 const isChatsListLoading = ref(false)
 export async function fetchChats() {
   isChatsListLoading.value = true
@@ -20,4 +20,10 @@ export async function fetchChats() {
     chats,
     isChatsListLoading,
   }
+}
+
+export function updateChat(newChat: FullConversationType) {
+  const index = chats.value.findIndex(chat => chat.id === newChat.id)
+  if (index !== -1)
+    chats.value[index] = newChat
 }

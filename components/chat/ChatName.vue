@@ -16,7 +16,9 @@ const participantsWithoutSelf = computed(() => [...props.participants].filter(
 ))
 
 const getConversationName = computed(() => {
-  // TODO: add group name if is not default
+  if (props.name)
+    return props.name
+
   if (participantsWithoutSelf.value.length === 1)
     return displayUsernameLocale(participantsWithoutSelf.value[0].user.fullName, participantsWithoutSelf.value[0].user.fullNameEL, true)
 
