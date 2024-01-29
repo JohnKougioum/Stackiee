@@ -1,8 +1,11 @@
 <script setup lang='ts'>
-const { data: user, pending } = await useFetch('/api/user/info', {
+const { data: user, pending, error } = await useFetch('/api/user/info', {
   method: 'GET',
   credentials: 'include',
 })
+if (error.value)
+  window.location.href = '/login'
+
 userObject.value = user.value?.data || null
 </script>
 
