@@ -41,7 +41,7 @@ const containerClass = computed(() => {
       class="m-auto"
       :class="[
         isHydrated && wideLayout ? 'w-full sm:max-w-600px' : 'sm:max-w-600px md:shrink-0',
-        { 'h-[calc(100%-60px)] xl:h-[calc(100%-30px)]': fullHeight }]"
+        { 'h-[calc(100%-110px)] sm:h-[calc(100%-60px)] xl:h-[calc(100%-30px)]': fullHeight }]"
     >
       <slot />
     </div>

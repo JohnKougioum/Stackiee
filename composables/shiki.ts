@@ -1,4 +1,5 @@
 import type { Highlighter, Lang } from 'shiki-es'
+import { getHighlighter } from 'shiki-es'
 
 const shiki = ref<Highlighter>()
 
@@ -8,9 +9,8 @@ let shikiImport: Promise<void> | undefined
 export function useHighlighter(lang: Lang, loadLanguagesDynamically = false) {
   if (!shikiImport) {
     shikiImport = import('shiki-es')
-      .then(async (r) => {
-        r.setCDN('https://unpkg.com/shiki/')
-        shiki.value = await r.getHighlighter({
+      .then(async () => {
+        shiki.value = await getHighlighter({
           theme: 'github-dark',
           langs: loadLanguagesDynamically
             ? [lang]

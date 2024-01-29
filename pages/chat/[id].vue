@@ -6,8 +6,8 @@ import { isModalInChatOpen } from '~/composables/modal'
 
 const chatId = useRoute().params.id as string
 
-const { data: conversationResponse, refresh } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
-!Object.keys(conversationResponse.value!).length && await navigateTo('/chat')
+const { data: conversationResponse, refresh, error } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
+!error.value && !Object.keys(conversationResponse.value!).length && await navigateTo('/chat')
 const isUserAdmin = computed(() => conversationResponse.value?.body.participants
   .some(participant => participant.isAdmin && participant.userId === userObject.value?.id) || false)
 
