@@ -5,7 +5,7 @@ export default defineNuxtPlugin(async (nuxt) => {
   const { setLocale } = i18n
   const lang = useCookie('i18n_lang')
 
-  watch([$$(lang), isHydrated], () => {
+  watch([lang.value, isHydrated], () => {
     if (isHydrated.value && lang.value && lang.value !== i18n.locale)
       setLocale(lang.value)
   }, { immediate: true })
