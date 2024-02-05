@@ -59,6 +59,7 @@ const filteredChats = computed(() => {
               v-for="chat in filteredChats"
               :key="chat.id"
               :to="`/chat/${chat.id}`"
+              active-class="sd"
             >
               <ChatName
                 class="border-[1px] border-primary-dark rounded-md my-4 mx-2 px-2"
@@ -76,3 +77,11 @@ const filteredChats = computed(() => {
     </div>
   </div>
 </template>
+
+<style lang="postcss" scoped>
+.sd {
+  & > div {
+    @apply shadow-xl;
+  }
+}
+</style>
