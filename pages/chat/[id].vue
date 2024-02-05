@@ -1,14 +1,12 @@
 <script setup lang='ts'>
-import PartySocket from 'partysocket'
-import { type FullConversationType, updateChatName } from '~/composables/chat'
+import { updateChatName } from '~/composables/chat'
 import { SocketEvents } from '~/types'
 import { isModalInChatOpen } from '~/composables/modal'
 
 const chatId = useRoute().params.id as string
 
-const { data: conversationResponse, error } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
-!error.value && !Object.keys(conversationResponse.value!).length && await navigateTo('/chat')
-const isUserAdmin = computed(() => conversationResponse.value?.body.participants
+const conversationResponse = ref(chats.value.find(chat => chat.id === chatId))
+const isUserAdmin = computed(() => conversationResponse.value?.participants
   .some(participant => participant.isAdmin && participant.userId === userObject.value?.id) || false)
 
 const inputText = ref('')
@@ -41,7 +39,7 @@ socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
     messagesContainer.value?.addMessage(data.message)
 
   if (data.eventName === SocketEvents.ConversationNameUpdate) {
-    conversationResponse.value?.body && (conversationResponse.value.body.name = data.message)
+    conversationResponse.value && (conversationResponse.value.name = data.message)
     updateChatName(chatId, data.message)
   }
 })
@@ -57,17 +55,17 @@ const deactivated = useDeactivated()
     </template>
     <ChatLayout v-model="inputText" @submit="sendMessage">
       <template #title>
-        <ChatName class="flex-1" :name="conversationResponse!.body.name" :participants="conversationResponse!.body.participants" />
+        <ChatName class="flex-1" :name="conversationResponse!.name" :participants="conversationResponse!.participants" />
       </template>
       <template #messages>
-        <template v-if="conversationResponse?.body?.participants.length">
-          <ChatMessagesContainer ref="messagesContainer" :chat-id="chatId" :participants="conversationResponse?.body?.participants" />
+        <template v-if="conversationResponse?.participants.length">
+          <ChatMessagesContainer ref="messagesContainer" :chat-id="chatId" :participants="conversationResponse?.participants" />
         </template>
       </template>
       <template #participantsDropdown>
         <ChatParticipantsDropdown
-          v-if="conversationResponse?.body.participants.length"
-          :participants="conversationResponse?.body.participants"
+          v-if="conversationResponse?.participants.length"
+          :participants="conversationResponse.participants"
           :chat-id="chatId"
           :is-user-admin="isUserAdmin"
         />
@@ -78,7 +76,7 @@ const deactivated = useDeactivated()
     </ChatLayout>
   </MainContent>
   <ModalDialog v-if="!deactivated" v-model="isModalInChatOpen" :custom-z-index="10001" use-v-if>
-    <ChatAddUsers v-if="isParticipantsDropdownOpen" :participants="conversationResponse?.body.participants!" :chat-id="chatId" />
+    <ChatAddUsers v-if="isParticipantsDropdownOpen" :participants="conversationResponse?.participants!" :chat-id="chatId" />
     <ChatRenameDialog v-if="isChatRenameOpen" :chat-id="chatId" />
   </ModalDialog>
 </template>
