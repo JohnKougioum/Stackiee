@@ -16,10 +16,6 @@ async function updateConversationsParticipantsCall(newParticipantsIdList: string
       participantIDs: newParticipantsIdList,
     },
   })
-  socketsList.value?.get(props.chatId)?.send(JSON.stringify({
-    eventName: SocketEvents.ConversationUpdated,
-    message: '',
-  }))
 }
 
 async function removeParticipant(id: string) {

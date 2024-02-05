@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { Conversation, ConversationParticipant } from '@prisma/client'
+import type { Conversation, ConversationParticipant, User } from '@prisma/client'
 import type { ThinnedUser } from '~/types/index'
 
 export type FullConversationType = Conversation & { participants: Array<ConversationParticipant & { user: ThinnedUser }> }
@@ -32,4 +32,10 @@ export function updateChatName(chatId: string, newName: string) {
   const index = chats.value.findIndex(chat => chat.id === chatId)
   if (index !== -1)
     chats.value[index].name = newName
+}
+
+export function updateParticipantsList(chatId: string, participants: Array<ConversationParticipant & { user: ThinnedUser }>) {
+  const index = chats.value.findIndex(chat => chat.id === chatId)
+  if (index !== -1)
+    chats.value[index].participants = participants
 }

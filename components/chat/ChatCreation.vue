@@ -5,6 +5,7 @@ import type { ThinnedUser } from '~/types/index'
 const props = withDefaults(defineProps<{
   buttonText?: string
   filterParticipants?: string[]
+  loading?: boolean
 }>(), {
   buttonText: 'create',
 })
@@ -100,7 +101,7 @@ const isUserSelected = computed(() => (user: User) => selectedUsers.value.some(u
         {{ $t(buttonText) }}
       </button>
     </div>
-    <div class="border-t-[1px] border-secondary-gray">
+    <div class="border-t-[1px] border-secondary-gray relative">
       <div class="p-2 h-[20rem] overflow-auto">
         <div v-if="selectedUsers.length">
           <span class="text-primary-gray">{{ $t('selectedUsers') }}</span>
@@ -122,7 +123,7 @@ const isUserSelected = computed(() => (user: User) => selectedUsers.value.some(u
         <div>
           <span class="text-primary-gray">{{ $t('users') }}</span>
           <div class="mt-2">
-            <CommonLoader v-if="pending" class="text-primary-dark" />
+            <CommonLoader v-if="pending || loading" class="text-primary-dark" />
             <div v-else>
               <div v-if="!users.length">
                 <div class="mt-10 mb-20 text-center text-primary-gray">

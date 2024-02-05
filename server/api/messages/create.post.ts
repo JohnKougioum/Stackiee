@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import PartySocket from 'partysocket'
 import { object as zobject, string as zstring } from 'zod'
+import { SocketEvents } from '~/types'
 
 const prisma = new PrismaClient()
 
@@ -68,7 +69,7 @@ export default defineEventHandler(async (event) => {
       { host: '127.0.0.1:1999', room: newMessage.conversationId },
       {
         method: 'POST',
-        body: JSON.stringify({ message: newMessage }),
+        body: JSON.stringify({ socketEvent: SocketEvents.NewMessage, message: newMessage }),
       },
     )
 

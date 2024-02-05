@@ -1,6 +1,4 @@
 <script setup lang='ts'>
-import { SocketEvents } from '~/types'
-
 const props = defineProps<{
   chatId?: string
 }>()

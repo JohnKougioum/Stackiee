@@ -6,6 +6,9 @@ import { isModalInChatOpen } from '~/composables/modal'
 const chatId = useRoute().params.id as string
 
 const conversationResponse = ref(chats.value.find(chat => chat.id === chatId))
+if (!conversationResponse.value)
+  await navigateTo('/chat')
+
 const isUserAdmin = computed(() => conversationResponse.value?.participants
   .some(participant => participant.isAdmin && participant.userId === userObject.value?.id) || false)
 
@@ -37,11 +40,6 @@ socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
 
   if (data.eventName === SocketEvents.NewMessage)
     messagesContainer.value?.addMessage(data.message)
-
-  if (data.eventName === SocketEvents.ConversationNameUpdate) {
-    conversationResponse.value && (conversationResponse.value.name = data.message)
-    updateChatName(chatId, data.message)
-  }
 })
 const deactivated = useDeactivated()
 </script>

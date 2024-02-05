@@ -9,18 +9,25 @@ export default class WebSocketServer implements Party.Server {
   // handling incoming requests
   async onRequest(request: Party.Request) {
     if (request.method === 'POST') {
-      const payload = await request.json<{ message: Message & {
-        sender: {
-          id: string
-          uid: string
-        } } }>()
-
-      for (const connection of this.room.getConnections()) {
-        if (connection.id === payload.message.senderId)
-          continue
-        connection.send(JSON.stringify({ eventName: SocketEvents.NewMessage, message: payload.message }))
+      const payload = await request.json<{ socketEvent: SocketEvents; message: any }>()
+      if (payload.socketEvent === SocketEvents.NewMessage) {
+        const message = payload.message as Message
+        for (const connection of this.room.getConnections()) {
+          if (connection.id === message.senderId)
+            continue
+          connection.send(JSON.stringify({ eventName: SocketEvents.NewMessage, message }))
+        }
+        return new Response('OK')
       }
-      return new Response('OK')
+
+      if (payload.socketEvent === SocketEvents.ConversationNameUpdate) {
+        this.room.broadcast(JSON.stringify({ eventName: SocketEvents.ConversationNameUpdate, message: payload.message }))
+        return new Response('OK')
+      }
+      if (payload.socketEvent === SocketEvents.ConversationParticipantsUpdate) {
+        this.room.broadcast(JSON.stringify({ eventName: SocketEvents.ConversationParticipantsUpdate, message: payload.message }))
+        return new Response('OK')
+      }
     }
     return new Response('Not found', { status: 404 })
   }
