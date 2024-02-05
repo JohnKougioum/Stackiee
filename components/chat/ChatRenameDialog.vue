@@ -2,7 +2,7 @@
 import { SocketEvents } from '~/types'
 
 const props = defineProps<{
-  chatId: string
+  chatId?: string
 }>()
 
 const inputText = ref('')
@@ -12,16 +12,13 @@ function closeModal() {
 }
 
 async function rename() {
-  await $fetch(`/api/conversations/update/name/${props.chatId}`, {
+  const chatId = props.chatId || useRoute().params.id as string
+  await $fetch(`/api/conversations/update/name/${chatId}`, {
     method: 'PUT',
     body: {
       name: inputText.value,
     },
   })
-  socketsList.value?.get(props.chatId)?.send(JSON.stringify({
-    eventName: SocketEvents.ConversationUpdated,
-    message: '',
-  }))
   closeModal()
 }
 </script>

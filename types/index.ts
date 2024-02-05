@@ -474,4 +474,6 @@ export interface ThinnedUser {
 export enum SocketEvents {
   NewMessage,
   ConversationUpdated,
+  ConversationNameUpdate,
+  ConversationParticipantsUpdate,
 }

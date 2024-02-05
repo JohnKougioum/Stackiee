@@ -27,3 +27,9 @@ export function updateChat(newChat: FullConversationType) {
   if (index !== -1)
     chats.value[index] = newChat
 }
+
+export function updateChatName(chatId: string, newName: string) {
+  const index = chats.value.findIndex(chat => chat.id === chatId)
+  if (index !== -1)
+    chats.value[index].name = newName
+}

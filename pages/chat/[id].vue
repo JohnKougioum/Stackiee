@@ -1,12 +1,12 @@
 <script setup lang='ts'>
 import PartySocket from 'partysocket'
-import type { FullConversationType } from '~/composables/chat'
+import { type FullConversationType, updateChatName } from '~/composables/chat'
 import { SocketEvents } from '~/types'
 import { isModalInChatOpen } from '~/composables/modal'
 
 const chatId = useRoute().params.id as string
 
-const { data: conversationResponse, refresh, error } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
+const { data: conversationResponse, error } = await useFetch<{ statusCode: number; body: FullConversationType }>(`/api/conversations/${chatId}`)
 !error.value && !Object.keys(conversationResponse.value!).length && await navigateTo('/chat')
 const isUserAdmin = computed(() => conversationResponse.value?.body.participants
   .some(participant => participant.isAdmin && participant.userId === userObject.value?.id) || false)
@@ -36,15 +36,16 @@ async function sendMessage() {
 
 socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
   const data = JSON.parse(event.data) as { eventName: number; message: any }
+
   if (data.eventName === SocketEvents.NewMessage)
     messagesContainer.value?.addMessage(data.message)
 
-  if (data.eventName === SocketEvents.ConversationUpdated) {
-    await refresh()
-    if (conversationResponse.value?.body)
-      updateChat(conversationResponse.value?.body)
+  if (data.eventName === SocketEvents.ConversationNameUpdate) {
+    conversationResponse.value?.body && (conversationResponse.value.body.name = data.message)
+    updateChatName(chatId, data.message)
   }
 })
+const deactivated = useDeactivated()
 </script>
 
 <template>
@@ -76,7 +77,7 @@ socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
       </template>
     </ChatLayout>
   </MainContent>
-  <ModalDialog v-model="isModalInChatOpen" :custom-z-index="10001" use-v-if>
+  <ModalDialog v-if="!deactivated" v-model="isModalInChatOpen" :custom-z-index="10001" use-v-if>
     <ChatAddUsers v-if="isParticipantsDropdownOpen" :participants="conversationResponse?.body.participants!" :chat-id="chatId" />
     <ChatRenameDialog v-if="isChatRenameOpen" :chat-id="chatId" />
   </ModalDialog>
