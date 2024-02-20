@@ -7,6 +7,21 @@ if (error.value)
   window.location.href = '/login'
 
 userObject.value = user.value?.data || null
+onMounted(() => {
+  const source = new EventSource('/api/sse')
+
+  source.addEventListener('open', (event) => {
+    console.log('SSE connection opened:', event)
+  })
+
+  source.addEventListener('message', (event) => {
+    console.log('Received event:', event.data)
+  })
+
+  source.addEventListener('error', (event) => {
+    console.error('Error with SSE connection:', event)
+  })
+})
 </script>
 
 <template>
