@@ -17,26 +17,30 @@ export default defineEventHandler(async (event) => {
     select: {
       conversation: {
         include: {
-          user: {
-            select: {
-              fullNameEL: true,
-              fullName: true,
-              uid: true,
-              id: true,
+          participants: {
+            include: {
+              user: {
+                select: {
+                  fullNameEL: true,
+                  fullName: true,
+                  uid: true,
+                  id: true,
+                },
+              },
             },
           },
           latestMessage: true,
         },
       },
     },
-  });
+  })
 
   const finalResponse = {
     statusCode: 200,
     conversations: conversations.map(({ conversation }) => ({
       ...conversation,
     })),
-  };
-  
+  }
+
   return finalResponse
 })

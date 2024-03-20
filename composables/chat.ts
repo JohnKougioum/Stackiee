@@ -8,10 +8,10 @@ export const chats = ref < Array<FullConversationType>>([])
 const isChatsListLoading = ref(false)
 export async function fetchChats() {
   isChatsListLoading.value = true
-  const data = await $fetch<{ statusCode: number; body: FullConversationType[] }>('/api/conversations/all')
+  const data = await $fetch<{ statusCode: number; conversations: FullConversationType[] }>('/api/conversations/all')
   isChatsListLoading.value = false
 
-  chats.value = data?.body || []
+  chats.value = data?.conversations || []
   chats.value.forEach((chat) => {
     setSocket(chat.id)
   })
