@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
         },
         User: {
           connect: {
-            uid: event.context.uid.uid,
+            id: event.context.id.id,
           },
         },
       },

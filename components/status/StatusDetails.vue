@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import type { User } from '~/types/index'
+
 const props = defineProps<{
   user: User
   timeAgo: string

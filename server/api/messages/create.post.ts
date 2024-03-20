@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import PartySocket from 'partysocket'
 import { object as zobject, string as zstring } from 'zod'
 import { SocketEvents } from '~/types'
+import { sendSSeEvent } from '~/server/utils/server-events'
 
 const prisma = new PrismaClient()
 
@@ -28,7 +29,7 @@ export default defineEventHandler(async (event) => {
 
   const user = await prisma.user.findUniqueOrThrow({
     where: {
-      uid: event.context.uid.uid,
+      id: event.context.id.id,
     },
   })
 
@@ -41,14 +42,16 @@ export default defineEventHandler(async (event) => {
     },
   }
 
-  const participant = await prisma.conversationParticipant.findFirst({
+  const conversation = await prisma.conversation.findFirst({
     where: {
-      userId: user.id,
-      conversationId: conversationID,
+      id: conversationID,
+    },
+    include: {
+      participants: true,
     },
   })
 
-  if (!participant) {
+  if (!conversation || !conversation.participants.some(p => p.userId === user.id)) {
     throw createError({
       statusCode: 404,
       message: 'Participant doesn\'t exist in this conversation',
@@ -72,6 +75,9 @@ export default defineEventHandler(async (event) => {
         body: JSON.stringify({ socketEvent: SocketEvents.NewMessage, message: newMessage }),
       },
     )
+
+    for (const participant of conversation.participants)
+      await sendSSeEvent(participant.userId, `${user.fullName} sent a message: ${messageBody}`)
 
     return {
       statusCode: 200,

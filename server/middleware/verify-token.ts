@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
     return await sendRedirect(event, '/login', 401)
   }
 
-  jwt.verify(token, useRuntimeConfig().token_secret, async (err, uid) => {
+  jwt.verify(token, useRuntimeConfig().token_secret, async (err, id) => {
     if (err) {
       deleteCookie(event, 'loggedIn')
       deleteCookie(event, 'token', {
@@ -29,6 +29,6 @@ export default defineEventHandler(async (event) => {
       })
       return await sendRedirect(event, '/login', 401)
     }
-    event.context.uid = uid
+    event.context.id = id
   })
 })

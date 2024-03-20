@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
   const user = await prisma.user.findUniqueOrThrow({
     where: {
-      uid: event.context.uid.uid,
+      id: event.context.id.id,
     },
   })
   const participantPopulated = {

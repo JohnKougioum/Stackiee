@@ -48,10 +48,10 @@ export default defineEventHandler(async (event) => {
         regyear: response.regyear,
       },
     })
-    token = jwt.sign({ uid: newUser.uid }, token_secret, { expiresIn: '86400s' })
+    token = jwt.sign({ id: newUser.id }, token_secret, { expiresIn: '86400s' })
   }
   else {
-    token = jwt.sign({ uid: user.uid }, token_secret, { expiresIn: '86400s' })
+    token = jwt.sign({ id: user.id }, token_secret, { expiresIn: '86400s' })
   }
 
   setCookie(event, 'loggedIn', 'true')

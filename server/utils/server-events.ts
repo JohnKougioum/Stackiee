@@ -1,48 +1,35 @@
 import type { H3Event } from 'h3'
-import { createHooks } from 'hookable'
 
-const connections: Array<{
+let connections: Array<{
   id: string
-  send: (data: unknown) => void
+  eventSteam: any
 }> = []
+
 export const serverEventsConnections = {
   connections,
 }
 
-export interface ServerSentEvent {
-  [key: string]: <T, R>(data: T) => R | void
+export async function createConnection(id: string, event: H3Event) {
+  const eventStream = createEventStream(event)
+
+  serverEventsConnections.connections.push({
+    id,
+    eventSteam: eventStream,
+  })
+  setTimeout(async () => {
+    await eventStream.push('Hello world')
+  }, 1000)
+
+  eventStream.onClosed(async () => {
+    await eventStream.close()
+    connections = connections.filter(c => c.id !== id)
+  })
+
+  return eventStream.send()
 }
 
-export const sseHooks = createHooks<ServerSentEvent>()
-
-export function useSSE(event: H3Event, userId: string) {
-  setHeader(event, 'content-type', 'text/event-stream')
-  setHeader(event, 'cache-control', 'no-cache')
-  setHeader(event, 'connection', 'keep-alive')
-  setResponseStatus(event, 200)
-
-  let counter = 0
-  sseHooks.hook('sse:event', (data: unknown) => {
-    event.node.res.write(`id: ${++counter}\n`)
-    event.node.res.write(`data: ${JSON.stringify(data)}\n\n`)
-  })
-
-  const sendEvent = (data: unknown) => {
-    sseHooks.callHook('sse:event', data)
-  }
-  sendEvent({ message: 'connected' })
-
-  const close = () => {
-    event.node.res.end()
-  }
-
-  event._handled = true
-  event.node.req.on('close', close)
-
-  connections.push({
-    id: userId,
-    send: (data: unknown) => sendEvent(data),
-  })
-
-  return { sendEvent, close }
+export async function sendSSeEvent(id: string, data: string) {
+  const connection = connections.find(c => c.id === id)
+  if (connection)
+    await connection.eventSteam.push(data)
 }

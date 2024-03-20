@@ -3,12 +3,12 @@ const { data: user, pending, error } = await useFetch('/api/user/info', {
   method: 'GET',
   credentials: 'include',
 })
-if (error.value)
+if (error.value && process.client)
   window.location.href = '/login'
 
 userObject.value = user.value?.data || null
 onMounted(() => {
-  const source = new EventSource('/api/sse')
+  const source = new EventSource(`/api/sse?user=${userObject.value?.id}`)
 
   source.addEventListener('open', (event) => {
     console.log('SSE connection opened:', event)

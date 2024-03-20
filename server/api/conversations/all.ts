@@ -1,13 +1,11 @@
 import { PrismaClient } from '@prisma/client'
-import { serverEventsConnections, sseHooks } from '../../utils/server-events'
 
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  serverEventsConnections.connections.find(item => item.id === event.context.uid.uid)?.send({ message: 'Hello' })
   const user = await prisma.user.findUniqueOrThrow({
     where: {
-      uid: event.context.uid.uid,
+      id: event.context.id.id,
     },
   })
   // GET ALL CONVERSATIONS

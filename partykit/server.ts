@@ -40,6 +40,6 @@ export default class WebSocketServer implements Party.Server {
 
   // when a client disconnects
   onClose(connection: Party.Connection) {
-    this.room.broadcast(`So sad! ${connection.id} left the party!`)
+    this.room.broadcast(JSON.stringify({ eventName: SocketEvents.UserLeft, message: `So sad! ${connection.id} left the party!` }))
   }
 }
