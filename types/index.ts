@@ -477,4 +477,5 @@ export enum SocketEvents {
   ConversationNameUpdate,
   ConversationParticipantsUpdate,
   UserLeft,
+  NewConversationCreated,
 }

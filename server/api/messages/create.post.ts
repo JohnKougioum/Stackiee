@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 import PartySocket from 'partysocket'
 import { object as zobject, string as zstring } from 'zod'
 import { SocketEvents } from '~/types'
-import { sendSSeEvent } from '~/server/utils/server-events'
+import { sendSSEEvent } from '~/server/utils/server-events'
 
 const prisma = new PrismaClient()
 
@@ -77,7 +77,7 @@ export default defineEventHandler(async (event) => {
     )
 
     for (const participant of conversation.participants)
-      await sendSSeEvent(participant.userId, `${user.fullName} sent a message: ${messageBody}`)
+      await sendSSEEvent(participant.userId, `${user.fullName} sent a message: ${messageBody}`)
 
     return {
       statusCode: 200,

@@ -39,3 +39,8 @@ export function updateParticipantsList(chatId: string, participants: Array<Conve
   if (index !== -1)
     chats.value[index].participants = participants
 }
+
+export async function handleNewChatSSEEvent() {
+  const { fullPath } = useRoute()
+  fullPath.includes('chat') && await fetchChats()
+}

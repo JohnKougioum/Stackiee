@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client'
+import { sendSSEEvent } from '~/server/utils/server-events'
+import { SocketEvents } from '~/types'
 
 const prisma = new PrismaClient()
 
@@ -34,6 +36,7 @@ export default defineEventHandler(async (event) => {
     },
   }
   try {
+    // TODO: Send SSE event to all participants in the conversation (except the sender)
     const allConversationParticipants = await prisma.conversationParticipant.findMany({})
 
     const transformedArray = allConversationParticipants.reduce((result, item) => {
@@ -84,6 +87,15 @@ export default defineEventHandler(async (event) => {
         },
         include: conversationPopulated,
       })
+
+      for (const participant of conversation.participants) {
+        if (participant.userId !== user.id) {
+          await sendSSEEvent(participant.userId, JSON.stringify({
+            type: SocketEvents.NewConversationCreated,
+          }))
+        }
+      }
+
       return {
         status: 200,
         conversation_id: conversation.id,
