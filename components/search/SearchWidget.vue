@@ -1,16 +1,15 @@
 <script setup lang='ts'>
-const router = useRouter()
-
 const inputRef = ref<HTMLInputElement>()
 const query = ref('')
 
 defineExpose({ inputRef })
 
-function search() {
+async function search() {
   if (query.value.trim() === '')
     return
 
-  router.push(`/search?query=${query.value.trim()}`)
+  await navigateTo(`/search?query=${query.value.trim()}`)
+  useLoadingIndicator().finish()
   query.value = ''
   inputRef.value?.blur()
 }

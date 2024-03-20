@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { classes } from '@/types/index'
+
 definePageMeta({
   title: 'Compose',
   description: 'Compose a new post',
@@ -9,7 +10,7 @@ const lectures = computed(() => classes[semester.value as keyof typeof classes].
 const selectedLecture = ref<string | undefined>(undefined)
 
 async function publishPost(postBody: string) {
-  const { data } = await useFetch('/api/posts/create', {
+  const data = await $fetch('/api/posts/create', {
     method: 'POST',
     body: {
       postBody,
@@ -18,7 +19,7 @@ async function publishPost(postBody: string) {
     },
   })
 
-  if (data.value?.statusCode === 200) {
+  if (data?.statusCode === 200) {
     semester.value = undefined
     selectedLecture.value = undefined
     await navigateTo('/')
@@ -51,7 +52,7 @@ async function publishPost(postBody: string) {
       </option>
       <template v-if="semester">
         <option v-for="(lecture, index) of lectures" :key="lecture.nameEL" :value="index">
-          {{ lecture.nameEL }}
+          {{ displayUsernameLocale(lecture.nameEN, lecture.nameEL) }}
         </option>
       </template>
     </select>

@@ -18,22 +18,14 @@ export default defineNuxtConfig({
   macros: {
     defineModels: false,
   },
-  typescript: {
-    tsConfig: {
-      vueCompilerOptions: {
-        experimentalRfc436: true,
-      },
-    },
-  },
   experimental: {
     payloadExtraction: false,
-    reactivityTransform: true,
   },
   routeRules: {
-    // Static generation
     '/': { prerender: true },
     '/settings/**': { prerender: false },
     '/login/auth': { prerender: false, ssr: false },
+    '/chat/**': { prerender: false, ssr: false },
   },
   app: {
     keepalive: true,

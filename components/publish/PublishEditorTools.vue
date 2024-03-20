@@ -1,8 +1,18 @@
 <script setup lang='ts'>
 import type { Editor } from '@tiptap/core'
-defineProps<{
+
+const prop = defineProps<{
   editor: Editor
 }>()
+
+const emit = defineEmits<{
+  (event: 'showCodeBlockHint'): void
+}>()
+
+function codeBlockClicked() {
+  prop.editor.chain().focus().toggleCodeBlock().run()
+  emit('showCodeBlockHint')
+}
 </script>
 
 <template>
@@ -46,7 +56,7 @@ defineProps<{
         aria-label="Code Block"
         :disabled="!editor.can().chain().focus().toggleCodeBlock().run()"
         :class="{ 'bg-secondary-gray': editor.isActive('codeBlock') }"
-        @click="editor.chain().focus().toggleCodeBlock().run()"
+        @click="codeBlockClicked"
       >
         <Icon name="mdi:code" size="1.2rem" />
       </button>

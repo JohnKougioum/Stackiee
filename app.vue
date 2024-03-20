@@ -5,7 +5,7 @@
   </NuxtLayout>
 </template>
 
-<style>
+<style lang="postcss">
 html,
 body,
 #__nuxt {
@@ -36,12 +36,12 @@ body{
 
 ::-webkit-scrollbar-track {
   background: #D9D9D9;
-  border-radius: 1px;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #8885;
-  border-radius: 1px;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async (event) => {
   const user = await prisma.user.findUniqueOrThrow({
     where: {
-      uid: event.context.uid.uid,
+      id: event.context.id.id,
     },
   })
 
@@ -17,6 +17,14 @@ export default defineEventHandler(async (event) => {
     select: {
       conversation: {
         include: {
+          user: {
+            select: {
+              fullNameEL: true,
+              fullName: true,
+              uid: true,
+              id: true,
+            },
+          },
           latestMessage: true,
         },
       },

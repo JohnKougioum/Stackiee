@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import type { IhuApiProfile } from '@/types/index'
+
 definePageMeta({
   layout: 'none',
 })

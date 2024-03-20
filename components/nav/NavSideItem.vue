@@ -9,8 +9,8 @@ const props = withDefaults(defineProps<{
 })
 
 defineSlots<{
-  icon: {}
-  default: {}
+  icon: object
+  default: object
 }>()
 
 const activeClass = ref('text-primary-dark')

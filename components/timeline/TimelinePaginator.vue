@@ -68,7 +68,7 @@ function areArraysEqual(arr1: string[], arr2: string[]) {
 
 <template>
   <div>
-    <template v-if="isHydrated && posts">
+    <template v-if="isHydrated">
       <CommonPaginator v-model:page="page" :items="posts" :pending="pending" :next-page="nextPage">
         <template #default="{ item, active, index }">
           <DynamicScrollerItem
@@ -86,6 +86,11 @@ function areArraysEqual(arr1: string[], arr2: string[]) {
           </DynamicScrollerItem>
         </template>
       </CommonPaginator>
+      <template v-if="!pending && error">
+        <div class="text-center p-4 mt-10 text-xl">
+          {{ $t('somethingWentWrong') }}
+        </div>
+      </template>
     </template>
   </div>
 </template>

@@ -1,4 +1,4 @@
-import type { MaybeComputedRef, MaybeRef, UseTimeAgoOptions } from '@vueuse/core'
+import type { MaybeRef, MaybeRefOrGetter, UseTimeAgoOptions } from '@vueuse/core'
 
 const formatter = Intl.NumberFormat()
 
@@ -29,13 +29,13 @@ export function useHumanReadableNumber() {
   }
 }
 
-export function useFormattedDateTime(value: MaybeComputedRef<string | number | Date | undefined | null>,
+export function useFormattedDateTime(value: MaybeRefOrGetter<string | number | Date | undefined | null>,
   options: Intl.DateTimeFormatOptions = { dateStyle: 'long', timeStyle: 'medium' }) {
   const { locale } = useI18n()
-  const formatter = $computed(() => Intl.DateTimeFormat(locale.value, options))
+  const formatter = computed(() => Intl.DateTimeFormat(locale.value, options))
   return computed(() => {
     const v = resolveUnref(value)
-    return v ? formatter.format(new Date(v)) : ''
+    return v ? formatter.value.format(new Date(v)) : ''
   })
 }
 
@@ -85,4 +85,8 @@ export function displayUsernameLocale(name: string, nameEL: string, shouldLowerc
     : shouldLowercase
       ? nameEL.toLowerCase()
       : nameEL
+}
+
+export function removeAccents(str: string) {
+  return str.normalize('NFD').replace(/[\u0300-\u036F]/g, '')
 }
