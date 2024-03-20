@@ -8,11 +8,23 @@ export default defineEventHandler(async (event) => {
   const requestBody = await readBody(event)
   const participantIds: string[] = requestBody.userIDs.sort()
 
+  if (!participantIds.length) {
+    throw createError({
+      statusCode: 400,
+      message: 'You cannot create a conversation without setting at least one participant',
+    })
+  }
+
+  // Get all the details of the logged-in user
   const user = await prisma.user.findUniqueOrThrow({
     where: {
       id: event.context.id.id,
     },
   })
+
+  if (!(participantIds.includes(user.id)))
+    participantIds.push(user.id)
+
   const participantPopulated = {
     user: {
       select: {
@@ -40,15 +52,15 @@ export default defineEventHandler(async (event) => {
     const allConversationParticipants = await prisma.conversationParticipant.findMany({})
 
     const transformedArray = allConversationParticipants.reduce((result, item) => {
-      // Find if there is an existing entry in the result array with the same conversationId
-      const existingEntry = result.find(entry => entry.conversationID === item.conversationId)
+      // Find if there is an existing record in the result array with the same conversationId
+      const existingRecord = result.find(entry => entry.conversationID === item.conversationId)
 
-      // If an existing entry is found, add the userId to its participants array
-      if (existingEntry) {
-        existingEntry.participants.push(item.userId)
+      // If an existing record is found, add the userId to its participants array
+      if (existingRecord) {
+        existingRecord.participants.push(item.userId)
       }
       else {
-        // If no existing entry is found, create a new entry
+        // If no existing record is found, create a new entry
         result.push({
           conversationID: item.conversationId,
           participants: [item.userId],
@@ -68,6 +80,7 @@ export default defineEventHandler(async (event) => {
     if (everyElementsExists) {
       return {
         status: 200,
+        message: 'A conversation with the given participants already exists',
         conversation_id: everyElementsExists,
       }
     }
@@ -98,12 +111,12 @@ export default defineEventHandler(async (event) => {
 
       return {
         status: 200,
+        message: 'A new conversation has been created',
         conversation_id: conversation.id,
       }
     }
   }
   catch (error) {
-    console.log(error)
     throw createError({
       statusCode: 403,
       statusMessage: 'Invalid Payload',

@@ -8,11 +8,14 @@ export default defineEventHandler(async (event) => {
       id: event.context.id.id,
     },
   })
-  // GET ALL CONVERSATIONS
-  let conversations = await prisma.conversation.findMany({
-    where: {},
-    include: {
-      participants: {
+
+  // Get all the conversations where the logged in user is part of
+  const conversations = await prisma.conversationParticipant.findMany({
+    where: {
+      userId: user.id,
+    },
+    select: {
+      conversation: {
         include: {
           user: {
             select: {
@@ -22,19 +25,18 @@ export default defineEventHandler(async (event) => {
               id: true,
             },
           },
+          latestMessage: true,
         },
       },
     },
-  })
-  // FILTER CONVERSATIONS TO TAKE ONLY THE CONVERSATIONS OF THE CURRENT USER
-  conversations = conversations.filter((item) => {
-    return item.participants.some((item1) => {
-      return item1.userId === user.id
-    })
-  })
+  });
 
-  return {
+  const finalResponse = {
     statusCode: 200,
-    body: conversations,
-  }
+    conversations: conversations.map(({ conversation }) => ({
+      ...conversation,
+    })),
+  };
+  
+  return finalResponse
 })
