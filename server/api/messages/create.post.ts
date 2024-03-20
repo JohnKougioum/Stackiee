@@ -76,8 +76,12 @@ export default defineEventHandler(async (event) => {
       },
     )
 
-    for (const participant of conversation.participants)
-      await sendSSEEvent(participant.userId, `${user.fullName} sent a message: ${messageBody}`)
+    for (const participant of conversation.participants) {
+      await sendSSEEvent(participant.userId, JSON.stringify({
+        type: SocketEvents.NewMessage,
+        message: `${user.fullName} sent a message: ${messageBody}`,
+      }))
+    }
 
     return {
       statusCode: 200,
