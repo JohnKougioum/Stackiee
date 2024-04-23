@@ -2,6 +2,7 @@
 export interface Props {
   useVIf?: boolean
   customZIndex?: number
+  customClose?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   useVIf: true,
@@ -40,10 +41,10 @@ const isVShow = computed(() => {
 })
 
 function close() {
-  if (!visible.value)
+  emit('close')
+  if (!visible.value || props.customClose)
     return
   visible.value = false
-  emit('close')
 }
 
 useEventListener('keydown', (e: KeyboardEvent) => {

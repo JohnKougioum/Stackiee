@@ -1,5 +1,4 @@
 <script setup lang='ts'>
-import { updateChatName } from '~/composables/chat'
 import { SocketEvents } from '~/types'
 import { isModalInChatOpen } from '~/composables/modal'
 
@@ -42,6 +41,11 @@ socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
     messagesContainer.value?.addMessage(data.message)
 })
 const deactivated = useDeactivated()
+
+function handleCloseModal() {
+  // if (isWhiteboardOpen.value)
+  //   isWhiteboardOpen.value = false
+}
 </script>
 
 <template>
@@ -73,8 +77,24 @@ const deactivated = useDeactivated()
       </template>
     </ChatLayout>
   </MainContent>
-  <ModalDialog v-if="!deactivated" v-model="isModalInChatOpen" :custom-z-index="10001" use-v-if>
+  <ModalDialog
+    v-if="!deactivated"
+    v-model="isModalInChatOpen"
+    :custom-z-index="10001"
+    use-v-if
+    :class="{ 'whiteboard-mode': isWhiteboardOpen }"
+    :custom-close="isWhiteboardOpen"
+    @close="handleCloseModal"
+  >
     <ChatAddUsers v-if="isParticipantsDropdownOpen" :participants="conversationResponse?.participants!" :chat-id="chatId" />
     <ChatRenameDialog v-if="isChatRenameOpen" :chat-id="chatId" />
   </ModalDialog>
+  <WhiteboardModal v-if="isWhiteboardOpen">
+    <div class="bg-base rounded-md flex-1">
+      chat section
+    </div>
+  </WhiteboardModal>
 </template>
+
+<style scoped lang="postcss">
+</style>
