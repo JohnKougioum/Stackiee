@@ -22,7 +22,7 @@ interface TokenRespone {
 }
 const { $auth } = useNuxtApp()
 onMounted(async () => {
-  const token = await useFetch('https://login.iee.ihu.gr/token', {
+  const token = await $fetch('https://login.iee.ihu.gr/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -30,30 +30,30 @@ onMounted(async () => {
     body: new URLSearchParams(Object.entries(body) as string[][]).toString(),
   })
 
-  if (!(token?.data?.value as TokenRespone)?.access_token)
+  if (!(token as TokenRespone)?.access_token)
     return
 
-  const { data: profileResponse } = await useFetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
+  const profileResponse = await $fetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
     method: 'GET',
     headers: {
-      'x-access-token': (token?.data?.value as TokenRespone)?.access_token,
+      'x-access-token': (token as TokenRespone)?.access_token,
     },
   })
 
-  await useFetch('/api/login', {
+  await $fetch('/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: {
-      uid: profileResponse.value?.uid,
-      am: profileResponse.value?.am,
-      fullName: profileResponse.value?.cn,
-      fullNameEL: profileResponse.value!['cn;lang-el'],
-      email: profileResponse.value?.mail,
-      eduPersonAffiliation: profileResponse.value?.eduPersonAffiliation,
-      eduPersonPrimaryAffiliation: profileResponse.value?.eduPersonPrimaryAffiliation,
-      regyear: profileResponse.value?.regyear,
+      uid: profileResponse?.uid,
+      am: profileResponse?.am,
+      fullName: profileResponse?.cn,
+      fullNameEL: profileResponse!['cn;lang-el'],
+      email: profileResponse?.mail,
+      eduPersonAffiliation: profileResponse?.eduPersonAffiliation,
+      eduPersonPrimaryAffiliation: profileResponse?.eduPersonPrimaryAffiliation,
+      regyear: profileResponse?.regyear,
     },
     async onResponse({ response }) {
       if (response.status === 200) {

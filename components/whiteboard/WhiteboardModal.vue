@@ -10,6 +10,8 @@ watch(notInCurrentPage, (value) => {
     close()
 })
 
+const chatSectionVisible = ref(true)
+
 function close() {
   isWhiteboardOpen.value = false
 }
@@ -17,10 +19,12 @@ function close() {
 
 <template>
   <Teleport to="body">
-    <div class="fixed inset-0 overflow-y-auto scrollbar-hide overscroll-none z-10 bg-black bg-opacity-20">
+    <div class="fixed inset-0 overflow-y-auto scrollbar-hide overscroll-none z-10 bg-base">
       <div class="w-full h-full p-4 flex gap-2">
-        <WhiteboardWidget class="flex-[2]" />
-        <slot />
+        <WhiteboardWidget class="flex-[2] border-primary" @close="close" @toggle-chat-visibility="chatSectionVisible = !chatSectionVisible" />
+        <template v-if="chatSectionVisible">
+          <slot />
+        </template>
       </div>
     </div>
   </Teleport>

@@ -82,7 +82,6 @@ function handleCloseModal() {
     v-model="isModalInChatOpen"
     :custom-z-index="10001"
     use-v-if
-    :class="{ 'whiteboard-mode': isWhiteboardOpen }"
     :custom-close="isWhiteboardOpen"
     @close="handleCloseModal"
   >
@@ -90,8 +89,28 @@ function handleCloseModal() {
     <ChatRenameDialog v-if="isChatRenameOpen" :chat-id="chatId" />
   </ModalDialog>
   <WhiteboardModal v-if="isWhiteboardOpen">
-    <div class="bg-base rounded-md flex-1">
-      chat section
+    <div class="rounded-md flex-1">
+      <ChatLayout v-model="inputText" @submit="sendMessage">
+        <template #title>
+          <ChatName class="flex-1" :name="conversationResponse!.name" :participants="conversationResponse!.participants" />
+        </template>
+        <template #messages>
+          <template v-if="conversationResponse?.participants.length">
+            <ChatMessagesContainer ref="messagesContainer" :chat-id="chatId" :participants="conversationResponse?.participants" />
+          </template>
+        </template>
+        <template #participantsDropdown>
+          <ChatParticipantsDropdown
+            v-if="conversationResponse?.participants.length"
+            :participants="conversationResponse.participants"
+            :chat-id="chatId"
+            :is-user-admin="isUserAdmin"
+          />
+        </template>
+        <template #chat-settings>
+          <ChatSettings :is-user-admin="isUserAdmin" />
+        </template>
+      </ChatLayout>
     </div>
   </WhiteboardModal>
 </template>
