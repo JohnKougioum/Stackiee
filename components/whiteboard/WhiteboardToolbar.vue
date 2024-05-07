@@ -1,13 +1,13 @@
 <script setup lang='ts'>
 defineEmits<{
-  toggleChatVisibility: []
-  closeWhiteboard: []
-  action: [id: number]
+  (e: 'toggleChatVisibility'): void
+  (e: 'closeWhiteboard'): void
+  (e: 'action', id: number): void
 }>()
 </script>
 
 <template>
-  <div class="whiteboard-toolbar absolute top-1/2 -translate-y-1/2 border-primary rounded-md left-2 p-1 flex flex-col gap-2">
+  <div class="whiteboard-toolbar absolute top-1/2 -translate-y-1/2 border-primary rounded-md left-2 p-1 flex flex-col gap-2 shadow-xl">
     <WhiteboardToolbarItem icon="clarity:pencil-line" size="1.3rem" />
     <WhiteboardToolbarItem icon="fluent:shapes-28-regular" size="1.3rem" />
     <WhiteboardToolbarItem icon="solar:eraser-outline" size="1.3rem" />

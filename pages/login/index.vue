@@ -19,9 +19,7 @@ async function loginWithCreds() {
       regyear: '2018',
     },
   })
-  if (response.status === 200) {
-    console.log(response)
-
+  if (response.statusCode === 200) {
     $auth.loginCookie.value = 'true'
     await navigateTo('/')
   }

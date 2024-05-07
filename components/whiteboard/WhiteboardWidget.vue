@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 defineEmits<{
-  toggleChatVisibility: []
-  close: []
+  (e: 'toggleChatVisibility'): void
+  (e: 'close'): void
 }>()
 </script>
 
