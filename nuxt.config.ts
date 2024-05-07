@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { i18n } from './config/i18n'
+import { currentLocales } from './config/i18n'
 
 export default defineNuxtConfig({
   modules: [
@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     'nuxt-icon',
   ],
   vue: {
-    defineModel: true,
+    propsDestructure: true,
   },
   macros: {
     defineModels: false,
@@ -36,7 +36,15 @@ export default defineNuxtConfig({
       },
     },
   },
-  i18n,
+  i18n: {
+    locales: currentLocales,
+    lazy: true,
+    strategy: 'no_prefix',
+    detectBrowserLanguage: false,
+    langDir: 'locales',
+    defaultLocale: 'el',
+    vueI18n: './config/i18n.config.ts',
+  },
   css: [
     'floating-vue/dist/style.css',
     '~/styles/global.css',
