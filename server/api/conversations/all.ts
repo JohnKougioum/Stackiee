@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { getUserConversations } from '~/server/utils/chat-utils'
 
 const prisma = new PrismaClient()
 
@@ -10,31 +11,7 @@ export default defineEventHandler(async (event) => {
   })
 
   // Get all the conversations where the logged in user is part of
-  const conversations = await prisma.conversationParticipant.findMany({
-    where: {
-      userId: user.id,
-    },
-    select: {
-      conversation: {
-        include: {
-          participants: {
-            include: {
-              user: {
-                select: {
-                  fullNameEL: true,
-                  fullName: true,
-                  uid: true,
-                  id: true,
-                },
-              },
-            },
-          },
-          latestMessage: true,
-        },
-      },
-    },
-  })
-
+  const conversations = await getUserConversations(user.id)
   const finalResponse = {
     statusCode: 200,
     conversations: conversations.map(({ conversation }) => ({

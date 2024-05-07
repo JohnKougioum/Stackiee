@@ -52,6 +52,11 @@ function handleCloseModal() {
   // if (isWhiteboardOpen.value)
   //   isWhiteboardOpen.value = false
 }
+
+const { $ws, $connectWebsocket } = useNuxtApp()
+onMounted(async () => {
+  userObject.value?.id && $connectWebsocket(userObject.value?.id)
+})
 </script>
 
 <template>
