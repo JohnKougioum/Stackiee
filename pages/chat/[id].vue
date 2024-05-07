@@ -13,6 +13,7 @@ const isUserAdmin = computed(() => conversationResponse.value?.participants
 
 const inputText = ref('')
 const messagesContainer = ref()
+const messagesContainerWhiteboard = ref()
 
 async function sendMessage() {
   if (!inputText.value.trim())
@@ -28,6 +29,8 @@ async function sendMessage() {
       },
     })
     messagesContainer.value?.addMessage(data?.body)
+    if (isWhiteboardOpen.value && messagesContainerWhiteboard.value)
+      messagesContainerWhiteboard.value?.addMessage(data?.body)
   }
   catch (error) {
 
@@ -37,8 +40,11 @@ async function sendMessage() {
 socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
   const data = JSON.parse(event.data) as { eventName: number; message: any }
 
-  if (data.eventName === SocketEvents.NewMessage)
+  if (data.eventName === SocketEvents.NewMessage) {
     messagesContainer.value?.addMessage(data.message)
+    if (isWhiteboardOpen.value && messagesContainerWhiteboard.value)
+      messagesContainerWhiteboard.value?.addMessage(data?.message)
+  }
 })
 const deactivated = useDeactivated()
 
@@ -96,7 +102,7 @@ function handleCloseModal() {
         </template>
         <template #messages>
           <template v-if="conversationResponse?.participants.length">
-            <ChatMessagesContainer ref="messagesContainer" :chat-id="chatId" :participants="conversationResponse?.participants" />
+            <ChatMessagesContainer ref="messagesContainerWhiteboard" :chat-id="chatId" :participants="conversationResponse?.participants" />
           </template>
         </template>
         <template #participantsDropdown>
