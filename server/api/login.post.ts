@@ -35,6 +35,7 @@ export default defineEventHandler(async (event) => {
   })
 
   let token = ''
+  let userId = ''
   if (!user) {
     const newUser = await prisma.user.create({
       data: {
@@ -49,9 +50,11 @@ export default defineEventHandler(async (event) => {
       },
     })
     token = jwt.sign({ id: newUser.id }, token_secret, { expiresIn: '86400s' })
+    userId = newUser.id
   }
   else {
     token = jwt.sign({ id: user.id }, token_secret, { expiresIn: '86400s' })
+    userId = user.id
   }
 
   setCookie(event, 'loggedIn', 'true')
@@ -59,5 +62,10 @@ export default defineEventHandler(async (event) => {
     sameSite: 'lax',
     httpOnly: true,
   })
-  return { statusCode: 200, body: 'OK' }
+  return {
+    statusCode: 200,
+    body: {
+      userId: userId || '',
+    },
+  }
 })

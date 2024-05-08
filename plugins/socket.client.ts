@@ -1,5 +1,5 @@
 export default defineNuxtPlugin(() => {
-  let ws: WebSocket | undefined
+  const ws = ref<WebSocket | undefined>()
 
   return {
     provide: {
@@ -7,12 +7,11 @@ export default defineNuxtPlugin(() => {
       connectWebsocket: async (userId: string) => {
         const isSecure = location.protocol === 'https:'
         const url = `${(isSecure ? 'wss://' : 'ws://') + location.host}/api/chat-ws?userId=${userId}`
-        if (ws)
-          ws.close()
+        if (ws.value)
+          ws.value.close()
 
-        ws = new WebSocket(url)
-
-        await new Promise(resolve => ws!.addEventListener('open', resolve))
+        ws.value = new WebSocket(url)
+        await new Promise(resolve => ws.value!.addEventListener('open', resolve))
       },
     },
   }

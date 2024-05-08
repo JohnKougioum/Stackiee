@@ -20,7 +20,7 @@ interface TokenRespone {
   expires_in: number
   user: number
 }
-const { $auth } = useNuxtApp()
+const { $auth, $connectWebsocket } = useNuxtApp()
 onMounted(async () => {
   const token = await $fetch('https://login.iee.ihu.gr/token', {
     method: 'POST',
@@ -58,6 +58,7 @@ onMounted(async () => {
     async onResponse({ response }) {
       if (response.status === 200) {
         $auth.loginCookie.value = 'true'
+        response._data.body?.userId && $connectWebsocket(response._data.body?.userId)
         await navigateTo('/')
       }
     },
