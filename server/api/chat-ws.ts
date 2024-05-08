@@ -1,6 +1,7 @@
 import type { Peer } from 'crossws'
 import { getQuery } from 'ufo'
-import { getUserConversations } from '~/server/utils/chat-utils'
+import { addMessageDB, getUserConversations } from '~/server/utils/chat-utils'
+import { SocketEvents } from '~/types'
 
 const users = new Map<string, { online: boolean }>()
 
@@ -21,18 +22,30 @@ export default defineWebSocketHandler({
       peer.subscribe(conversationId)
     })
   },
-  async message(peer, message) {
-    console.log(`[ws] message ${peer} ${message.text()}`)
+  async message(peer, event) {
+    const data = JSON.parse(event.text())
+    console.log(`[ws] message ${peer} ${data.message}`)
     const userId = getUserId(peer)
-    const _message = {
-      user: userId,
-      message: message.text(),
-    }
-    peer.send(_message) // echo back
-    peer.publish('chat', _message)
+    try {
+      const message = await addMessageDB(userId, data.chatId, data.message)
 
-    // TODO: add message to db
-    // await addMessage(userId, message.text())
+      const _message = {
+        user: userId,
+        message,
+        chatId: data.chatId,
+        eventName: data.eventName,
+      }
+
+      peer.send(_message)
+      peer.publish(data.chatId, _message)
+    }
+    catch (error) {
+      console.error('Error adding message to db', error)
+      peer.send({
+        eventName: SocketEvents.MessageError,
+        message: 'There was an error adding the message to the database. Please try again.',
+      })
+    }
   },
 
   close(peer) {

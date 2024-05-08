@@ -4,6 +4,8 @@ import { isModalInChatOpen } from '~/composables/modal'
 
 const chatId = useRoute().params.id as string
 
+const { $ws } = useNuxtApp()
+
 const conversationResponse = ref(chats.value.find(chat => chat.id === chatId))
 if (!conversationResponse.value)
   await navigateTo('/chat')
@@ -21,16 +23,12 @@ async function sendMessage() {
   const text = inputText.value
   inputText.value = ''
   try {
-    const data = await $fetch('/api/messages/create', {
-      method: 'POST',
-      body: {
-        conversationId: chatId,
-        body: text,
-      },
-    })
-    messagesContainer.value?.addMessage(data?.body)
-    if (isWhiteboardOpen.value && messagesContainerWhiteboard.value)
-      messagesContainerWhiteboard.value?.addMessage(data?.body)
+    $ws.value?.send(JSON.stringify({
+      eventName: SocketEvents.NewMessage,
+      message: text,
+      chatId,
+
+    }))
   }
   catch (error) {
 
@@ -48,15 +46,18 @@ socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
 })
 const deactivated = useDeactivated()
 
-function handleCloseModal() {
-  // if (isWhiteboardOpen.value)
-  //   isWhiteboardOpen.value = false
-}
-
-const { $ws } = useNuxtApp()
 onMounted(async () => {
   $ws.value?.addEventListener('message', (event) => {
-    console.log('message', event.data)
+    const { user = 'system', eventName = undefined, message = '', messageChatId = chatId } = event.data.startsWith('{')
+      ? JSON.parse(event.data)
+      : { message: event.data }
+
+    console.log(user, eventName, message, messageChatId)
+    if (eventName === SocketEvents.NewMessage) {
+      messagesContainer.value?.addMessage(message)
+      if (isWhiteboardOpen.value && messagesContainerWhiteboard.value)
+        messagesContainerWhiteboard.value?.addMessage(message)
+    }
   })
 })
 </script>
@@ -95,8 +96,6 @@ onMounted(async () => {
     v-model="isModalInChatOpen"
     :custom-z-index="10001"
     use-v-if
-    :custom-close="isWhiteboardOpen"
-    @close="handleCloseModal"
   >
     <ChatAddUsers v-if="isParticipantsDropdownOpen" :participants="conversationResponse?.participants!" :chat-id="chatId" />
     <ChatRenameDialog v-if="isChatRenameOpen" :chat-id="chatId" />

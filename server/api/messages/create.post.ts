@@ -11,6 +11,7 @@ const createMessagePayloadSchema = zobject({
   body: zstring().min(1),
 })
 
+// TODO: Remove this and use the new socket implementation
 export default defineEventHandler(async (event) => {
   const requestBody = await readBody(event)
 
@@ -68,14 +69,7 @@ export default defineEventHandler(async (event) => {
       include: messagePopulated,
     })
 
-    await PartySocket.fetch(
-      { host: '127.0.0.1:1999', room: newMessage.conversationId },
-      {
-        method: 'POST',
-        body: JSON.stringify({ socketEvent: SocketEvents.NewMessage, message: newMessage }),
-      },
-    )
-
+    // TODO: maybe change this to the new socket implementation
     for (const participant of conversation.participants) {
       await sendSSEEvent(participant.userId, JSON.stringify({
         type: SocketEvents.NewMessage,
