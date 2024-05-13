@@ -48,16 +48,18 @@ const deactivated = useDeactivated()
 
 onMounted(async () => {
   $ws.value?.addEventListener('message', (event) => {
-    const { user = 'system', eventName = undefined, message = '', messageChatId = chatId } = event.data.startsWith('{')
+    const data = event.data.startsWith('{')
       ? JSON.parse(event.data)
       : { message: event.data }
 
-    console.log(user, eventName, message, messageChatId)
-    if (eventName === SocketEvents.NewMessage) {
-      messagesContainer.value?.addMessage(message)
+    if (data.eventName === SocketEvents.NewMessage) {
+      messagesContainer.value?.addMessage(data.message)
       if (isWhiteboardOpen.value && messagesContainerWhiteboard.value)
-        messagesContainerWhiteboard.value?.addMessage(message)
+        messagesContainerWhiteboard.value?.addMessage(data.message)
     }
+
+    if (data.eventName === SocketEvents.ConversationNameUpdate)
+      updateChatName(data.chatId, data.conversationName)
   })
 })
 </script>

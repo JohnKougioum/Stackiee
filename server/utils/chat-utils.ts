@@ -87,3 +87,32 @@ export async function addMessageDB(userId = '', conversationId = '', body = '') 
     throw createError('Error sending message')
   }
 }
+
+export async function updateConversationName(userId: string, conversationId: string, newName: string = '') {
+  if (!userId || !conversationId)
+    throw new Error('There was an error changing the name of the conversation. Please try again.')
+
+  const conversation = await prisma.conversation.findUniqueOrThrow({
+    where: {
+      id: conversationId,
+    },
+    include: {
+      participants: {},
+    },
+  })
+
+  if (conversation.participants.length > 2) {
+    const conversationAdmin = conversation.participants.find(participant => participant.isAdmin === true)
+    if (conversationAdmin?.userId !== userId)
+      throw new Error('Only conversation admins have the authority to delete a conversation')
+  }
+
+  await prisma.conversation.update({
+    where: {
+      id: conversationId,
+    },
+    data: {
+      name: newName,
+    },
+  })
+}
