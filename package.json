@@ -3,7 +3,6 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --port=8080",
-    "socket": "npx partykit dev partykit/server.ts",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
