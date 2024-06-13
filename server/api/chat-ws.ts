@@ -66,6 +66,13 @@ export default defineWebSocketHandler({
         })
       }
     }
+    if (data.eventName === SocketEvents.ConversationParticipantsUpdate) {
+      peer.publish(data.chatId, {
+        eventName: SocketEvents.ConversationParticipantsUpdate,
+        chatId: data.chatId,
+        participants: data.participants,
+      })
+    }
   },
 
   close(peer) {

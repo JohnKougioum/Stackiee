@@ -35,15 +35,6 @@ async function sendMessage() {
   }
 }
 
-socketsList.value?.get(chatId)?.addEventListener('message', async (event) => {
-  const data = JSON.parse(event.data) as { eventName: number; message: any }
-
-  if (data.eventName === SocketEvents.NewMessage) {
-    messagesContainer.value?.addMessage(data.message)
-    if (isWhiteboardOpen.value && messagesContainerWhiteboard.value)
-      messagesContainerWhiteboard.value?.addMessage(data?.message)
-  }
-})
 const deactivated = useDeactivated()
 
 onMounted(async () => {
@@ -60,6 +51,9 @@ onMounted(async () => {
 
     if (data.eventName === SocketEvents.ConversationNameUpdate)
       updateChatName(data.chatId, data.conversationName)
+
+    if (data.eventName === SocketEvents.ConversationParticipantsUpdate)
+      updateParticipantsList(data.chatId, data.participants)
   })
 })
 </script>

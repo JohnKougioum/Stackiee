@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import PartySocket from 'partysocket'
 import { object as zobject, string as zstring } from 'zod'
 import { SocketEvents } from '~/types'
 import { sendSSEEvent } from '~/server/utils/server-events'
