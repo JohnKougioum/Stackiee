@@ -41,7 +41,7 @@ const isVShow = computed(() => {
 })
 
 function close() {
-  emit('close')
+  visible.value && emit('close')
   if (!visible.value || props.customClose)
     return
   visible.value = false

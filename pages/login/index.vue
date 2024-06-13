@@ -5,7 +5,7 @@ definePageMeta({
 })
 
 async function loginWithCreds() {
-  const { $auth } = useNuxtApp()
+  const { $auth, $connectWebsocket } = useNuxtApp()
   const response = await $fetch('/api/login', {
     method: 'POST',
     body: {
@@ -21,6 +21,7 @@ async function loginWithCreds() {
   })
   if (response.statusCode === 200) {
     $auth.loginCookie.value = 'true'
+    response.body.userId && $connectWebsocket(response.body.userId)
     await navigateTo('/')
   }
 }

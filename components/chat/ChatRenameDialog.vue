@@ -1,4 +1,6 @@
 <script setup lang='ts'>
+import { SocketEvents } from '~/types'
+
 const props = defineProps<{
   chatId?: string
 }>()
@@ -9,14 +11,14 @@ function closeModal() {
   isChatRenameOpen.value = false
 }
 
-async function rename() {
+function rename() {
+  const { $ws } = useNuxtApp()
   const chatId = props.chatId || useRoute().params.id as string
-  await $fetch(`/api/conversations/update/name/${chatId}`, {
-    method: 'PUT',
-    body: {
-      name: inputText.value,
-    },
-  })
+  $ws.value?.send(JSON.stringify({
+    eventName: SocketEvents.ConversationNameUpdate,
+    chatId,
+    conversationName: inputText.value,
+  }))
   closeModal()
 }
 </script>

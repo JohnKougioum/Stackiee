@@ -1,3 +1,10 @@
+<script setup lang="ts">
+const { $connectWebsocket } = useNuxtApp()
+onMounted(async () => {
+  userObject.value?.id && $connectWebsocket(userObject.value?.id)
+})
+</script>
+
 <template>
   <NuxtLoadingIndicator color="repeating-linear-gradient(to right,#d98018 0%,#9a5420 100%)" />
   <NuxtLayout>

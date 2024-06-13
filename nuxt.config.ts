@@ -50,6 +50,11 @@ export default defineNuxtConfig({
     '~/styles/global.css',
     '~/styles/dropdown.css',
   ],
+  nitro: {
+    experimental: {
+      websocket: true,
+    },
+  },
   vite: {
     define: {
       'process.env.VSCODE_TEXTMATE_DEBUG': 'false',
