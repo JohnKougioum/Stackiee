@@ -39,7 +39,7 @@ const deactivated = useDeactivated()
 
 onMounted(async () => {
   $ws.value?.addEventListener('message', (event) => {
-    const data = event.data.startsWith('{')
+    const data = event?.data && event.data?.startsWith('{')
       ? JSON.parse(event.data)
       : { message: event.data }
 
@@ -97,7 +97,7 @@ onMounted(async () => {
     <ChatRenameDialog v-if="isChatRenameOpen" :chat-id="chatId" />
   </ModalDialog>
   <WhiteboardModal v-if="isWhiteboardOpen">
-    <div class="rounded-md flex-1">
+    <div class="rounded-md flex-1 h-full">
       <ChatLayout v-model="inputText" @submit="sendMessage">
         <template #title>
           <ChatName class="flex-1" :name="conversationResponse!.name" :participants="conversationResponse!.participants" />
