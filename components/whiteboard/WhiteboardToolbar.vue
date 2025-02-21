@@ -29,7 +29,7 @@ const isToolSelected = computed(() => (toolId: ElementType) => selectedToolType.
 </script>
 
 <template>
-  <div class="whiteboard-toolbar absolute top-1/2 -translate-y-1/2 border-primary rounded-md left-2 p-1 flex flex-col gap-2 shadow-xl z-10">
+  <div class="whiteboard-toolbar absolute top-1/2 -translate-y-1/2 border-primary rounded-md left-2 p-1 flex flex-col gap-2 shadow-xl z-10 bg-white">
     <WhiteboardToolbarItem
       v-for="tool in tools"
       :key="tool.id"

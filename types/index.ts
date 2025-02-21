@@ -479,4 +479,7 @@ export enum SocketEvents {
   ConversationParticipantsUpdate,
   UserLeft,
   NewConversationCreated,
+  WhiteboardJoined,
+  WhiteboardLeft,
+  WhiteboardEvent,
 }

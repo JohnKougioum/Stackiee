@@ -73,14 +73,6 @@ export async function addMessageDB(userId = '', conversationId = '', body = '') 
       },
     })
 
-    // TODO: maybe change this to the new socket implementation
-    // for (const participant of conversation.participants) {
-    //   await sendSSEEvent(participant.userId, JSON.stringify({
-    //     type: SocketEvents.NewMessage,
-    //     message: `${user.fullName} sent a message: ${messageBody}`,
-    //   }))
-    // }
-
     return newMessage
   }
   catch (error) {

@@ -2,6 +2,7 @@ import type { Peer } from 'crossws'
 import { getQuery } from 'ufo'
 import { addMessageDB, getUserConversations, updateConversationName } from '~/server/utils/chat-utils'
 import { SocketEvents } from '~/types'
+import { getWhiteboardData, setWhiteboardEntry } from '~/server/utils/whiteboard-server'
 
 const users = new Map<string, { online: boolean }>()
 
@@ -23,7 +24,7 @@ export default defineWebSocketHandler({
     })
   },
   async message(peer, event) {
-    const data = JSON.parse(event.text())
+    const data = JSON.parse(await event.text())
     const userId = getUserId(peer)
     if (data.eventName === SocketEvents.NewMessage) {
       try {
@@ -73,6 +74,30 @@ export default defineWebSocketHandler({
         participants: data.participants,
       })
     }
+    if (data.eventName === SocketEvents.WhiteboardJoined) {
+      const chatId = data.chatId
+      // console.log('what the heell', getWhiteboardData(chatId))
+      peer.subscribe(`whiteboard-${chatId}`)
+      peer.send({
+        user: 'sever',
+        message: `joined ${chatId} whiteboard`,
+        eventName: SocketEvents.WhiteboardJoined,
+        data: getWhiteboardData(chatId),
+      })
+    }
+    if (data.eventName === SocketEvents.WhiteboardLeft) {
+      peer.unsubscribe(`whiteboard-${data.chatId}`)
+      peer.send({
+        user: 'server',
+        message: 'left whiteboard',
+      })
+    }
+    if (data.eventName === SocketEvents.WhiteboardEvent) {
+      const entry = setWhiteboardEntry(data.chatId, data.data)
+      peer.publish(`whiteboard-${data.chatId}`, {
+        data: entry,
+      })
+    }
   },
 
   close(peer) {
@@ -88,6 +113,6 @@ export default defineWebSocketHandler({
 })
 
 function getUserId(peer: Peer) {
-  const query = getQuery(peer.url)
+  const query = getQuery(peer.request.url)
   return query.userId as string
 }

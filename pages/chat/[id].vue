@@ -38,11 +38,12 @@ async function sendMessage() {
 const deactivated = useDeactivated()
 
 onMounted(async () => {
-  $ws.value?.addEventListener('message', (event) => {
-    const data = event?.data && event.data?.startsWith('{')
-      ? JSON.parse(event.data)
-      : { message: event.data }
-
+  $ws.value?.addEventListener('message', async (event) => {
+    let data
+            = typeof event.data === 'string' ? event.data : await event.data.text()
+    data = data.startsWith('{')
+      ? JSON.parse(data)
+      : { message: data }
     if (data.eventName === SocketEvents.NewMessage) {
       messagesContainer.value?.addMessage(data.message)
       if (isWhiteboardOpen.value && messagesContainerWhiteboard.value)
@@ -61,6 +62,7 @@ onMounted(async () => {
 <template>
   <MainContent back full-height>
     <template #title>
+      <!-- TODO: fix scrollToTop -->
       <div class="textlg font-bold flex items-center gap-2" @click="$scrollToTop">
         <span>{{ $t('nav.messages') }}</span>
       </div>

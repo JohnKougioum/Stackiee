@@ -21,6 +21,7 @@ import {
 } from '@/utils/whiteboard/utils'
 import { ActionTypes, ToolTypes, positionNames } from '@/types/whiteboardTypes'
 import type { Element, ElementType } from '@/types/whiteboardTypes'
+import { SocketEvents } from '~/types'
 
 defineEmits<{
   (e: 'toggleChatVisibility'): void
@@ -30,6 +31,9 @@ defineEmits<{
 let canvas: HTMLCanvasElement
 let ctx: CanvasRenderingContext2D
 let roughCanvas: RoughCanvas
+
+const chatId = useRoute().params.id as string
+const { $ws } = useNuxtApp()
 
 const { width: windowInnerWidth, height: windowInnerHeight } = useWindowSize()
 
@@ -51,7 +55,46 @@ onMounted(() => {
   canvas = document.getElementById('canvas') as HTMLCanvasElement
   ctx = canvas.getContext('2d') as CanvasRenderingContext2D
   roughCanvas = rough.canvas(canvas)
+
+  $ws.value?.send(JSON.stringify({
+    eventName: SocketEvents.WhiteboardJoined,
+    chatId,
+  }))
+
+  $ws.value?.addEventListener('message', async (event) => {
+    let response
+            = typeof event.data === 'string' ? event.data : await event.data.text()
+    response = response.startsWith('{')
+      ? JSON.parse(response)
+      : { message: response }
+
+    if (response?.eventName === SocketEvents.WhiteboardJoined) {
+      if (Object.keys(response.data)?.length)
+        elements.value.push(...Object.values(response.data) as Element[])
+    }
+    else {
+      if (response?.data && Object.keys(response?.data)?.length) {
+        if (elements.value.findIndex(({ id }) => id === response.data.id) !== -1)
+          elements.value[response.data.id] = response.data
+        else
+          elements.value.push(response.data)
+      }
+      else {
+        elements.value = []
+      }
+    }
+    reDraw()
+  })
+
   draw()
+})
+
+onUnmounted(() => {
+  const { $ws } = useNuxtApp()
+  $ws.value?.send(JSON.stringify({
+    eventName: SocketEvents.WhiteboardLeft,
+    chatId,
+  }))
 })
 
 useEventListener('resize', () => {
@@ -106,18 +149,24 @@ function updateElement(
   x2: number,
   y2: number,
   type?: ElementType,
+  fromServer?: boolean,
 ) {
   const elementToolType = type || toolType.value
-  const elementsCopy = [...elements.value]
   if (elementToolType === ToolTypes.PENCIL) {
-    elementsCopy[id]?.points?.push([x2, y2])
+    elements.value[id]?.points?.push([x2, y2])
   }
   else {
     const updatedElement = createElement(id, x1, y1, x2, y2, elementToolType)
-    elementsCopy[id] = updatedElement as Element
+    elements.value[id] = updatedElement as Element
   }
-  elements.value = elementsCopy
   reDraw()
+  if (!fromServer) {
+    $ws.value?.send(JSON.stringify({
+      eventName: SocketEvents.WhiteboardEvent,
+      chatId,
+      data: elements.value[id],
+    }))
+  }
 }
 
 function handleMouseDown(event: MouseEvent) {
@@ -426,6 +475,11 @@ function getMouseCoordinates(event: MouseEvent) {
 
 function emptyWhiteboard() {
   elements.value.length = 0
+  $ws.value?.send(JSON.stringify({
+    eventName: SocketEvents.WhiteboardEvent,
+    chatId,
+    data: [],
+  }))
   reDraw()
 
   // TODO: remove them after sockets
