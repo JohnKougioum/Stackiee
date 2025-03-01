@@ -320,14 +320,6 @@ export const classes: Classes = {
         nameEL: 'Μετατροπείς Ισχύος',
         nameEN: 'Power Converters',
       },
-      1837: {
-        nameEL: 'Μικροηλεκτρονική',
-        nameEN: 'Microelectronics',
-      },
-      1838: {
-        nameEL: 'Εφαρμογές Συστημάτων Ισχύος και ΑΠΕ',
-        nameEN: 'Application of power systems and RES',
-      },
       1839: {
         nameEL: 'Ηλεκτροκίνηση και Ευφυή Δίκτυα',
         nameEN: 'Motor drives and smart grid',
