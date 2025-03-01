@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const uploadedFiles: Array<{
+    id: string;
     encryptedMetadata: string;
   }> = [];
 
@@ -52,6 +53,7 @@ export default defineEventHandler(async (event) => {
 
         // 4) Add the newly created file info to the response
         uploadedFiles.push({
+          id: newFile.id,
           encryptedMetadata
         });
       } catch (error) {
