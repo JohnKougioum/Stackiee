@@ -5,7 +5,8 @@
       "search": "Αναζήτηση",
       "messages": "Μηνύματα",
       "profile": "Προφίλ",
-      "compose": "Σύνθεση"
+      "compose": "Σύνθεση",
+      "announcements": "Ανακοινώσεις"
   },
     "time_ago_options": {
         "day_future": "σε 0 μέρες|αύριο|σε {n} μέρες",
