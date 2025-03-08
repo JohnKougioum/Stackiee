@@ -5,7 +5,8 @@
         "search": "Search",
         "messages": "Messages",
         "profile": "Profile",
-        "compose": "Compose"
+        "compose": "Compose",
+        "announcements": "Announcements"
     },
     "time_ago_options": {
         "day_future": "in 0 days|tomorrow|in {n} days",

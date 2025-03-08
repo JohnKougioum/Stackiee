@@ -7,7 +7,7 @@
     <NavSideItem :text="$t('nav.home')" to="/" icon="majesticons:home-analytics-line" />
     <NavSideItem :text="$t('nav.messages')" to="/chat" icon="majesticons:messages-line" />
     <NavSideItem :text="$t('nav.profile')" to="/profile" icon="mingcute:user-3-line" />
-    <NavSideItem text="Dashboard" to="/dashboard" icon="majesticons:dashboard-line" />
+    <NavSideItem :text="$t('nav.announcements')" to="/announcements" icon="majesticons:megaphone-line" />
     <NavSideItem :text="$t('nav.compose')" to="/compose" icon="quill:compose" />
 
     <div class="flex-shrink hidden sm:block mt-4" />
