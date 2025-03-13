@@ -15,6 +15,7 @@ export interface Element {
   id: number
   position?: string
   points?: number[][]
+  actionType?: string
 }
 
 export const ToolTypes = {

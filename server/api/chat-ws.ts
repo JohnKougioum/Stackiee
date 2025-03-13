@@ -2,7 +2,7 @@ import type { Peer } from 'crossws'
 import { getQuery } from 'ufo'
 import { addMessageDB, getUserConversations, updateConversationName } from '~/server/utils/chat-utils'
 import { SocketEvents } from '~/types'
-import { getWhiteboardData, setWhiteboardEntry } from '~/server/utils/whiteboard-server'
+import { Redo, Undo, createHistoryPoint, getWhiteboardData, setWhiteboardEntry } from '~/server/utils/whiteboard-server'
 
 const users = new Map<string, { online: boolean }>()
 
@@ -95,7 +95,38 @@ export default defineWebSocketHandler({
     if (data.eventName === SocketEvents.WhiteboardEvent) {
       const entry = setWhiteboardEntry(data.chatId, data.data)
       peer.publish(`whiteboard-${data.chatId}`, {
+        eventName: SocketEvents.WhiteboardEvent,
         data: entry,
+      })
+    }
+    if (data.eventName === SocketEvents.WhiteboardDeleteElement) {
+      peer.publish(`whiteboard-${data.chatId}`, {
+        eventName: SocketEvents.WhiteboardDeleteElement,
+        data: data.data,
+      })
+    }
+    if (data.eventName === SocketEvents.WhiteboardHistoryPointCreation)
+      createHistoryPoint(data.chatId, data.data)
+    if (data.eventName === SocketEvents.WhiteboardUndo) {
+      const undoData = Undo(data.chatId)
+      peer.send({
+        eventName: SocketEvents.WhiteboardUndo,
+        data: undoData,
+      })
+      peer.publish(`whiteboard-${data.chatId}`, {
+        eventName: SocketEvents.WhiteboardUndo,
+        data: undoData,
+      })
+    }
+    if (data.eventName === SocketEvents.WhiteboardRedo) {
+      const redoData = Redo(data.chatId)
+      peer.send({
+        eventName: SocketEvents.WhiteboardRedo,
+        data: redoData,
+      })
+      peer.publish(`whiteboard-${data.chatId}`, {
+        eventName: SocketEvents.WhiteboardRedo,
+        data: redoData,
       })
     }
   },

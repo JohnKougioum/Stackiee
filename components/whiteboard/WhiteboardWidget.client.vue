@@ -4,7 +4,6 @@ import type { RoughCanvas } from 'roughjs/bin/canvas'
 import type { Drawable } from 'roughjs/bin/core'
 import { getStroke } from 'perfect-freehand'
 import {
-  createHistoryPoint,
   getLastHistoryPoint,
   getLastLocalRedo,
   getLocalHistory,
@@ -72,7 +71,7 @@ onMounted(() => {
       if (Object.keys(response.data)?.length)
         elements.value.push(...Object.values(response.data) as Element[])
     }
-    else {
+    if (response?.eventName === SocketEvents.WhiteboardEvent) {
       if (response?.data && Object.keys(response?.data)?.length) {
         if (elements.value.findIndex(({ id }) => id === response.data.id) !== -1)
           elements.value[response.data.id] = response.data
@@ -83,6 +82,15 @@ onMounted(() => {
         elements.value = []
       }
     }
+    if (response?.eventName === SocketEvents.WhiteboardDeleteElement)
+      elements.value = elements.value.filter(element => element.id !== response.data)
+
+    if (response?.eventName === SocketEvents.WhiteboardUndo)
+      elements.value = response.data || []
+
+    if (response?.eventName === SocketEvents.WhiteboardRedo)
+      elements.value = response.data || []
+
     reDraw()
   })
 
@@ -164,7 +172,7 @@ function updateElement(
     $ws.value?.send(JSON.stringify({
       eventName: SocketEvents.WhiteboardEvent,
       chatId,
-      data: elements.value[id],
+      data: { ...JSON.parse(JSON.stringify(elements.value[id])), actionType: action },
     }))
   }
 }
@@ -204,17 +212,10 @@ function handleMouseDown(event: MouseEvent) {
           : ActionTypes.RESIZING
     }
 
-    const { x1, y1, x2, y2, points, type } = selectedElement
     createHistoryPoint(
       element.id,
       action,
-      type,
-      undoIndex,
-      x1,
-      y1,
-      x2,
-      y2,
-      points,
+      selectedElement,
     )
     undoIndex = 0
   }
@@ -237,12 +238,7 @@ function handleMouseDown(event: MouseEvent) {
     createHistoryPoint(
       newElement.id,
       ActionTypes.DRAWING,
-      newElement.type,
-      undoIndex,
-      newElement.x1,
-      newElement.y1,
-      newElement.x2,
-      newElement.y2,
+      newElement,
     )
     undoIndex = 0
   }
@@ -330,6 +326,11 @@ function handleMouseUp() {
     else if (action === ActionTypes.DELETING) {
       const index = selectedElement.id
       elements.value = elements.value.filter(element => element.id !== index)
+      $ws.value?.send(JSON.stringify({
+        eventName: SocketEvents.WhiteboardDeleteElement,
+        chatId,
+        data: index,
+      }))
       reDraw()
     }
   }
@@ -388,68 +389,95 @@ function getElementAtPosition(x: number, y: number) {
     .find(element => !!element.position)
 }
 
+function createHistoryPoint(
+  id: number,
+  actionType: string,
+  element: Element,
+) {
+  let localHistory = {}
+  const { x1, y1, x2, y2, points, type, roughElement, position } = element
+  if (type === ToolTypes.PENCIL)
+    localHistory = { id, actionType, points, type }
+  else
+    localHistory = { id, actionType, x1, y1, x2, y2, type, roughElement, position }
+
+  $ws.value?.send(JSON.stringify({
+    eventName: SocketEvents.WhiteboardHistoryPointCreation,
+    chatId,
+    data: localHistory,
+  }))
+}
+
 function Undo() {
-  const lastAction = getLastHistoryPoint(undoIndex)
-  const elementCopy
-    = elements.value.find((element) => {
-      return element?.id === lastAction?.id
-    }) || {}
-  if (lastAction) {
-    const { id, actionType, x1, y1, x2, y2, points, type } = lastAction
-    if (actionType === ActionTypes.DRAWING) {
-      elements.value = elements.value.filter(element => element.id !== id)
-    }
-    else {
-      type === ToolTypes.PENCIL
-        ? elements.value.push({ id, type, points } as Element)
-        : updateElement(id, x1, y1, x2, y2, type)
-    }
-    if (Object.keys(elementCopy).length) {
-      const { id, x1, y1, x2, y2, points, type } = elementCopy as Element
-      storeRedoPoint(id, lastAction.actionType, type, x1, y1, x2, y2, points)
-    }
-    else if (actionType === ActionTypes.DELETING) {
-      storeRedoPoint(id, lastAction.actionType, type, x1, y1, x2, y2, points)
-    }
-  }
-  reDraw()
-  undoIndex < getLocalHistory().length && undoIndex++
+  $ws.value?.send(JSON.stringify({
+    eventName: SocketEvents.WhiteboardUndo,
+    chatId,
+  }))
+  // const lastAction = getLastHistoryPoint(undoIndex)
+  // const elementCopy
+  //   = elements.value.find((element) => {
+  //     return element?.id === lastAction?.id
+  //   }) || {}
+  // if (lastAction) {
+  //   const { id, actionType, x1, y1, x2, y2, points, type } = lastAction
+  //   if (actionType === ActionTypes.DRAWING) {
+  //     elements.value = elements.value.filter(element => element.id !== id)
+  //   }
+  //   else {
+  //     type === ToolTypes.PENCIL
+  //       ? elements.value.push({ id, type, points } as Element)
+  //       : updateElement(id, x1, y1, x2, y2, type)
+  //   }
+  //   if (Object.keys(elementCopy).length) {
+  //     const { id, x1, y1, x2, y2, points, type } = elementCopy as Element
+  //     storeRedoPoint(id, lastAction.actionType, type, x1, y1, x2, y2, points)
+  //   }
+  //   else if (actionType === ActionTypes.DELETING) {
+  //     storeRedoPoint(id, lastAction.actionType, type, x1, y1, x2, y2, points)
+  //   }
+  // }
+  // reDraw()
+  // undoIndex < getLocalHistory().length && undoIndex++
 }
 
 function Redo() {
-  const redoElement = getLastLocalRedo()
-  if (redoElement) {
-    const { id, actionType, x1, y1, x2, y2, points, type } = redoElement
-    if (actionType === ActionTypes.DELETING) {
-      elements.value = elements.value.filter(element => element.id !== id)
-      reDraw()
-    }
-    else if (
-      elements.value.findIndex(element => element.id === id) === -1
-    ) {
-      if (type === ToolTypes.PENCIL && points) {
-        elements.value.push({ id, type, points } as Element)
-      }
-      else {
-        const newElement = createElement(id, x1, y1, x2, y2, type) as Element
-        elements.value.push(newElement)
-        updateElement(
-          newElement.id,
-          newElement.x1,
-          newElement.y1,
-          newElement.x2,
-          newElement.y2,
-          newElement.type,
-        )
-      }
-    }
-    else {
-      updateElement(id, x1, y1, x2, y2, type)
-    }
-  }
-  reDraw()
-  removeLastLocalRedo()
-  undoIndex > 0 && undoIndex--
+  $ws.value?.send(JSON.stringify({
+    eventName: SocketEvents.WhiteboardRedo,
+    chatId,
+  }))
+  // const redoElement = getLastLocalRedo()
+  // if (redoElement) {
+  //   const { id, actionType, x1, y1, x2, y2, points, type } = redoElement
+  //   if (actionType === ActionTypes.DELETING) {
+  //     elements.value = elements.value.filter(element => element.id !== id)
+  //     reDraw()
+  //   }
+  //   else if (
+  //     elements.value.findIndex(element => element.id === id) === -1
+  //   ) {
+  //     if (type === ToolTypes.PENCIL && points) {
+  //       elements.value.push({ id, type, points } as Element)
+  //     }
+  //     else {
+  //       const newElement = createElement(id, x1, y1, x2, y2, type) as Element
+  //       elements.value.push(newElement)
+  //       updateElement(
+  //         newElement.id,
+  //         newElement.x1,
+  //         newElement.y1,
+  //         newElement.x2,
+  //         newElement.y2,
+  //         newElement.type,
+  //       )
+  //     }
+  //   }
+  //   else {
+  //     updateElement(id, x1, y1, x2, y2, type)
+  //   }
+  // }
+  // reDraw()
+  // removeLastLocalRedo()
+  // undoIndex > 0 && undoIndex--
 }
 
 function onZoom(delta: number) {

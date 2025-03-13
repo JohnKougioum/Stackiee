@@ -482,4 +482,8 @@ export enum SocketEvents {
   WhiteboardJoined,
   WhiteboardLeft,
   WhiteboardEvent,
+  WhiteboardDeleteElement,
+  WhiteboardHistoryPointCreation,
+  WhiteboardUndo,
+  WhiteboardRedo,
 }
