@@ -48,7 +48,6 @@ export default defineEventHandler(async (event) => {
     },
   }
   try {
-    // TODO: Send SSE event to all participants in the conversation (except the sender)
     const allConversationParticipants = await prisma.conversationParticipant.findMany({})
 
     const transformedArray = allConversationParticipants.reduce((result, item) => {

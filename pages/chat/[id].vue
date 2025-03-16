@@ -62,7 +62,6 @@ onMounted(async () => {
 <template>
   <MainContent back full-height>
     <template #title>
-      <!-- TODO: fix scrollToTop -->
       <div class="textlg font-bold flex items-center gap-2" @click="$scrollToTop">
         <span>{{ $t('nav.messages') }}</span>
       </div>
