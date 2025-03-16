@@ -16,6 +16,11 @@ export default defineEventHandler(async (event) => {
     },
     include: {
       User: true,
+      File: {
+        select: {
+            encryptedDetails: true
+        }
+      },
       _count: {
         select: {
           Comment: true,
