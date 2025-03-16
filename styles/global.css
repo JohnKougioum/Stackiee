@@ -14,6 +14,10 @@
     @apply w-0.5 h-5 bg-secondary-gray;
 }
 
+.border-primary {
+    @apply border-[1px] border-primary-dark;
+}
+
 h1{
     font-size: 1.5rem;
 }
@@ -78,4 +82,4 @@ blockquote {
 }
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
-  }
+}

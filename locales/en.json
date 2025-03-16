@@ -43,10 +43,13 @@
       "signIn": "Sign In",
       "signOut": "Sign Out"
     },
+    "users": "Users",
+    "selectedUsers": "Selected Users",
     "select": {
       "semester": "Select Semester",
       "course": "Select Course"
     },
+    "codeBlockHint": "*You can hover at right top corner of the code block to select a language for highlighting.",
     "search": "Search",
     "searchedFor": "Showing results for: ",
     "publish": "Publish",
@@ -61,6 +64,7 @@
     "noMorePosts": "No more posts",
     "settings": {
       "title": "Settings",
+      "select_a_setting": "Select a setting",
       "language": {
         "title": "Language",
         "change": "Change Language"
@@ -86,5 +90,22 @@
         "10": "10th Semester"
       },
       "showMore": "Show More"
-    }
+    },
+    "chat": {
+      "select_a_chat": "Select a conversation",
+      "or_create_a_new_one": "or create a new one",
+      "new_chat": "New Chat",
+      "sentMessage": "Sent a message",
+      "addParticipant": "Add participant",
+      "renameConversation": "Rename conversation",
+      "enterNewName": "Enter new name",
+      "rename": "Rename"
+    },
+    "create": "Create",
+    "searchForChat": "Search for a specific conversation",
+    "searchForUsers": "Search for users",
+    "noUsersFound": "No users found",
+    "participants": "Participants",
+    "whiteboard": "Whiteboard",
+    "somethingWentWrong": "Something went wrong. Please try again later."
 }

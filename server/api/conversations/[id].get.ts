@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   try {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        uid: event.context.uid.uid,
+        id: event.context.id.id,
       },
     })
 
@@ -28,13 +28,16 @@ export default defineEventHandler(async (event) => {
             user: {
               select: {
                 fullNameEL: true,
+                fullName: true,
+                uid: true,
+                id: true,
               },
             },
           },
         },
       },
     })
-  
+
     return {
       statusCode: 200,
       body: conversation,

@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { storeToRefs } from 'pinia'
 import { classes } from '@/types/index'
+
 const props = defineProps<{
   semester: number
 }>()

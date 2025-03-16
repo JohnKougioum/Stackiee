@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   try {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        uid: event.context.uid.uid,
+        id: event.context.id.id,
       },
     })
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
         id: conversationID,
       },
       include: {
-        participants: {},
+        participants: true,
       },
     })
     if (!conversation) {
@@ -43,22 +43,14 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const allConversationParticipants = await prisma.conversationParticipant.findMany({
-      where: {
-        conversationId: conversationID,
-      },
-    })
-    const tempConversationParticipants = allConversationParticipants.map((element) => {
-      return element.userId
-    })
-
+    const tempConversationParticipants = conversation.participants.map(participant => participant.userId)
     const usersToRemove = tempConversationParticipants.filter(item => !participants.includes(item))
-    const usersToAdd = participants.filter((uid) =>
+    const usersToAdd = participants.filter((uid: string) =>
       !tempConversationParticipants.includes(uid) && uid !== user.id,
     )
 
     if (usersToRemove.length) {
-      const x = await prisma.conversationParticipant.deleteMany({
+      await prisma.conversationParticipant.deleteMany({
         where: {
           conversationId: conversation.id,
           userId: {
@@ -66,18 +58,17 @@ export default defineEventHandler(async (event) => {
           },
         },
       })
-      console.log("response: ", x)
     }
 
     if (usersToAdd.length) {
-      const x1 = await prisma.conversation.update({
+      await prisma.conversation.update({
         where: {
           id: conversation.id,
         },
         data: {
           participants: {
             createMany: {
-              data: usersToAdd.map((id) => ({
+              data: usersToAdd.map((id: string) => ({
                 userId: id,
                 hasSeenLatestMessage: id === user.id,
                 isAdmin: id === user.id,
@@ -85,16 +76,38 @@ export default defineEventHandler(async (event) => {
             },
           },
         },
+        include: {
+          participants: true,
+        },
       })
-      console.log("response: ", x1)
     }
+
+    const updatedCoversation = await prisma.conversation.findUniqueOrThrow({
+      where: {
+        id: conversation.id,
+      },
+      include: {
+        participants: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                uid: true,
+                fullName: true,
+                fullNameEL: true,
+              },
+            },
+          },
+        },
+      },
+    })
 
     return {
       statusCode: 200,
-      conversationParticipants: tempConversationParticipants,
-      participantsInPayload: participants,
-      toRemove: usersToRemove,
-      toAdd: usersToAdd,
+      body: {
+        message: 'Successfully updated conversation participants',
+        participantsList: updatedCoversation.participants,
+      },
     }
   }
   catch (error: any) {

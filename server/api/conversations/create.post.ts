@@ -1,10 +1,12 @@
 import { PrismaClient } from '@prisma/client'
+import { sendSSEEvent } from '~/server/utils/server-events'
+import { SocketEvents } from '~/types'
 
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
   const requestBody = await readBody(event)
-  const participantIds = requestBody.userIDs.sort()
+  const participantIds: string[] = requestBody.userIDs.sort()
 
   if (!participantIds.length) {
     throw createError({
@@ -16,7 +18,7 @@ export default defineEventHandler(async (event) => {
   // Get all the details of the logged-in user
   const user = await prisma.user.findUniqueOrThrow({
     where: {
-      uid: event.context.uid.uid,
+      id: event.context.id.id,
     },
   })
 
@@ -84,7 +86,7 @@ export default defineEventHandler(async (event) => {
     else {
       const conversation = await prisma.conversation.create({
         data: {
-          name: 'default name',
+          name: '',
           participants: {
             createMany: {
               data: participantIds.map((id: string) => ({
@@ -97,6 +99,15 @@ export default defineEventHandler(async (event) => {
         },
         include: conversationPopulated,
       })
+
+      for (const participant of conversation.participants) {
+        if (participant.userId !== user.id) {
+          await sendSSEEvent(participant.userId, JSON.stringify({
+            type: SocketEvents.NewConversationCreated,
+          }))
+        }
+      }
+
       return {
         status: 200,
         message: 'A new conversation has been created',

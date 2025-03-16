@@ -6,8 +6,8 @@ defineProps<{
   autoBoundaryMaxSize?: boolean
 }>()
 
-const dropdown = $ref<any>()
-const hide = () => dropdown.hide()
+const dropdown = ref<any>()
+const hide = () => dropdown.value.hide()
 provide(InjectionKeyDropdownContext, {
   hide,
 })
@@ -18,7 +18,12 @@ defineExpose({
 </script>
 
 <template>
-  <VDropdown v-bind="$attrs" ref="dropdown" :placement="placement || 'auto'" :auto-boundary-max-size="autoBoundaryMaxSize">
+  <VDropdown
+    v-bind="$attrs"
+    ref="dropdown"
+    :placement="placement || 'auto'"
+    :auto-boundary-max-size="autoBoundaryMaxSize"
+  >
     <slot />
     <template #popper="scope">
       <slot name="popper" v-bind="scope" />

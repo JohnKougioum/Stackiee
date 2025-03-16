@@ -5,21 +5,30 @@ export default defineEventHandler(async (event) => {
   if (
     event.node.req.url?.startsWith('/login')
     || event.node.req.url?.startsWith('/api/login')
+    || event.node.req.url?.startsWith('/favicon.ico')
   )
     return
 
   if (!token) {
     deleteCookie(event, 'loggedIn')
-    await sendRedirect(event, '/login', 401)
+    deleteCookie(event, 'token', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    })
+    return await sendRedirect(event, '/login', 401)
   }
 
-  jwt.verify(token, useRuntimeConfig().token_secret, async (err, uid) => {
+  jwt.verify(token, useRuntimeConfig().token_secret, async (err, id) => {
     if (err) {
       deleteCookie(event, 'loggedIn')
-      await sendRedirect(event, '/login', 401)
+      deleteCookie(event, 'token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+      })
+      return await sendRedirect(event, '/login', 401)
     }
-    else {
-      event.context.uid = uid
-    }
+    event.context.id = id
   })
 })

@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
         course: course || '',
         User: {
           connect: {
-            uid: event.context.uid.uid,
+            id: event.context.id.id,
           },
         },
       },

@@ -455,3 +455,27 @@ export const classes: Classes = {
     },
   },
 } as const
+
+export interface ThinnedUser {
+  id: string
+  uid: string
+  fullName: string
+  fullNameEL: string
+}
+
+export enum SocketEvents {
+  NewMessage,
+  MessageError,
+  ConversationUpdated,
+  ConversationNameUpdate,
+  ConversationParticipantsUpdate,
+  UserLeft,
+  NewConversationCreated,
+  WhiteboardJoined,
+  WhiteboardLeft,
+  WhiteboardEvent,
+  WhiteboardDeleteElement,
+  WhiteboardHistoryPointCreation,
+  WhiteboardUndo,
+  WhiteboardRedo,
+}

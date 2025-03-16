@@ -1,3 +1,10 @@
+<script setup lang="ts">
+const { $connectWebsocket } = useNuxtApp()
+onMounted(async () => {
+  userObject.value?.id && $connectWebsocket(userObject.value?.id)
+})
+</script>
+
 <template>
   <NuxtLoadingIndicator color="repeating-linear-gradient(to right,#d98018 0%,#9a5420 100%)" />
   <NuxtLayout>
@@ -5,7 +12,7 @@
   </NuxtLayout>
 </template>
 
-<style>
+<style lang="postcss">
 html,
 body,
 #__nuxt {
@@ -36,12 +43,12 @@ body{
 
 ::-webkit-scrollbar-track {
   background: #D9D9D9;
-  border-radius: 1px;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #8885;
-  border-radius: 1px;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

@@ -3,22 +3,23 @@ import type { Ref } from 'vue'
 import { classes } from '@/types/index'
 
 export function usePaginator(
-  page: globalThis.Ref<number | undefined>,
+  page: Ref<number | undefined>,
   pending: Ref<boolean>,
-  next: Ref<boolean>) {
+  next: Ref<boolean>,
+) {
   const endAnchor = ref<HTMLDivElement>()
-  const bound = reactive(useElementBounding(endAnchor))
-  const isInScreen = $computed(() => bound.top < window.innerHeight * 2)
+  const bound = useElementBounding(endAnchor)
+  const isInScreen = computed(() => bound.top.value < window.innerHeight * 2)
   const deactivated = useDeactivated()
 
-  if (process.client) {
+  if (import.meta.client) {
     useIntervalFn(() => {
       bound.update()
     }, 1000)
 
-    watch(() => isInScreen, () => {
+    watch(isInScreen, () => {
       if (
-        isInScreen
+        isInScreen.value
         && deactivated.value === false
         && !pending.value
         && next.value

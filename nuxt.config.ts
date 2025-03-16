@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { i18n } from './config/i18n'
+import { currentLocales } from './config/i18n'
 
 export default defineNuxtConfig({
   modules: [
@@ -13,27 +13,19 @@ export default defineNuxtConfig({
     'nuxt-icon',
   ],
   vue: {
-    defineModel: true,
+    propsDestructure: true,
   },
   macros: {
     defineModels: false,
   },
-  typescript: {
-    tsConfig: {
-      vueCompilerOptions: {
-        experimentalRfc436: true,
-      },
-    },
-  },
   experimental: {
     payloadExtraction: false,
-    reactivityTransform: true,
   },
   routeRules: {
-    // Static generation
     '/': { prerender: true },
     '/settings/**': { prerender: false },
     '/login/auth': { prerender: false, ssr: false },
+    '/chat/**': { prerender: false, ssr: false },
   },
   app: {
     keepalive: true,
@@ -44,12 +36,25 @@ export default defineNuxtConfig({
       },
     },
   },
-  i18n,
+  i18n: {
+    locales: currentLocales,
+    lazy: true,
+    strategy: 'no_prefix',
+    detectBrowserLanguage: false,
+    langDir: 'locales',
+    defaultLocale: 'el',
+    vueI18n: './config/i18n.config.ts',
+  },
   css: [
     'floating-vue/dist/style.css',
     '~/styles/global.css',
     '~/styles/dropdown.css',
   ],
+  nitro: {
+    experimental: {
+      websocket: true,
+    },
+  },
   vite: {
     define: {
       'process.env.VSCODE_TEXTMATE_DEBUG': 'false',

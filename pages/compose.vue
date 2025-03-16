@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import { classes } from '@/types/index'
 
 definePageMeta({
@@ -21,14 +20,14 @@ const selectedFile = ref<File | null>(null)
 // Handle file input changes
 function handleFileChange(event: Event) {
   const target = event.target as HTMLInputElement
-  if (target.files && target.files.length > 0) {
+  if (target.files && target.files.length > 0)
     selectedFile.value = target.files[0]
-  }
 }
 
 // Upload the file and return its id (or null if no file was uploaded)
 async function uploadFile(): Promise<string | null> {
-  if (!selectedFile.value) return null
+  if (!selectedFile.value)
+    return null
 
   const formData = new FormData()
   formData.append('file', selectedFile.value)
@@ -39,15 +38,15 @@ async function uploadFile(): Promise<string | null> {
       body: formData,
     })
 
-    if (!response.ok) {
+    if (!response.ok)
       throw new Error('File upload failed')
-    }
 
     const result = await response.json()
     // Expecting a response structure like:
     // { success: true, files: [{ id: "file-uuid", encryptedMetadata: "..." }] }
     return result.files && result.files[0]?.id ? result.files[0].id : null
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error uploading file:', error)
     return null
   }
@@ -57,7 +56,7 @@ async function uploadFile(): Promise<string | null> {
 async function publishPost(postBody: string) {
   const fileId = await uploadFile()
 
-  const { data } = await useFetch('/api/posts/create', {
+  const data = await $fetch('/api/posts/create', {
     method: 'POST',
     body: {
       postBody,
@@ -67,7 +66,7 @@ async function publishPost(postBody: string) {
     },
   })
 
-  if (data.value?.statusCode === 200) {
+  if (data?.statusCode === 200) {
     semester.value = undefined
     selectedLecture.value = undefined
     selectedFile.value = null
@@ -104,7 +103,7 @@ async function publishPost(postBody: string) {
       </option>
       <template v-if="semester">
         <option v-for="(lecture, index) of lectures" :key="lecture.nameEL" :value="index">
-          {{ lecture.nameEL }}
+          {{ displayUsernameLocale(lecture.nameEN, lecture.nameEL) }}
         </option>
       </template>
     </select>
@@ -116,11 +115,11 @@ async function publishPost(postBody: string) {
       {{ $t('upload.file') }}
     </label>
     <input
-      type="file"
       id="fileUpload"
-      @change="handleFileChange"
+      type="file"
       class="block"
-    />
+      @change="handleFileChange"
+    >
   </div>
 
   <PublishWidget
