@@ -22,7 +22,7 @@ function close() {
     <div class="fixed inset-0 overflow-y-auto scrollbar-hide overscroll-none z-10 bg-base">
       <div class="w-full h-full">
         <WhiteboardWidget class="h-full border-primary" @close="close" @toggle-chat-visibility="chatSectionVisible = !chatSectionVisible" />
-        <div v-if="chatSectionVisible" class="absolute top-0 right-0 h-full w-1/3 bg-white z-10">
+        <div v-if="chatSectionVisible" class="absolute top-0 right-0 h-full w-1/3 bg-white z-10 shadow-md">
           <slot />
         </div>
       </div>

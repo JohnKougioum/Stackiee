@@ -102,7 +102,7 @@ onMounted(async () => {
     <div class="rounded-md flex-1 h-full">
       <ChatLayout v-model="inputText" @submit="sendMessage">
         <template #title>
-          <ChatName class="flex-1" :name="conversationResponse!.name" :participants="conversationResponse!.participants" />
+          <ChatName class="flex-1 overflow-hidden" :name="conversationResponse!.name" :participants="conversationResponse!.participants" />
         </template>
         <template #messages>
           <template v-if="conversationResponse?.participants.length">
