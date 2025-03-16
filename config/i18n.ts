@@ -1,15 +1,10 @@
-import type { NuxtI18nOptions } from '@nuxtjs/i18n'
 import type { DateTimeFormats, NumberFormats, PluralizationRule, PluralizationRules } from '@intlify/core-base'
-
-import type { LocaleObject } from '#i18n'
+import type { LocaleObject } from '@nuxtjs/i18n'
 
 interface LocaleObjectData extends LocaleObject {
   numberFormats?: NumberFormats
   dateTimeFormats?: DateTimeFormats
   pluralRule?: PluralizationRule
-}
-
-const countryLocaleVariants: Record<string, LocaleObjectData[]> = {
 }
 
 const locales: LocaleObjectData[] = [
@@ -22,27 +17,19 @@ const locales: LocaleObjectData[] = [
     code: 'el',
     file: 'el.json',
     name: 'Ελληνικά',
+    pluralRule: (choice: number) => {
+      if (choice === 0)
+        return 0
+
+      const name = new Intl.PluralRules('pl-PL').select(choice)
+      return { zero: 0, one: 1, two: 0 /* not used */, few: 2, many: 3, other: 4 }[name]
+    },
   },
 ]
 
 function buildLocales() {
   const useLocales = Object.values(locales).reduce((acc, data) => {
-    const locales = countryLocaleVariants[data.code]
-    if (locales) {
-      locales.forEach((l) => {
-        const entry: LocaleObjectData = {
-          ...data,
-          code: l.code,
-          name: l.name,
-          files: [data.file!, `${l.code}.json`],
-        }
-        delete entry.file
-        acc.push(entry)
-      })
-    }
-    else {
-      acc.push(data)
-    }
+    acc.push(data)
     return acc
   }, <LocaleObjectData[]>[])
 
@@ -51,7 +38,7 @@ function buildLocales() {
 
 export const currentLocales = buildLocales()
 
-const datetimeFormats = Object.values(currentLocales).reduce((acc, data) => {
+export const datetimeFormats = Object.values(currentLocales).reduce((acc, data) => {
   const dateTimeFormats = data.dateTimeFormats
   if (dateTimeFormats) {
     acc[data.code] = { ...dateTimeFormats }
@@ -76,7 +63,7 @@ const datetimeFormats = Object.values(currentLocales).reduce((acc, data) => {
   return acc
 }, <DateTimeFormats>{})
 
-const numberFormats = Object.values(currentLocales).reduce((acc, data) => {
+export const numberFormats = Object.values(currentLocales).reduce((acc, data) => {
   const numberFormats = data.numberFormats
   if (numberFormats) {
     acc[data.code] = { ...numberFormats }
@@ -108,7 +95,7 @@ const numberFormats = Object.values(currentLocales).reduce((acc, data) => {
   return acc
 }, <NumberFormats>{})
 
-const pluralRules = Object.values(currentLocales).reduce((acc, data) => {
+export const pluralRules = Object.values(currentLocales).reduce((acc, data) => {
   const pluralRule = data.pluralRule
   if (pluralRule) {
     acc[data.code] = pluralRule
@@ -117,21 +104,3 @@ const pluralRules = Object.values(currentLocales).reduce((acc, data) => {
 
   return acc
 }, <PluralizationRules>{})
-
-export const i18n: NuxtI18nOptions = {
-  locales: currentLocales,
-  lazy: true,
-  strategy: 'no_prefix',
-  detectBrowserLanguage: false,
-  langDir: 'locales',
-  defaultLocale: 'el',
-  vueI18n: {
-    availableLocales: currentLocales.map(l => l.code),
-    fallbackLocale: 'en',
-    fallbackWarn: false,
-    missingWarn: false,
-    datetimeFormats,
-    numberFormats,
-    pluralRules,
-  },
-}

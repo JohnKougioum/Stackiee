@@ -77,7 +77,9 @@ export function useTimeAgoOptions(short = false): UseTimeAgoOptions<false> {
 }
 
 export function displayUsernameLocale(name: string, nameEL: string, shouldLowercase = false) {
-  const { locale } = useI18n()
+  if (!process.client)
+    return name
+  const { locale } = useNuxtApp().$i18n
   return locale.value === 'en'
     ? shouldLowercase
       ? name.toLowerCase()

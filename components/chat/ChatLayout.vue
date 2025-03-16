@@ -3,6 +3,10 @@ defineEmits<{
   (event: 'submit'): void
 }>()
 const modelValue = defineModel<string>()
+
+function toggleWhiteboard() {
+  isWhiteboardOpen.value = !isWhiteboardOpen.value
+}
 </script>
 
 <template>
@@ -18,7 +22,7 @@ const modelValue = defineModel<string>()
             <slot name="participantsDropdown" />
           </template>
         </CommonDropdown>
-        <CommonTooltip placement="bottom" :content="$t('whiteboard')">
+        <CommonTooltip placement="bottom" :content="$t('whiteboard')" @click="toggleWhiteboard">
           <Icon class="cursor-pointer" name="fluent:whiteboard-16-regular" size="1.8rem" />
         </CommonTooltip>
         <CommonDropdown placement="bottom">

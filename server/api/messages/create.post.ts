@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import PartySocket from 'partysocket'
 import { object as zobject, string as zstring } from 'zod'
 import { SocketEvents } from '~/types'
 import { sendSSEEvent } from '~/server/utils/server-events'
@@ -67,14 +66,6 @@ export default defineEventHandler(async (event) => {
       },
       include: messagePopulated,
     })
-
-    await PartySocket.fetch(
-      { host: '127.0.0.1:1999', room: newMessage.conversationId },
-      {
-        method: 'POST',
-        body: JSON.stringify({ socketEvent: SocketEvents.NewMessage, message: newMessage }),
-      },
-    )
 
     for (const participant of conversation.participants) {
       await sendSSEEvent(participant.userId, JSON.stringify({

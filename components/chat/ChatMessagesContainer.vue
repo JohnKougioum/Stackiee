@@ -24,7 +24,7 @@ const lastScrollHeight: number[] = []
 
 const messages = ref<Message[]>([])
 let allMessagesSeen = false
-const { pending } = await useFetch(`/api/messages/${props.chatId}`, {
+const { pending } = await useLazyFetch(`/api/messages/${props.chatId}`, {
   method: 'POST',
   body: {
     lastDate,
@@ -38,6 +38,7 @@ const { pending } = await useFetch(`/api/messages/${props.chatId}`, {
       const scrollerHeight = await getScrollerHeight()
       chatContainer.value.scrollTop = scrollerHeight - lastScrollHeight[0]
       lastScrollHeight.length = 0
+      await scrollToBottom()
     }
   },
 })

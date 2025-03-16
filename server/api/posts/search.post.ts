@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   try {
     postSearchSchema.parse(searchRequest)
 
-    const limit = 10
+    const limit = 15
 
     const startIndex = (searchRequest.page - 1) * limit
 

@@ -34,9 +34,9 @@ const timeAgo = props.lastMessageDate && useTimeAgo(props.lastMessageDate, timeA
 <template>
   <div>
     <div class="flex justify-between">
-      <span class="capitalize inline-block max-w-3/4 overflow-hidden whitespace-nowrap text-ellipsis">
+      <span class="capitalize inline-block overflow-hidden whitespace-nowrap text-ellipsis">
         {{ getConversationName }}
-        <span v-if="participantsWithoutSelf.length === 1" class="italic text-gray-400"> @{{ participantsWithoutSelf[0].user.uid }}</span>
+        <span v-if="participantsWithoutSelf.length === 1" class="italic text-gray-400 hidden sm:inline"> @{{ participantsWithoutSelf[0].user.uid }}</span>
       </span>
       <div v-if="showTimeAgo" class="ml-1">
         {{ timeAgo }}

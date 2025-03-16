@@ -1,6 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import PartySocket from 'partysocket'
-import { SocketEvents } from '~/types'
 
 const prisma = new PrismaClient()
 
@@ -104,17 +102,12 @@ export default defineEventHandler(async (event) => {
       },
     })
 
-    await PartySocket.fetch(
-      { host: '127.0.0.1:1999', room: conversation.id },
-      {
-        method: 'POST',
-        body: JSON.stringify({ socketEvent: SocketEvents.ConversationParticipantsUpdate, message: updatedCoversation.participants }),
-      },
-    )
-
     return {
       statusCode: 200,
-      body: 'Successfully updated conversation participants',
+      body: {
+        message: 'Successfully updated conversation participants',
+        participantsList: updatedCoversation.participants,
+      },
     }
   }
   catch (error: any) {

@@ -473,9 +473,17 @@ export interface ThinnedUser {
 
 export enum SocketEvents {
   NewMessage,
+  MessageError,
   ConversationUpdated,
   ConversationNameUpdate,
   ConversationParticipantsUpdate,
   UserLeft,
   NewConversationCreated,
+  WhiteboardJoined,
+  WhiteboardLeft,
+  WhiteboardEvent,
+  WhiteboardDeleteElement,
+  WhiteboardHistoryPointCreation,
+  WhiteboardUndo,
+  WhiteboardRedo,
 }

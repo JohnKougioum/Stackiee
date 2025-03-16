@@ -5,6 +5,7 @@ const visible = ref(true)
 let isRedirecting = false
 
 async function close() {
+  visible.value = false
   const router = useRouter()
   if (isRedirecting) {
     isRedirecting = false
@@ -31,7 +32,7 @@ async function createChat(users: ThinnedUser[]) {
 
 <template>
   <ChatCreatePlaceholder />
-  <ModalDialog v-model="visible" use-v-if @close="close">
+  <ModalDialog v-model="visible" use-v-if :custom-close="true" @close="close">
     <ChatCreation @action-event="createChat" />
   </ModalDialog>
 </template>

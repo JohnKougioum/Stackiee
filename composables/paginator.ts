@@ -8,11 +8,11 @@ export function usePaginator(
   next: Ref<boolean>,
 ) {
   const endAnchor = ref<HTMLDivElement>()
-  const bound = reactive(useElementBounding(endAnchor))
-  const isInScreen = computed(() => bound.top < window.innerHeight * 2)
+  const bound = useElementBounding(endAnchor)
+  const isInScreen = computed(() => bound.top.value < window.innerHeight * 2)
   const deactivated = useDeactivated()
 
-  if (process.client) {
+  if (import.meta.client) {
     useIntervalFn(() => {
       bound.update()
     }, 1000)
