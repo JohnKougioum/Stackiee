@@ -8,7 +8,6 @@ const users = new Map<string, { online: boolean }>()
 
 export default defineWebSocketHandler({
   async open(peer) {
-    console.log(`[ws] open ${peer}`)
     const userId = getUserId(peer)
     const conversations = await getUserConversations(userId)
     const conversationsIds = conversations.map(({ conversation }) => conversation.id)
@@ -132,8 +131,6 @@ export default defineWebSocketHandler({
   },
 
   close(peer) {
-    console.log(`[ws] close ${peer}`)
-
     const userId = getUserId(peer)
     users.set(userId, { online: false })
   },

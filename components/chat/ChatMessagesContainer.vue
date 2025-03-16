@@ -38,6 +38,7 @@ const { pending } = await useLazyFetch(`/api/messages/${props.chatId}`, {
       const scrollerHeight = await getScrollerHeight()
       chatContainer.value.scrollTop = scrollerHeight - lastScrollHeight[0]
       lastScrollHeight.length = 0
+      await scrollToBottom()
     }
   },
 })

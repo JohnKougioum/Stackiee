@@ -18,6 +18,7 @@ export function setWhiteboardEntry(id = '', data: Element) {
   }
   else {
     existingWhiteboard?.set(data?.id.toString(), data)
+    globalWhiteboardHistory.get(id)?.redo?.length && (globalWhiteboardHistory.get(id)!.redo.length = 0)
     return data
   }
   globalWhiteboardHistory.get(id)?.redo?.length && (globalWhiteboardHistory.get(id)!.redo.length = 0)
@@ -73,16 +74,18 @@ export function Undo(chatId: string) {
         createRedoPoint(chatId, globalChatElements!.get(lastElement.id.toString())!)
         globalChatElements?.set(lastElement.id.toString(), lastElement)
       }
-
       return Array.from(globalChatElements!.values())
     }
+  }
+  else {
+    return undefined
   }
 }
 
 export function Redo(chatId: string) {
   const localHistory = globalWhiteboardHistory.get(chatId)
   if (localHistory) {
-    const firstElement = localHistory.redo.shift()
+    const firstElement = localHistory.redo.pop()
     if (firstElement) {
       const globalChatElements = globalWhiteboardsElements.get(chatId)
       if (firstElement?.actionType === ActionTypes.DRAWING
@@ -94,6 +97,9 @@ export function Redo(chatId: string) {
 
       localHistory.history.push(firstElement)
       return Array.from(globalChatElements!.values())
+    }
+    else {
+      return undefined
     }
   }
 }

@@ -4,13 +4,6 @@ import type { RoughCanvas } from 'roughjs/bin/canvas'
 import type { Drawable } from 'roughjs/bin/core'
 import { getStroke } from 'perfect-freehand'
 import {
-  getLastHistoryPoint,
-  getLastLocalRedo,
-  getLocalHistory,
-  removeLastLocalRedo,
-  storeRedoPoint,
-} from '@/utils/whiteboard/history'
-import {
   adjustElementCoordinates,
   cursorForPosition,
   getArrowPoints,
@@ -48,8 +41,6 @@ const startPanMousePosition = reactive({ x: 0, y: 0 })
 
 const scale = ref(1)
 
-let undoIndex = 0
-
 onMounted(() => {
   canvas = document.getElementById('canvas') as HTMLCanvasElement
   ctx = canvas.getContext('2d') as CanvasRenderingContext2D
@@ -86,10 +77,10 @@ onMounted(() => {
       elements.value = elements.value.filter(element => element.id !== response.data)
 
     if (response?.eventName === SocketEvents.WhiteboardUndo)
-      elements.value = response.data || []
+      response.data !== undefined && (elements.value = response.data || [])
 
     if (response?.eventName === SocketEvents.WhiteboardRedo)
-      elements.value = response.data || []
+      response.data !== undefined && (elements.value = response.data || [])
 
     reDraw()
   })
@@ -217,7 +208,6 @@ function handleMouseDown(event: MouseEvent) {
       action,
       selectedElement,
     )
-    undoIndex = 0
   }
   else {
     const newElement = createElement(
@@ -238,9 +228,8 @@ function handleMouseDown(event: MouseEvent) {
     createHistoryPoint(
       newElement.id,
       ActionTypes.DRAWING,
-      newElement,
+      newElement as Element,
     )
-    undoIndex = 0
   }
 }
 
@@ -413,31 +402,6 @@ function Undo() {
     eventName: SocketEvents.WhiteboardUndo,
     chatId,
   }))
-  // const lastAction = getLastHistoryPoint(undoIndex)
-  // const elementCopy
-  //   = elements.value.find((element) => {
-  //     return element?.id === lastAction?.id
-  //   }) || {}
-  // if (lastAction) {
-  //   const { id, actionType, x1, y1, x2, y2, points, type } = lastAction
-  //   if (actionType === ActionTypes.DRAWING) {
-  //     elements.value = elements.value.filter(element => element.id !== id)
-  //   }
-  //   else {
-  //     type === ToolTypes.PENCIL
-  //       ? elements.value.push({ id, type, points } as Element)
-  //       : updateElement(id, x1, y1, x2, y2, type)
-  //   }
-  //   if (Object.keys(elementCopy).length) {
-  //     const { id, x1, y1, x2, y2, points, type } = elementCopy as Element
-  //     storeRedoPoint(id, lastAction.actionType, type, x1, y1, x2, y2, points)
-  //   }
-  //   else if (actionType === ActionTypes.DELETING) {
-  //     storeRedoPoint(id, lastAction.actionType, type, x1, y1, x2, y2, points)
-  //   }
-  // }
-  // reDraw()
-  // undoIndex < getLocalHistory().length && undoIndex++
 }
 
 function Redo() {
@@ -445,39 +409,6 @@ function Redo() {
     eventName: SocketEvents.WhiteboardRedo,
     chatId,
   }))
-  // const redoElement = getLastLocalRedo()
-  // if (redoElement) {
-  //   const { id, actionType, x1, y1, x2, y2, points, type } = redoElement
-  //   if (actionType === ActionTypes.DELETING) {
-  //     elements.value = elements.value.filter(element => element.id !== id)
-  //     reDraw()
-  //   }
-  //   else if (
-  //     elements.value.findIndex(element => element.id === id) === -1
-  //   ) {
-  //     if (type === ToolTypes.PENCIL && points) {
-  //       elements.value.push({ id, type, points } as Element)
-  //     }
-  //     else {
-  //       const newElement = createElement(id, x1, y1, x2, y2, type) as Element
-  //       elements.value.push(newElement)
-  //       updateElement(
-  //         newElement.id,
-  //         newElement.x1,
-  //         newElement.y1,
-  //         newElement.x2,
-  //         newElement.y2,
-  //         newElement.type,
-  //       )
-  //     }
-  //   }
-  //   else {
-  //     updateElement(id, x1, y1, x2, y2, type)
-  //   }
-  // }
-  // reDraw()
-  // removeLastLocalRedo()
-  // undoIndex > 0 && undoIndex--
 }
 
 function onZoom(delta: number) {
@@ -509,10 +440,6 @@ function emptyWhiteboard() {
     data: [],
   }))
   reDraw()
-
-  // TODO: remove them after sockets
-  localStorage.removeItem('history')
-  localStorage.removeItem('redo')
 }
 
 useEventListener(
