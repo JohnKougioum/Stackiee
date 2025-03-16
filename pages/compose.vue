@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { classes } from '@/types/index'
+
 definePageMeta({
   title: 'Compose',
   description: 'Compose a new post',
