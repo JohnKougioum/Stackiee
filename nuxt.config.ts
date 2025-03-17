@@ -10,23 +10,28 @@ export default defineNuxtConfig({
     '@vue-macros/nuxt',
     '@nuxt/devtools',
     '@nuxtjs/i18n',
-    'nuxt-icon',
+    '@nuxt/icon',
   ],
+
   vue: {
     propsDestructure: true,
   },
+
   macros: {
     defineModels: false,
   },
+
   experimental: {
     payloadExtraction: false,
   },
+
   routeRules: {
-    '/': { prerender: true },
+    '/': { prerender: false },
     '/settings/**': { prerender: false },
     '/login/auth': { prerender: false, ssr: false },
     '/chat/**': { prerender: false, ssr: false },
   },
+
   app: {
     keepalive: true,
     head: {
@@ -36,25 +41,29 @@ export default defineNuxtConfig({
       },
     },
   },
+
   i18n: {
     locales: currentLocales,
     lazy: true,
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
-    langDir: 'locales',
+    langDir: '../locales',
     defaultLocale: 'el',
     vueI18n: './config/i18n.config.ts',
   },
+
   css: [
     'floating-vue/dist/style.css',
     '~/styles/global.css',
     '~/styles/dropdown.css',
   ],
+
   nitro: {
     experimental: {
       websocket: true,
     },
   },
+
   vite: {
     define: {
       'process.env.VSCODE_TEXTMATE_DEBUG': 'false',
@@ -64,11 +73,13 @@ export default defineNuxtConfig({
       },
     },
   },
+
   postcss: {
     plugins: {
       'postcss-nested': {},
     },
   },
+
   runtimeConfig: {
     token_secret: process.env.NUXT_TOKEN_SECRET,
     public: {
@@ -79,4 +90,6 @@ export default defineNuxtConfig({
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
   },
+
+  compatibilityDate: '2025-03-17',
 })
