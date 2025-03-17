@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxt/devtools": "^1.0.8",
     "@nuxtjs/i18n": "^9.1.1",
+    "@prisma/nuxt": "^0.3.0",
     "@tiptap/extension-blockquote": "2.2.4",
     "@tiptap/extension-bullet-list": "2.2.4",
     "@tiptap/extension-character-count": "2.2.4",
@@ -35,7 +36,6 @@
     "perfect-freehand": "^1.2.2",
     "pinia": "^2.2.6",
     "postcss-nested": "^7.0.0",
-    "prisma": "^6.5.0",
     "roughjs": "^4.6.6",
     "shiki": "^0.14.3",
     "shiki-es": "^0.2.0",

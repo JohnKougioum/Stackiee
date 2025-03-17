@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
     '@nuxtjs/i18n',
     '@nuxt/icon',
+    '@prisma/nuxt',
   ],
 
   vue: {
@@ -70,6 +71,11 @@ export default defineNuxtConfig({
     },
     css: {
       preprocessorOptions: {
+      },
+    },
+    resolve: {
+      alias: {
+        '.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js',
       },
     },
   },
