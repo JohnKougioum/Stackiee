@@ -96,6 +96,6 @@ export default defineNuxtConfig({
     cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
     cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
   },
-
+  prisma: { autoSetupPrisma: true },
   compatibilityDate: '2025-03-17',
 })

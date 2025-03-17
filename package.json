@@ -7,7 +7,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint --cache .",
-    "typecheck": "stale-dep && nuxi typecheck"
+    "typecheck": "stale-dep && nuxi typecheck",
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@nuxt/devtools": "^1.0.8",
