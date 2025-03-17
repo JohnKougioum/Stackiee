@@ -1,7 +1,7 @@
 import crypto from 'node:crypto'
 
 // Ensure the ENCRYPTION_KEY is set
-const ENCRYPTION_KEY = '12345678901234567890123456789012'
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY
 if (!ENCRYPTION_KEY || ENCRYPTION_KEY.length !== 32)
   throw new Error('ENCRYPTION_KEY must be set and exactly 32 characters long')
 
