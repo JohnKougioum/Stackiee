@@ -57,6 +57,10 @@ onMounted(async () => {
       updateParticipantsList(data.chatId, data.participants)
   })
 })
+
+onDeactivated(() => {
+  isWhiteboardOpen.value = false
+})
 </script>
 
 <template>
@@ -97,7 +101,7 @@ onMounted(async () => {
     <ChatAddUsers v-if="isParticipantsDropdownOpen" :participants="conversationResponse?.participants!" :chat-id="chatId" />
     <ChatRenameDialog v-if="isChatRenameOpen" :chat-id="chatId" />
   </ModalDialog>
-  <WhiteboardModal v-if="isWhiteboardOpen">
+  <WhiteboardModal v-if="isWhiteboardOpen && !deactivated">
     <div class="rounded-md flex-1 h-full">
       <ChatLayout v-model="inputText" @submit="sendMessage">
         <template #title>

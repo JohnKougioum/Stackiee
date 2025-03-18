@@ -41,6 +41,10 @@ const { pending } = await useLazyFetch(`/api/messages/${props.chatId}`, {
       await scrollToBottom()
     }
   },
+  onResponseError() {
+    allMessagesSeen = true
+    pending.value = false
+  },
 })
 
 onMounted(async () => {
@@ -60,6 +64,8 @@ function getScrollerHeight(): Promise<number> {
   return new Promise((resolve) => {
     setTimeout(() => {
       const dyncamicScroller = document.getElementsByClassName('vue-recycle-scroller__item-wrapper')[0]
+      if (!dyncamicScroller)
+        return resolve(0)
       const styles = getComputedStyle(dyncamicScroller)
       resolve(Number(styles.minHeight.replace('px', '')))
     })
