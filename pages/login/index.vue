@@ -3,28 +3,6 @@ definePageMeta({
   title: 'Login',
   layout: 'none',
 })
-
-async function loginWithCreds() {
-  const { $auth, $connectWebsocket } = useNuxtApp()
-  const response = await $fetch('/api/login', {
-    method: 'POST',
-    body: {
-      uid: 'it185219',
-      am: '185219',
-      fullName: 'APOSTOLOS MALOUDIS',
-      fullNameEL: 'ΑΠΟΣΤΟΛΟΣ ΜΑΛΟΥΔΗΣ',
-      email: 'ap.maloudis@gmail.com',
-      eduPersonAffiliation: 'student',
-      eduPersonPrimaryAffiliation: 'it',
-      regyear: '2018',
-    },
-  })
-  if (response.statusCode === 200) {
-    $auth.loginCookie.value = 'true'
-    response.body.userId && $connectWebsocket(response.body.userId)
-    await navigateTo('/')
-  }
-}
 </script>
 
 <template>
@@ -47,9 +25,6 @@ async function loginWithCreds() {
           @click="$auth.redirectToLogin"
         >
           {{ $t('user.signIn') }}
-        </button>
-        <button class="base-button" @click="loginWithCreds">
-          Tolis
         </button>
       </div>
     </div>
