@@ -111,9 +111,7 @@ async function publishPost(postBody: string) {
 
   <!-- File upload input -->
   <div class="px-10 pb-4">
-    <label for="fileUpload" class="block mb-2">
-      {{ $t('upload.file') }}
-    </label>
+    
     <input
       id="fileUpload"
       type="file"

@@ -7,7 +7,7 @@ const postCreationSchema = z.object({
   postBody: z.string(),
   semester: z.number().optional().nullable(),
   course: z.string().optional().nullable(),
-  fileId: z.string().optional(),
+  fileId: z.string().optional().nullable(),
 })
 
 export default defineEventHandler(async (event) => {

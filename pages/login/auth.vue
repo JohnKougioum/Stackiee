@@ -1,6 +1,4 @@
 <script setup lang='ts'>
-import type { IhuApiProfile } from '@/types/index'
-
 definePageMeta({
   layout: 'none',
 })
@@ -33,37 +31,22 @@ onMounted(async () => {
   if (!(token as TokenRespone)?.access_token)
     return
 
-  const profileResponse = await $fetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
-    method: 'GET',
-    headers: {
-      'x-access-token': (token as TokenRespone)?.access_token,
-    },
-  })
-
   await $fetch('/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    server: false,
     body: {
-      uid: profileResponse?.uid,
-      am: profileResponse?.am,
-      fullName: profileResponse?.cn,
-      fullNameEL: profileResponse!['cn;lang-el'],
-      email: profileResponse?.mail,
-      eduPersonAffiliation: profileResponse?.eduPersonAffiliation,
-      eduPersonPrimaryAffiliation: profileResponse?.eduPersonPrimaryAffiliation,
-      regyear: profileResponse?.regyear,
+      accessToken: (token as TokenRespone)?.access_token,
     },
-    async onResponse({ response }) {
-      if (response.status === 200) {
-        $auth.loginCookie.value = 'true'
-        response._data.body?.userId && $connectWebsocket(response._data.body?.userId)
-        await navigateTo('/')
-      }
-    },
-  },
-  )
+  }).then(async (response) => {
+    if (response.statusCode === 200) {
+      $auth.loginCookie.value = 'true'
+      response?.body?.userId && await $connectWebsocket(response?.body?.userId)
+      await navigateTo('/')
+    }
+  })
 })
 </script>
 

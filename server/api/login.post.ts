@@ -1,71 +1,68 @@
 import { PrismaClient } from '@prisma/client'
 import z from 'zod'
 import jwt from 'jsonwebtoken'
-
-const token_secret = useRuntimeConfig().token_secret
-
-const loginPayloadSchema = z.object({
-  uid: z.string(),
-  am: z.string(),
-  fullName: z.string(),
-  fullNameEL: z.string(),
-  email: z.string(),
-  eduPersonAffiliation: z.string(),
-  eduPersonPrimaryAffiliation: z.string(),
-  regyear: z.string(),
-})
+import type { IhuApiProfile } from '@/types/index'
 
 const prisma = new PrismaClient()
 
+const payload = z.object({
+  accessToken: z.string(),
+})
+
 export default defineEventHandler(async (event) => {
-  const response = await readBody(event)
+  const config = useRuntimeConfig()
+
+  let body, token
   try {
-    loginPayloadSchema.parse(response)
+    body = await readBody(event)
+    payload.parse(body)
   }
   catch (error) {
     throw createError({
-      statusCode: 403,
-      statusMessage: 'Invalid Payload',
+      statusCode: 400,
+      statusMessage: 'Invalid user data received.',
     })
   }
-  const user = await prisma.user.findUnique({
-    where: {
-      uid: response.uid,
+
+  const profile = await $fetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
+    method: 'GET',
+    headers: {
+      'x-access-token': body.accessToken,
     },
   })
 
-  let token = ''
-  let userId = ''
-  if (!user) {
-    const newUser = await prisma.user.create({
-      data: {
-        uid: response.uid,
-        am: response.am,
-        fullName: response.fullName,
-        fullNameEL: response.fullNameEL,
-        email: response.email,
-        eduPersonAffiliation: response.eduPersonAffiliation,
-        eduPersonPrimaryAffiliation: response.eduPersonPrimaryAffiliation,
-        regyear: response.regyear,
-      },
+  if (!profile) {
+    throw createError({
+      statusCode: 403,
+      statusMessage: 'Invalid IHU Access Token',
     })
-    token = jwt.sign({ id: newUser.id }, token_secret, { expiresIn: '86400s' })
-    userId = newUser.id
-  }
-  else {
-    token = jwt.sign({ id: user.id }, token_secret, { expiresIn: '86400s' })
-    userId = user.id
   }
 
+  let user = await prisma.user.findUnique({ where: { uid: profile?.uid } })
+
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        uid: profile?.uid,
+        am: profile?.am,
+        fullName: profile?.cn,
+        fullNameEL: profile!['cn;lang-el'],
+        email: profile?.mail,
+        eduPersonAffiliation: profile?.eduPersonAffiliation,
+        eduPersonPrimaryAffiliation: profile?.eduPersonPrimaryAffiliation,
+        regyear: profile?.regyear,
+      },
+    })
+  }
+
+  token = jwt.sign({ id: user.id }, config.token_secret, { expiresIn: '86400s' })
   setCookie(event, 'loggedIn', 'true')
-  setCookie(event, 'token', token, {
-    sameSite: 'lax',
-    httpOnly: true,
-  })
+  setCookie(event, 'token', token, { sameSite: 'lax', httpOnly: true })
+
   return {
     statusCode: 200,
     body: {
-      userId: userId || '',
+      userId: user.id,
     },
   }
 })
