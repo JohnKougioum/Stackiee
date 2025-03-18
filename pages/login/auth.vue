@@ -1,6 +1,4 @@
 <script setup lang='ts'>
-import type { IhuApiProfile } from '@/types/index'
-
 definePageMeta({
   layout: 'none',
 })
@@ -30,30 +28,19 @@ onMounted(async () => {
     body: new URLSearchParams(Object.entries(body) as string[][]).toString(),
   })
 
-  if (!(token as TokenRespone)?.access_token)
+  console.log((token?.data?.value as TokenRespone)?.access_token);
+  
+
+  if (!(token?.data?.value as TokenRespone)?.access_token)
     return
 
-  const profileResponse = await $fetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
-    method: 'GET',
-    headers: {
-      'x-access-token': (token as TokenRespone)?.access_token,
-    },
-  })
-
-  await $fetch('/api/login', {
+  await useFetch('/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: {
-      uid: profileResponse?.uid,
-      am: profileResponse?.am,
-      fullName: profileResponse?.cn,
-      fullNameEL: profileResponse!['cn;lang-el'],
-      email: profileResponse?.mail,
-      eduPersonAffiliation: profileResponse?.eduPersonAffiliation,
-      eduPersonPrimaryAffiliation: profileResponse?.eduPersonPrimaryAffiliation,
-      regyear: profileResponse?.regyear,
+      accessToken: (token?.data?.value as TokenRespone)?.access_token
     },
     async onResponse({ response }) {
       if (response.status === 200) {
