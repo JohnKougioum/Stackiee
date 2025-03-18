@@ -28,29 +28,25 @@ onMounted(async () => {
     body: new URLSearchParams(Object.entries(body) as string[][]).toString(),
   })
 
-  console.log((token?.data?.value as TokenRespone)?.access_token);
-  
-
-  if (!(token?.data?.value as TokenRespone)?.access_token)
+  if (!(token as TokenRespone)?.access_token)
     return
 
-  await useFetch('/api/login', {
+  await $fetch('/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    server: false,
     body: {
-      accessToken: (token?.data?.value as TokenRespone)?.access_token
+      accessToken: (token as TokenRespone)?.access_token,
     },
-    async onResponse({ response }) {
-      if (response.status === 200) {
-        $auth.loginCookie.value = 'true'
-        response._data.body?.userId && $connectWebsocket(response._data.body?.userId)
-        await navigateTo('/')
-      }
-    },
-  },
-  )
+  }).then(async (response) => {
+    if (response.statusCode === 200) {
+      $auth.loginCookie.value = 'true'
+      response?.body?.userId && await $connectWebsocket(response?.body?.userId)
+      await navigateTo('/')
+    }
+  })
 })
 </script>
 

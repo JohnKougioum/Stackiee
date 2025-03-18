@@ -1,29 +1,30 @@
 import { PrismaClient } from '@prisma/client'
-import type { IhuApiProfile } from '@/types/index'
 import z from 'zod'
 import jwt from 'jsonwebtoken'
+import type { IhuApiProfile } from '@/types/index'
 
 const prisma = new PrismaClient()
 
 const payload = z.object({
-  accessToken: z.string()
+  accessToken: z.string(),
 })
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
-  let body, token;
+  let body, token
   try {
     body = await readBody(event)
     payload.parse(body)
-  } catch (error) {
+  }
+  catch (error) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Invalid user data received.',
     })
   }
 
-  const  profile = await $fetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
+  const profile = await $fetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
     method: 'GET',
     headers: {
       'x-access-token': body.accessToken,
@@ -33,7 +34,7 @@ export default defineEventHandler(async (event) => {
   if (!profile) {
     throw createError({
       statusCode: 403,
-      statusMessage: 'Invalid IHU Access Token'
+      statusMessage: 'Invalid IHU Access Token',
     })
   }
 
@@ -54,9 +55,14 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  token = jwt.sign({ uid: user.uid }, config.token_secret, { expiresIn: '86400s' })
+  token = jwt.sign({ id: user.id }, config.token_secret, { expiresIn: '86400s' })
   setCookie(event, 'loggedIn', 'true')
   setCookie(event, 'token', token, { sameSite: 'lax', httpOnly: true })
-  
-  return { statusCode: 200, body: 'OK' }
+
+  return {
+    statusCode: 200,
+    body: {
+      userId: user.id,
+    },
+  }
 })

@@ -5,7 +5,7 @@ const { data: user, pending, error } = await useFetch('/api/user/info', {
   method: 'GET',
   credentials: 'include',
 })
-if (error.value && process.client)
+if (error.value && import.meta.client)
   window.location.href = '/login'
 
 userObject.value = user.value?.data || null
