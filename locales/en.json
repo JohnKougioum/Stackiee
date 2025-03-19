@@ -1,111 +1,111 @@
 {
-    "hello": "Hello",
-    "nav": {
-        "home": "Home",
-        "search": "Search",
-        "messages": "Messages",
-        "profile": "Profile",
-        "compose": "Compose",
-        "announcements": "Announcements"
+  "back": "Go Back",
+  "chat": {
+    "addParticipant": "Add participant",
+    "enterNewName": "Enter new name",
+    "new_chat": "New Chat",
+    "or_create_a_new_one": "or create a new one",
+    "rename": "Rename",
+    "renameConversation": "Rename conversation",
+    "select_a_chat": "Select a conversation",
+    "sentMessage": "Sent a message"
+  },
+  "codeBlockHint": "*You can hover at right top corner of the code block to select a language for highlighting.",
+  "comments": "Comments",
+  "copyLink": "Copy Link",
+  "create": "Create",
+  "filters": {
+    "apply": "Apply",
+    "clear": "Clear",
+    "course": "Course",
+    "selectAll": "Select All",
+    "semester": "Semester",
+    "semesters": {
+      "1": "1st Semester",
+      "10": "10th Semester",
+      "2": "2nd Semester",
+      "3": "3rd Semester",
+      "4": "4th Semester",
+      "5": "5th Semester",
+      "6": "6th Semester",
+      "7": "7th Semester",
+      "8": "8th Semester",
+      "9": "9th Semester"
     },
-    "time_ago_options": {
-        "day_future": "in 0 days|tomorrow|in {n} days",
-        "day_past": "0 days ago|yesterday|{n} days ago",
-        "hour_future": "in 0 hours|in 1 hour|in {n} hours",
-        "hour_past": "0 hours ago|1 hour ago|{n} hours ago",
-        "just_now": "just now",
-        "minute_future": "in 0 minutes|in 1 minute|in {n} minutes",
-        "minute_past": "0 minutes ago|1 minute ago|{n} minutes ago",
-        "month_future": "in 0 months|next month|in {n} months",
-        "month_past": "0 months ago|last month|{n} months ago",
-        "second_future": "just now|in {n} second|in {n} seconds",
-        "second_past": "just now|{n} second ago|{n} seconds ago",
-        "short_day_future": "in {n}d",
-        "short_day_past": "{n}d",
-        "short_hour_future": "in {n}h",
-        "short_hour_past": "{n}h",
-        "short_minute_future": "in {n}min",
-        "short_minute_past": "{n}min",
-        "short_month_future": "in {n}mo",
-        "short_month_past": "{n}mo",
-        "short_second_future": "in {n}s",
-        "short_second_past": "{n}s",
-        "short_week_future": "in {n}w",
-        "short_week_past": "{n}w",
-        "short_year_future": "in {n}y",
-        "short_year_past": "{n}y",
-        "week_future": "in 0 weeks|next week|in {n} weeks",
-        "week_past": "0 weeks ago|last week|{n} weeks ago",
-        "year_future": "in 0 years|next year|in {n} years",
-        "year_past": "0 years ago|last year|{n} years ago"
-      },
-    "user": {
-      "signIn": "Sign In",
-      "signOut": "Sign Out"
+    "showMore": "Show More",
+    "title": "Filters"
+  },
+  "hello": "Hello",
+  "nav": {
+    "announcements": "Announcements",
+    "compose": "Compose",
+    "home": "Home",
+    "messages": "Messages",
+    "profile": "Profile",
+    "search": "Search"
+  },
+  "noMorePosts": "No more posts",
+  "noUsersFound": "No users found",
+  "pagesTitles": {
+    "home": "Home",
+    "search": "Search"
+  },
+  "participants": "Participants",
+  "publish": "Publish",
+  "reply": "Reply",
+  "search": "Search",
+  "searchForChat": "Search for a specific conversation",
+  "searchForUsers": "Search for users",
+  "searchedFor": "Showing results for: ",
+  "select": {
+    "course": "Select Course",
+    "semester": "Select Semester"
+  },
+  "selectedUsers": "Selected Users",
+  "settings": {
+    "language": {
+      "change": "Change Language",
+      "title": "Language"
     },
-    "users": "Users",
-    "selectedUsers": "Selected Users",
-    "select": {
-      "semester": "Select Semester",
-      "course": "Select Course"
-    },
-    "codeBlockHint": "*You can hover at right top corner of the code block to select a language for highlighting.",
-    "search": "Search",
-    "searchedFor": "Showing results for: ",
-    "publish": "Publish",
-    "reply": "Reply",
-    "back": "Go Back",
-    "pagesTitles": {
-      "home": "Home",
-      "search": "Search"
-    },
-    "comments": "Comments",
-    "copyLink" : "Copy Link",
-    "noMorePosts": "No more posts",
-    "settings": {
-      "title": "Settings",
-      "select_a_setting": "Select a setting",
-      "language": {
-        "title": "Language",
-        "change": "Change Language"
-      }
-    },
-    "filters": {
-      "title": "Filters",
-      "semester": "Semester",
-      "course": "Course",
-      "clear": "Clear",
-      "apply": "Apply",
-      "selectAll": "Select All",
-      "semesters": {
-        "1": "1st Semester",
-        "2": "2nd Semester",
-        "3": "3rd Semester",
-        "4": "4th Semester",
-        "5": "5th Semester",
-        "6": "6th Semester",
-        "7": "7th Semester",
-        "8": "8th Semester",
-        "9": "9th Semester",
-        "10": "10th Semester"
-      },
-      "showMore": "Show More"
-    },
-    "chat": {
-      "select_a_chat": "Select a conversation",
-      "or_create_a_new_one": "or create a new one",
-      "new_chat": "New Chat",
-      "sentMessage": "Sent a message",
-      "addParticipant": "Add participant",
-      "renameConversation": "Rename conversation",
-      "enterNewName": "Enter new name",
-      "rename": "Rename"
-    },
-    "create": "Create",
-    "searchForChat": "Search for a specific conversation",
-    "searchForUsers": "Search for users",
-    "noUsersFound": "No users found",
-    "participants": "Participants",
-    "whiteboard": "Whiteboard",
-    "somethingWentWrong": "Something went wrong. Please try again later."
+    "select_a_setting": "Select a setting",
+    "title": "Settings"
+  },
+  "somethingWentWrong": "Something went wrong. Please try again later.",
+  "time_ago_options": {
+    "day_future": "in 0 days|tomorrow|in {n} days",
+    "day_past": "0 days ago|yesterday|{n} days ago",
+    "hour_future": "in 0 hours|in 1 hour|in {n} hours",
+    "hour_past": "0 hours ago|1 hour ago|{n} hours ago",
+    "just_now": "just now",
+    "minute_future": "in 0 minutes|in 1 minute|in {n} minutes",
+    "minute_past": "0 minutes ago|1 minute ago|{n} minutes ago",
+    "month_future": "in 0 months|next month|in {n} months",
+    "month_past": "0 months ago|last month|{n} months ago",
+    "second_future": "just now|in {n} second|in {n} seconds",
+    "second_past": "just now|{n} second ago|{n} seconds ago",
+    "short_day_future": "in {n}d",
+    "short_day_past": "{n}d",
+    "short_hour_future": "in {n}h",
+    "short_hour_past": "{n}h",
+    "short_minute_future": "in {n}min",
+    "short_minute_past": "{n}min",
+    "short_month_future": "in {n}mo",
+    "short_month_past": "{n}mo",
+    "short_second_future": "in {n}s",
+    "short_second_past": "{n}s",
+    "short_week_future": "in {n}w",
+    "short_week_past": "{n}w",
+    "short_year_future": "in {n}y",
+    "short_year_past": "{n}y",
+    "week_future": "in 0 weeks|next week|in {n} weeks",
+    "week_past": "0 weeks ago|last week|{n} weeks ago",
+    "year_future": "in 0 years|next year|in {n} years",
+    "year_past": "0 years ago|last year|{n} years ago"
+  },
+  "user": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out"
+  },
+  "users": "Users",
+  "whiteboard": "Whiteboard"
 }

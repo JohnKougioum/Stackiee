@@ -18,8 +18,8 @@ export default defineEventHandler(async (event) => {
       User: true,
       File: {
         select: {
-            encryptedDetails: true
-        }
+          encryptedDetails: true,
+        },
       },
       _count: {
         select: {
