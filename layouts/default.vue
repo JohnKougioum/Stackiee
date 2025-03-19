@@ -33,7 +33,11 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
       <aside v-if="isHydrated && !wideLayout" class="hidden lg:w-1/5 xl:w-1/4 sm:hidden xl:block">
         <div class="sticky top-0 h-screen flex flex-col gap-2 py-3 margin-inline-2">
           <slot name="right">
-            <div class="flex-auto" />
+            <div class="flex-auto">
+              <div class="mt-4 mx-2">
+                <SearchWidget class="hidden xl:flex" />
+              </div>
+            </div>
             <NavFooter />
           </slot>
         </div>

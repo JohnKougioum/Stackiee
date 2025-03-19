@@ -457,6 +457,23 @@ useEventListener(
   },
   { passive: false },
 )
+
+function exportCanvas() {
+  const tempCanvas = document.createElement('canvas')
+  tempCanvas.width = canvas.width
+  tempCanvas.height = canvas.height
+
+  const tempCtx = tempCanvas.getContext('2d')!
+  tempCtx.fillStyle = '#FFFFFF'
+  tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height)
+  tempCtx.drawImage(canvas, 0, 0)
+
+  const link = document.createElement('a')
+  link.target = '_blank'
+  link.download = 'whiteboard.png'
+  link.href = tempCanvas.toDataURL('image/png')
+  link.click()
+}
 </script>
 
 <template>
@@ -491,6 +508,9 @@ useEventListener(
       </button>
       <button class="cursor-pointer p-2 bg-orange-100 hover:bg-orange-200 rounded-r-lg" @click="Redo">
         <Icon name="majesticons:redo" size="1.3rem" />
+      </button>
+      <button class="p-2 bg-orange-100 hover:bg-orange-200 rounded-lg ml-4" @click="exportCanvas">
+        {{ $t('export') }}
       </button>
     </div>
   </div>

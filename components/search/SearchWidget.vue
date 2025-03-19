@@ -17,7 +17,7 @@ async function search() {
 
 <template>
   <div
-    class="border-[1px] h-10 lg:ms-1 lg:me-5 rounded-xl flex flex-row
+    class="border-[1px] border-secondary-gray h-10 lg:ms-1 lg:me-5 rounded-xl flex flex-row
     items-center gap-3 px-4 focus-within:ring-1
     focus-within:ring-base-orange focus-within:border-transparent"
   >

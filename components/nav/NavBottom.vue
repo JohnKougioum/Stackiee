@@ -18,7 +18,7 @@ const moreMenuVisible = ref(false)
     <NuxtLink to="/chat" :active-class="moreMenuVisible ? '' : 'text-base-orange'" class="flex flex-row place-content-center items-center h-full flex-1" @click="$scrollToTop">
       <Icon name="majesticons:messages-line" size="1.6rem" />
     </NuxtLink>
-    <NuxtLink to="/profile" :active-class="moreMenuVisible ? '' : 'text-base-orange'" class="flex flex-row place-content-center items-center h-full flex-1" @click="$scrollToTop">
+    <NuxtLink :to="`/profile/${userObject?.uid}`" :active-class="moreMenuVisible ? '' : 'text-base-orange'" class="flex flex-row place-content-center items-center h-full flex-1" @click="$scrollToTop">
       <Icon name="mingcute:user-3-line" size="1.6rem" />
     </NuxtLink>
     <NavBottomMoreMenu
