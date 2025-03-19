@@ -22,7 +22,6 @@ function onclick(evt: MouseEvent | KeyboardEvent) {
 function go(evt: MouseEvent | KeyboardEvent) {
   if (evt.metaKey || evt.ctrlKey)
     window.open(`${window.location.origin}/status/${props.item.id}`)
-
   else
     router.push(`/status/${props.item.id}`)
 }
@@ -42,7 +41,7 @@ function go(evt: MouseEvent | KeyboardEvent) {
     </div>
     <div class="mt-2 h-5 flex justify-between items-center">
       <div class="flex items-center">
-        <button class="btn-icon">
+        <button class="btn-icon" @click="go">
           <CommonTooltip placement="bottom" :content="$t('comments')">
             <div class="btn-icon">
               <Icon name="majesticons:comment-2-line" size="20" color="#70798C" />
