@@ -2,6 +2,10 @@
 import { SocketEvents } from '~/types'
 import { isModalInChatOpen } from '~/composables/modal'
 
+definePageMeta({
+  keepalive: false,
+})
+
 const chatId = useRoute().params.id as string
 
 const { $ws } = useNuxtApp()
