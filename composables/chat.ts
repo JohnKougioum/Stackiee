@@ -42,4 +42,5 @@ export function updateParticipantsList(chatId: string, participants: Array<Conve
 export async function handleNewChatSSEEvent() {
   const { fullPath } = useRoute()
   fullPath.includes('chat') && await fetchChats()
+  // subscribe to new chat with websocket
 }
