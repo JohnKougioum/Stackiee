@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import type { ApiResult, CommentData } from '~/types'
+
 const props = defineProps<{
   id: string
 }>()
@@ -27,6 +28,10 @@ async function addComment(comment: string) {
   else
     refresh()
 }
+
+onReactivated(() => {
+  refresh()
+})
 </script>
 
 <template>

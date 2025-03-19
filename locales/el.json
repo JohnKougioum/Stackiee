@@ -1,112 +1,111 @@
 {
-    "hello": "Γεια σας",
-    "nav": {
-      "home": "Αρχική",
-      "search": "Αναζήτηση",
-      "messages": "Μηνύματα",
-      "profile": "Προφίλ",
-      "compose": "Σύνθεση",
-      "announcements": "Ανακοινώσεις"
+  "back": "Πίσω",
+  "chat": {
+    "addParticipant": "Προσθήκη χρήστη",
+    "enterNewName": "Εισάγετε το νέο όνομα",
+    "new_chat": "Νέα Συνομιλία",
+    "or_create_a_new_one": "Ή δημιούργησε μια νέα",
+    "rename": "Μετονομασία",
+    "renameConversation": "Μετονομασία Συνομιλίας",
+    "select_a_chat": "Διάλεξε μια συνομιλία",
+    "sentMessage": "Αποστολή Μηνύματος"
   },
-    "time_ago_options": {
-        "day_future": "σε 0 μέρες|αύριο|σε {n} μέρες",
-        "day_past": "0 μέρες πριν|εχθές|{n} μέρες πριν",
-        "hour_future": "σε 0 ώρες|σε 1 ώρα|σε {n} ώρες",
-        "hour_past": "0 ώρες πριν|1 ώρα πριν|{n} ώρες πριν",
-        "just_now": "μόλις τώρα",
-        "minute_future": "σε 0 λεπτά|σε 1 minute|σε {n} λεπτά",
-        "minute_past": "0 λεπτά πριν|1 minute πριν|{n} λεπτά πριν",
-        "month_future": "σε 0 μήνες|επόμενο μήνα|σε {n} μήνες",
-        "month_past": "0 μήνες πριν|προηγούμενο μήνα|{n} μήνες πριν",
-        "second_future": "μόλις τώρα|σε {n} second|σε {n} δευτερόλεπτα",
-        "second_past": "μόλις τώρα|{n} second πριν|{n} δευτερόλεπτα πριν",
-        "short_day_future": "σε {n}d",
-        "short_day_past": "{n}d",
-        "short_hour_future": "σε {n}h",
-        "short_hour_past": "{n}h",
-        "short_minute_future": "σε {n}min",
-        "short_minute_past": "{n}min",
-        "short_month_future": "σε {n}mo",
-        "short_month_past": "{n}mo",
-        "short_second_future": "σε {n}s",
-        "short_second_past": "{n}s",
-        "short_week_future": "σε {n}w",
-        "short_week_past": "{n}w",
-        "short_year_future": "σε {n}y",
-        "short_year_past": "{n}y",
-        "week_future": "σε 0 εβδομάδες|επόμενη week|σε {n} εβδομάδες",
-        "week_past": "0 εβδομάδες πριν|last week|{n} εβδομάδες πριν",
-        "year_future": "σε 0 χρόνια|επόμενο έτος|σε {n} χρόνια",
-        "year_past": "0 χρόνια πριν|προηγούμενο έτος|{n} χρόνια πριν"
-      },
-    "user":{
-      "signIn": "Σύνδεση",
-      "signOut": "Αποσύνδεση"
+  "codeBlockHint": "*Μπορείτε να αιωρήσετε το ποντίκι στην επάνω δεξιά γωνία του μπλοκ κώδικα για να επιλέξετε μια γλώσσα για την επισήμανση.",
+  "comments": "Σχόλια",
+  "copyLink": "Αντιγραφή Συνδέσμου",
+  "create": "Δημιουργία",
+  "filters": {
+    "apply": "Εφαρμογή",
+    "clear": "Καθαρισμός",
+    "course": "Μάθημα",
+    "selectAll": "Επιλογή Όλων",
+    "semester": "Εξάμηνο",
+    "semesters": {
+      "1": "1ο Εξάμηνο",
+      "10": "10ο Εξάμηνο",
+      "2": "2ο Εξάμηνο",
+      "3": "3ο Εξάμηνο",
+      "4": "4ο Εξάμηνο",
+      "5": "5ο Εξάμηνο",
+      "6": "6ο Εξάμηνο",
+      "7": "7ο Εξάμηνο",
+      "8": "8ο Εξάμηνο",
+      "9": "9ο Εξάμηνο"
     },
-    "users": "Χρήστες",
-    "selectedUsers": "Επιλεγμένοι Χρήστες",
-    "select": {
-     "semester": "Διάλεξε Εξάμηνο",
-     "course": "Διάλεξε Μάθημα"
+    "showMore": "Εμφάνιση Περισσότερων",
+    "title": "Φίλτρα"
+  },
+  "hello": "Γεια σας",
+  "nav": {
+    "announcements": "Ανακοινώσεις",
+    "compose": "Σύνθεση",
+    "home": "Αρχική",
+    "messages": "Μηνύματα",
+    "profile": "Προφίλ",
+    "search": "Αναζήτηση"
+  },
+  "noMorePosts": "Δεν υπάρχουν άλλες δημοσιεύσεις",
+  "noUsersFound": "Δεν βρέθηκαν χρήστες",
+  "pagesTitles": {
+    "home": "Αρχική",
+    "search": "Αναζήτηση"
+  },
+  "participants": "Συμμετέχοντες",
+  "publish": "Δημοσίευση",
+  "reply": "Aπάντηση",
+  "search": "Αναζήτηση",
+  "searchForChat": "Αναζήτηση για κάποια συγκεγκριμένη συνομιλία",
+  "searchForUsers": "Αναζήτηση Χρηστών",
+  "searchedFor": "Εμφάνιση αποτελεσμάτων για: ",
+  "select": {
+    "course": "Διάλεξε Μάθημα",
+    "semester": "Διάλεξε Εξάμηνο"
+  },
+  "selectedUsers": "Επιλεγμένοι Χρήστες",
+  "settings": {
+    "language": {
+      "change": "Αλλαγή Γλώσσας",
+      "title": "Γλώσσα"
     },
-    "codeBlockHint": "*Μπορείτε να αιωρήσετε το ποντίκι στην επάνω δεξιά γωνία του μπλοκ κώδικα για να επιλέξετε μια γλώσσα για την επισήμανση.",
-    "search": "Αναζήτηση",
-    "searchedFor": "Εμφάνιση αποτελεσμάτων για: ",
-    "publish": "Δημοσίευση",
-    "reply": "Aπάντηση",
-    "back": "Πίσω",
-    "pagesTitles": {
-      "home": "Αρχική",
-      "search": "Αναζήτηση"
-    },
-    "comments": "Σχόλια",
-    "copyLink" : "Αντιγραφή Συνδέσμου",
-    "noMorePosts": "Δεν υπάρχουν άλλες δημοσιεύσεις",
-    "settings": {
-      "title": "Ρυθμίσεις",
-      "select_a_setting": "Διάλεξε μια ρύθμιση",
-      "language": {
-        "title": "Γλώσσα",
-        "change": "Αλλαγή Γλώσσας"
-      }
-    },
-    "filters": {
-      "title": "Φίλτρα",
-      "semester": "Εξάμηνο",
-      "course": "Μάθημα",
-      "clear": "Καθαρισμός",
-      "apply": "Εφαρμογή",
-      "selectAll": "Επιλογή Όλων",
-      "semesters": {
-        "1": "1ο Εξάμηνο",
-        "2": "2ο Εξάμηνο",
-        "3": "3ο Εξάμηνο",
-        "4": "4ο Εξάμηνο",
-        "5": "5ο Εξάμηνο",
-        "6": "6ο Εξάμηνο",
-        "7": "7ο Εξάμηνο",
-        "8": "8ο Εξάμηνο",
-        "9": "9ο Εξάμηνο",
-        "10": "10ο Εξάμηνο"
-      },
-      "showMore": "Εμφάνιση Περισσότερων"
-    },
-    "chat": {
-      "select_a_chat": "Διάλεξε μια συνομιλία",
-      "or_create_a_new_one": "Ή δημιούργησε μια νέα",
-      "new_chat": "Νέα Συνομιλία",
-      "sentMessage": "Αποστολή Μηνύματος",
-      "addParticipant": "Προσθήκη χρήστη",
-      "renameConversation": "Μετονομασία Συνομιλίας",
-      "enterNewName": "Εισάγετε το νέο όνομα",
-      "rename": "Μετονομασία"
-    },
-    "create": "Δημιουργία",
-    "searchForChat": "Αναζήτηση για κάποια συγκεγκριμένη συνομιλία",
-    "searchForUsers": "Αναζήτηση Χρηστών",
-    "noUsersFound": "Δεν βρέθηκαν χρήστες",
-    "participants": "Συμμετέχοντες",
-    "whiteboard": "Whiteboard",
-    "somethingWentWrong": "Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε αργότερα."
-
+    "select_a_setting": "Διάλεξε μια ρύθμιση",
+    "title": "Ρυθμίσεις"
+  },
+  "somethingWentWrong": "Κάτι πήγε στραβά. Παρακαλούμε δοκιμάστε αργότερα.",
+  "time_ago_options": {
+    "day_future": "σε 0 μέρες|αύριο|σε {n} μέρες",
+    "day_past": "0 μέρες πριν|εχθές|{n} μέρες πριν",
+    "hour_future": "σε 0 ώρες|σε 1 ώρα|σε {n} ώρες",
+    "hour_past": "0 ώρες πριν|1 ώρα πριν|{n} ώρες πριν",
+    "just_now": "μόλις τώρα",
+    "minute_future": "σε 0 λεπτά|σε 1 minute|σε {n} λεπτά",
+    "minute_past": "0 λεπτά πριν|1 minute πριν|{n} λεπτά πριν",
+    "month_future": "σε 0 μήνες|επόμενο μήνα|σε {n} μήνες",
+    "month_past": "0 μήνες πριν|προηγούμενο μήνα|{n} μήνες πριν",
+    "second_future": "μόλις τώρα|σε {n} second|σε {n} δευτερόλεπτα",
+    "second_past": "μόλις τώρα|{n} second πριν|{n} δευτερόλεπτα πριν",
+    "short_day_future": "σε {n}d",
+    "short_day_past": "{n}d",
+    "short_hour_future": "σε {n}h",
+    "short_hour_past": "{n}h",
+    "short_minute_future": "σε {n}min",
+    "short_minute_past": "{n}min",
+    "short_month_future": "σε {n}mo",
+    "short_month_past": "{n}mo",
+    "short_second_future": "σε {n}s",
+    "short_second_past": "{n}s",
+    "short_week_future": "σε {n}w",
+    "short_week_past": "{n}w",
+    "short_year_future": "σε {n}y",
+    "short_year_past": "{n}y",
+    "week_future": "σε 0 εβδομάδες|επόμενη week|σε {n} εβδομάδες",
+    "week_past": "0 εβδομάδες πριν|last week|{n} εβδομάδες πριν",
+    "year_future": "σε 0 χρόνια|επόμενο έτος|σε {n} χρόνια",
+    "year_past": "0 χρόνια πριν|προηγούμενο έτος|{n} χρόνια πριν"
+  },
+  "user": {
+    "signIn": "Σύνδεση",
+    "signOut": "Αποσύνδεση"
+  },
+  "users": "Χρήστες",
+  "whiteboard": "Whiteboard"
 }
