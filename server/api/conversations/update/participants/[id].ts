@@ -103,8 +103,9 @@ export default defineEventHandler(async (event) => {
       },
     })
 
-    for (const participant of updatedCoversation.participants) {
-      await sendSSEEvent(participant.userId, JSON.stringify({
+    const pastAndPresentParticipants = Array.from(new Set([...tempConversationParticipants, ...usersToAdd, ...usersToRemove]).values())
+    for (const participant of pastAndPresentParticipants) {
+      await sendSSEEvent(participant, JSON.stringify({
         type: SocketEvents.ConversationParticipantsUpdate,
         body: {
           chatId: conversation.id,

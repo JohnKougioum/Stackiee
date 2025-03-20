@@ -21,12 +21,6 @@ export async function fetchChats() {
   }
 }
 
-export function updateChat(newChat: FullConversationType) {
-  const index = chats.value.findIndex(chat => chat.id === newChat.id)
-  if (index !== -1)
-    chats.value[index] = newChat
-}
-
 export function updateChatName(chatId: string, newName: string) {
   const index = chats.value.findIndex(chat => chat.id === chatId)
   if (index !== -1)
@@ -39,11 +33,14 @@ export async function updateParticipantsList(chatId: string, participants: Array
     if (!participants.some(participant => participant.user.id === userObject.value?.id)) {
       chats.value.splice(index, 1)
       const route = useRoute()
-      route.params.id.includes(chatId) && await navigateTo('/chat')
+      route.params?.id?.includes(chatId) && await navigateTo('/chat')
     }
     else {
       chats.value[index].participants = participants
     }
+  }
+  else {
+    await fetchChats()
   }
 }
 
