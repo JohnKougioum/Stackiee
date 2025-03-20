@@ -38,7 +38,8 @@ export async function updateParticipantsList(chatId: string, participants: Array
   if (index !== -1) {
     if (!participants.some(participant => participant.user.id === userObject.value?.id)) {
       chats.value.splice(index, 1)
-      await navigateTo('/chat')
+      const route = useRoute()
+      route.params.id.includes(chatId) && await navigateTo('/chat')
     }
     else {
       chats.value[index].participants = participants
