@@ -1,7 +1,28 @@
 <script setup lang="ts">
+import { SocketEvents } from '~/types'
+
 const { $connectWebsocket } = useNuxtApp()
 onMounted(async () => {
-  userObject.value?.id && $connectWebsocket(userObject.value?.id)
+  userObject.value?.id && await $connectWebsocket(userObject.value?.id)
+
+  const source = new EventSource(`/api/sse?user=${userObject.value?.id}`)
+  source.addEventListener('open', (event) => {
+    console.log('SSE connection opened:', event)
+  })
+
+  source.addEventListener('message', async (event) => {
+    const data = JSON.parse(event.data)
+    if (data.type === SocketEvents.NewConversationCreated)
+      await handleNewChatSSEEvent()
+    if (data.type === SocketEvents.ConversationParticipantsUpdate)
+      handleParticipantsUpdateSSEEvent(data.body.chatId, data.body.participants)
+    if (data.type === SocketEvents.ConversationNameUpdate)
+      handleChatNameUpdateSSEEvent(data.body.chatId, data.body.name)
+  })
+
+  source.addEventListener('error', (event) => {
+    console.error('Error with SSE connection:', event)
+  })
 })
 </script>
 

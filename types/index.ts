@@ -464,6 +464,8 @@ export interface ThinnedUser {
 }
 
 export enum SocketEvents {
+  JoinChat,
+  LeaveChat,
   NewMessage,
   MessageError,
   ConversationUpdated,

@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { SocketEvents } from '~/types'
 
 const prisma = new PrismaClient()
 
@@ -101,6 +102,16 @@ export default defineEventHandler(async (event) => {
         },
       },
     })
+
+    for (const participant of updatedCoversation.participants) {
+      await sendSSEEvent(participant.userId, JSON.stringify({
+        type: SocketEvents.ConversationParticipantsUpdate,
+        body: {
+          chatId: conversation.id,
+          participants: updatedCoversation.participants,
+        },
+      }))
+    }
 
     return {
       statusCode: 200,

@@ -33,14 +33,28 @@ export function updateChatName(chatId: string, newName: string) {
     chats.value[index].name = newName
 }
 
-export function updateParticipantsList(chatId: string, participants: Array<ConversationParticipant & { user: ThinnedUser }>) {
+export async function updateParticipantsList(chatId: string, participants: Array<ConversationParticipant & { user: ThinnedUser }>) {
   const index = chats.value.findIndex(chat => chat.id === chatId)
-  if (index !== -1)
-    chats.value[index].participants = participants
+  if (index !== -1) {
+    if (!participants.some(participant => participant.user.id === userObject.value?.id)) {
+      chats.value.splice(index, 1)
+      await navigateTo('/chat')
+    }
+    else {
+      chats.value[index].participants = participants
+    }
+  }
 }
 
 export async function handleNewChatSSEEvent() {
   const { fullPath } = useRoute()
   fullPath.includes('chat') && await fetchChats()
-  // subscribe to new chat with websocket
+}
+
+export function handleParticipantsUpdateSSEEvent(chatId: string, participants: Array<ConversationParticipant & { user: ThinnedUser }>) {
+  updateParticipantsList(chatId, participants)
+}
+
+export function handleChatNameUpdateSSEEvent(chatId: string, newName: string) {
+  updateChatName(chatId, newName)
 }

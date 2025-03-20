@@ -10,20 +10,16 @@ const props = defineProps<{
 }>()
 
 async function updateConversationsParticipantsCall(newParticipantsIdList: string[]) {
-  const { $ws } = useNuxtApp()
-  const data = await $fetch(`/api/conversations/update/participants/${props.chatId}`, {
-    method: 'PUT',
-    body: {
-      participantIDs: newParticipantsIdList,
-    },
-  })
-  if ((data as any).statusCode === 200) {
-    updateParticipantsList(props.chatId, (data as any).body.participantsList)
-    $ws.value?.send(JSON.stringify({
-      eventName: SocketEvents.ConversationParticipantsUpdate,
-      chatId: props.chatId,
-      participants: (data as any).body.participantsList,
-    }))
+  try {
+    await $fetch(`/api/conversations/update/participants/${props.chatId}`, {
+      method: 'PUT',
+      body: {
+        participantIDs: newParticipantsIdList,
+      },
+    })
+  }
+  catch (error) {
+
   }
 }
 

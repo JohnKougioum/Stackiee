@@ -3,7 +3,7 @@ import { SocketEvents } from '~/types'
 import { isModalInChatOpen } from '~/composables/modal'
 
 definePageMeta({
-  keepalive: false,
+  keepalive: true,
 })
 
 const chatId = useRoute().params.id as string
@@ -42,28 +42,55 @@ async function sendMessage() {
 const deactivated = useDeactivated()
 
 onMounted(async () => {
+  $ws.value?.addEventListener('open', joinChat) // when the user refreshes the chat page socket is not initialized
+  joinChat()
   $ws.value?.addEventListener('message', async (event) => {
     let data
             = typeof event.data === 'string' ? event.data : await event.data.text()
     data = data.startsWith('{')
       ? JSON.parse(data)
       : { message: data }
+
+    if (data.eventName === SocketEvents.JoinChat)
+      $ws.value?.removeEventListener('open', joinChat)
     if (data.eventName === SocketEvents.NewMessage) {
       messagesContainer.value?.addMessage(data.message)
       if (isWhiteboardOpen.value && messagesContainerWhiteboard.value)
         messagesContainerWhiteboard.value?.addMessage(data.message)
     }
-
-    if (data.eventName === SocketEvents.ConversationNameUpdate)
-      updateChatName(data.chatId, data.conversationName)
-
-    if (data.eventName === SocketEvents.ConversationParticipantsUpdate)
-      updateParticipantsList(data.chatId, data.participants)
   })
+})
+
+function joinChat() {
+  try {
+    $ws.value?.send(JSON.stringify({
+      eventName: SocketEvents.JoinChat,
+      chatId,
+    }))
+  }
+  catch (error) {
+  }
+}
+
+function leaveChat() {
+  // TODO: how should i update the messages if the user leaves the chat without rerendering the page
+  try {
+    $ws.value?.send(JSON.stringify({
+      eventName: SocketEvents.LeaveChat,
+      chatId,
+    }))
+  }
+  catch (error) {
+  }
+}
+
+onReactivated(() => {
+  joinChat()
 })
 
 onDeactivated(() => {
   isWhiteboardOpen.value = false
+  leaveChat()
 })
 </script>
 
