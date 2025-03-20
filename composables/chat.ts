@@ -4,7 +4,7 @@ import type { ThinnedUser } from '~/types/index'
 
 export type FullConversationType = Conversation & { participants: Array<ConversationParticipant & { user: ThinnedUser }> }
 
-export const chats = ref < Array<FullConversationType>>([])
+export const chats = ref <Array<FullConversationType>>([])
 const isChatsListLoading = ref(false)
 export async function fetchChats() {
   if (process.client) {
@@ -48,8 +48,7 @@ export async function updateParticipantsList(chatId: string, participants: Array
 }
 
 export async function handleNewChatSSEEvent() {
-  const { fullPath } = useRoute()
-  fullPath.includes('chat') && await fetchChats()
+  await fetchChats()
 }
 
 export function handleParticipantsUpdateSSEEvent(chatId: string, participants: Array<ConversationParticipant & { user: ThinnedUser }>) {

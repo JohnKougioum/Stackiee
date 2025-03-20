@@ -2,10 +2,6 @@
 import { SocketEvents } from '~/types'
 import { isModalInChatOpen } from '~/composables/modal'
 
-definePageMeta({
-  keepalive: true,
-})
-
 const chatId = useRoute().params.id as string
 
 const { $ws } = useNuxtApp()
@@ -73,7 +69,6 @@ function joinChat() {
 }
 
 function leaveChat() {
-  // TODO: how should i update the messages if the user leaves the chat without rerendering the page
   try {
     $ws.value?.send(JSON.stringify({
       eventName: SocketEvents.LeaveChat,
@@ -84,11 +79,7 @@ function leaveChat() {
   }
 }
 
-onReactivated(() => {
-  joinChat()
-})
-
-onDeactivated(() => {
+onUnmounted(() => {
   isWhiteboardOpen.value = false
   leaveChat()
 })
