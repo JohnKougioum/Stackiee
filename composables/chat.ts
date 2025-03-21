@@ -4,7 +4,7 @@ import type { ThinnedUser } from '~/types/index'
 
 export type FullConversationType = Conversation & { participants: Array<ConversationParticipant & { user: ThinnedUser }> }
 
-export const chats = ref < Array<FullConversationType>>([])
+export const chats = ref <Array<FullConversationType>>([])
 const isChatsListLoading = ref(false)
 export async function fetchChats() {
   if (process.client) {
@@ -21,26 +21,37 @@ export async function fetchChats() {
   }
 }
 
-export function updateChat(newChat: FullConversationType) {
-  const index = chats.value.findIndex(chat => chat.id === newChat.id)
-  if (index !== -1)
-    chats.value[index] = newChat
-}
-
 export function updateChatName(chatId: string, newName: string) {
   const index = chats.value.findIndex(chat => chat.id === chatId)
   if (index !== -1)
     chats.value[index].name = newName
 }
 
-export function updateParticipantsList(chatId: string, participants: Array<ConversationParticipant & { user: ThinnedUser }>) {
+export async function updateParticipantsList(chatId: string, participants: Array<ConversationParticipant & { user: ThinnedUser }>) {
   const index = chats.value.findIndex(chat => chat.id === chatId)
-  if (index !== -1)
-    chats.value[index].participants = participants
+  if (index !== -1) {
+    if (!participants.some(participant => participant.user.id === userObject.value?.id)) {
+      chats.value.splice(index, 1)
+      const route = useRoute()
+      route.params?.id?.includes(chatId) && await navigateTo('/chat')
+    }
+    else {
+      chats.value[index].participants = participants
+    }
+  }
+  else {
+    await fetchChats()
+  }
 }
 
 export async function handleNewChatSSEEvent() {
-  const { fullPath } = useRoute()
-  fullPath.includes('chat') && await fetchChats()
-  // subscribe to new chat with websocket
+  await fetchChats()
+}
+
+export function handleParticipantsUpdateSSEEvent(chatId: string, participants: Array<ConversationParticipant & { user: ThinnedUser }>) {
+  updateParticipantsList(chatId, participants)
+}
+
+export function handleChatNameUpdateSSEEvent(chatId: string, newName: string) {
+  updateChatName(chatId, newName)
 }

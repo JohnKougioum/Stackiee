@@ -11,15 +11,23 @@ function closeModal() {
   isChatRenameOpen.value = false
 }
 
-function rename() {
-  const { $ws } = useNuxtApp()
-  const chatId = props.chatId || useRoute().params.id as string
-  $ws.value?.send(JSON.stringify({
-    eventName: SocketEvents.ConversationNameUpdate,
-    chatId,
-    conversationName: inputText.value,
-  }))
-  closeModal()
+const { t } = useI18n()
+const errorMessage = ref('')
+async function rename() {
+  try {
+    const chatId = props.chatId || useRoute().params.id as string
+    await $fetch(`/api/conversations/update/name/${chatId}`, {
+      method: 'PUT',
+      body: {
+        name: inputText.value,
+      },
+    })
+    closeModal()
+  }
+  catch (error) {
+    if (error && (error as any).response)
+      errorMessage.value = (error as any).response?.status === 400 ? t('chat.renameNoPermission') : t('somethingWentWrong')
+  }
 }
 </script>
 
@@ -41,6 +49,9 @@ function rename() {
         type="text"
         @keydown.enter="rename"
       >
+    </div>
+    <div v-if="errorMessage" class="text-center text-red-500 mt-1">
+      {{ errorMessage }}
     </div>
     <button class="base-button my-2 float-right" @click="rename">
       {{ $t('chat.rename') }}

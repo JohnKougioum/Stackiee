@@ -16,7 +16,7 @@ function toggleWhiteboard() {
       <div class="flex items-center gap-2">
         <CommonDropdown placement="bottom">
           <CommonTooltip placement="bottom" :content="$t('participants')">
-            <img src="~/assets/UserGroupPlus.svg" class="h-8 w-8 fill-primary-dark cursor-pointer">
+            <img src="~/assets/UserGroupPlus.svg" class="h-8 w-8 mb-[2px] fill-primary-dark cursor-pointer">
           </CommonTooltip>
           <template #popper>
             <slot name="participantsDropdown" />

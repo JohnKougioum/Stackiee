@@ -7,6 +7,7 @@
     "or_create_a_new_one": "or create a new one",
     "rename": "Rename",
     "renameConversation": "Rename conversation",
+    "renameNoPermission": "You don't have permission to change the name of this conversation.",
     "select_a_chat": "Select a conversation",
     "sentMessage": "Sent a message"
   },
