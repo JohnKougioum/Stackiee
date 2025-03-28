@@ -12,25 +12,20 @@ const participantsIds = computed(() => props.participants.map(participant => par
 
 const loading = ref(false)
 async function addNewUsers(users: ThinnedUser[]) {
-  const { $ws } = useNuxtApp()
-
   loading.value = true
   const newParticipantsIdList = [...props.participants.map(participant => participant.userId), ...users.map(user => user.id)]
-  const data = await $fetch(`/api/conversations/update/participants/${props.chatId}`, {
-    method: 'PUT',
-    body: {
-      participantIDs: newParticipantsIdList,
-    },
-  })
-  loading.value = false
-  isParticipantsDropdownOpen.value = false
-  if ((data as any).statusCode === 200) {
-    updateParticipantsList(props.chatId, (data as any).body.participantsList)
-    $ws.value?.send(JSON.stringify({
-      eventName: SocketEvents.ConversationParticipantsUpdate,
-      chatId: props.chatId,
-      participants: (data as any).body.participantsList,
-    }))
+  try {
+    await $fetch(`/api/conversations/update/participants/${props.chatId}`, {
+      method: 'PUT',
+      body: {
+        participantIDs: newParticipantsIdList,
+      },
+    })
+    loading.value = false
+    isParticipantsDropdownOpen.value = false
+  }
+  catch (error) {
+
   }
 }
 </script>

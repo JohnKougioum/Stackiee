@@ -64,8 +64,9 @@ onMounted(() => {
     }
     if (response?.eventName === SocketEvents.WhiteboardEvent) {
       if (response?.data && Object.keys(response?.data)?.length) {
-        if (elements.value.findIndex(({ id }) => id === response.data.id) !== -1)
-          elements.value[response.data.id] = response.data
+        const elIndex = elements.value.findIndex(({ id }) => id === response.data.id)
+        if (elIndex !== -1)
+          elements.value[elIndex] = response.data
         else
           elements.value.push(response.data)
       }
@@ -152,18 +153,20 @@ function updateElement(
 ) {
   const elementToolType = type || toolType.value
   if (elementToolType === ToolTypes.PENCIL) {
-    elements.value[id]?.points?.push([x2, y2])
+    elements.value.find(element => element.id === id)?.points?.push([x2, y2])
   }
   else {
     const updatedElement = createElement(id, x1, y1, x2, y2, elementToolType)
-    elements.value[id] = updatedElement as Element
+    const elIndex = elements.value.findIndex(element => element.id === id)
+    elements.value[elIndex] = updatedElement as Element
   }
   reDraw()
   if (!fromServer) {
+    const element = elements.value.find(element => element.id === id)
     $ws.value?.send(JSON.stringify({
       eventName: SocketEvents.WhiteboardEvent,
       chatId,
-      data: { ...JSON.parse(JSON.stringify(elements.value[id])), actionType: action },
+      data: { ...JSON.parse(JSON.stringify(element)), actionType: action },
     }))
   }
 }
@@ -264,9 +267,9 @@ function handleMouseMove(event: MouseEvent) {
     (event.target as HTMLElement).style.cursor = 'crosshair'
 
   if (action === ActionTypes.DRAWING) {
-    const index = elements.value.length - 1
-    const { x1, y1 } = elements.value[index]
-    updateElement(index, x1, y1, clientX, clientY)
+    const { id } = selectedElement as Element
+    const { x1, y1 } = elements.value.find(element => element.id === id) as Element
+    updateElement(id, x1, y1, clientX, clientY)
   }
   else if (action === ActionTypes.MOVING) {
     if (selectedElement) {
@@ -308,7 +311,7 @@ function handleMouseUp() {
       && adjustmentRequired(type)
     ) {
       const { x1, y1, x2, y2 } = adjustElementCoordinates(
-        elements.value[index] as Element,
+        elements.value.find(element => element.id === index) as Element,
       )
       updateElement(id, x1, y1, x2, y2, type)
     }
@@ -493,23 +496,23 @@ function exportCanvas() {
       @mousemove="handleMouseMove"
       @mouseup="handleMouseUp"
     />
-    <div class="absolute bottom-5 left-5 z-10">
-      <button class="cursor-pointer p-2 bg-orange-100 rounded-l-lg hover:bg-orange-200" @click="onZoom(-0.1)">
+    <div class="absolute bottom-5 left-5 z-10 flex">
+      <button class="h-10 w-10 cursor-pointer p-2 bg-orange-100 rounded-l-lg hover:bg-orange-200" @click="onZoom(-0.1)">
         <Icon name="majesticons:minus-line" size="1.3rem" />
       </button>
-      <button class="cursor-pointer p-2 bg-orange-100 hover:bg-orange-200" @click="resetZoom">
+      <button class="h-10 w-12 cursor-pointer p-2 bg-orange-100 hover:bg-orange-200" @click="resetZoom">
         {{ new Intl.NumberFormat('en-US', { style: 'percent' }).format(scale) }}
       </button>
-      <button class="cursor-pointer p-2 bg-orange-100 hover:bg-orange-200 rounded-r-lg" @click="onZoom(0.1)">
+      <button class="h-10 w-10 cursor-pointer p-2 bg-orange-100 hover:bg-orange-200 rounded-r-lg" @click="onZoom(0.1)">
         <Icon name="majesticons:plus-line" size="1.3rem" />
       </button>
-      <button class="cursor-pointer ml-4 p-2 bg-orange-100 hover:bg-orange-200 rounded-l-lg" @click="Undo">
+      <button class="h-10 w-10 cursor-pointer ml-4 p-2 bg-orange-100 hover:bg-orange-200 rounded-l-lg" @click="Undo">
         <Icon name="majesticons:undo" size="1.3rem" />
       </button>
-      <button class="cursor-pointer p-2 bg-orange-100 hover:bg-orange-200 rounded-r-lg" @click="Redo">
+      <button class="h-10 w-10 cursor-pointer p-2 bg-orange-100 hover:bg-orange-200 rounded-r-lg" @click="Redo">
         <Icon name="majesticons:redo" size="1.3rem" />
       </button>
-      <button class="p-2 bg-orange-100 hover:bg-orange-200 rounded-lg ml-4" @click="exportCanvas">
+      <button class="h-10 p-2 bg-orange-100 hover:bg-orange-200 rounded-lg ml-4" @click="exportCanvas">
         {{ $t('export') }}
       </button>
     </div>

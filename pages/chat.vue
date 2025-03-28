@@ -73,7 +73,7 @@ const filteredChats = computed(() => {
       </MainContent>
     </div>
     <div class="flex-1" :class="isRootPath ? 'hidden lg:block' : 'block'">
-      <NuxtPage />
+      <NuxtPage :key="route.fullPath" />
     </div>
   </div>
 </template>

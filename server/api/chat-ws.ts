@@ -1,6 +1,6 @@
 import type { Peer } from 'crossws'
 import { getQuery } from 'ufo'
-import { addMessageDB, getUserConversations, updateConversationName } from '~/server/utils/chat-utils'
+import { addMessageDB } from '~/server/utils/chat-utils'
 import { SocketEvents } from '~/types'
 import { Redo, Undo, createHistoryPoint, getWhiteboardData, setWhiteboardEntry } from '~/server/utils/whiteboard-server'
 
@@ -9,22 +9,28 @@ const users = new Map<string, { online: boolean }>()
 export default defineWebSocketHandler({
   async open(peer) {
     const userId = getUserId(peer)
-    const conversations = await getUserConversations(userId)
-    const conversationsIds = conversations.map(({ conversation }) => conversation.id)
-
     users.set(userId, { online: true })
-
     peer.send({
       user: 'server',
       message: 'Connected',
-    })
-    conversationsIds.forEach((conversationId) => {
-      peer.subscribe(conversationId)
     })
   },
   async message(peer, event) {
     const data = JSON.parse(await event.text())
     const userId = getUserId(peer)
+    if (data.eventName === SocketEvents.JoinChat) {
+      peer.subscribe(data.chatId)
+      peer.send({
+        eventName: SocketEvents.JoinChat,
+      })
+    }
+    if (data.eventName === SocketEvents.LeaveChat) {
+      peer.unsubscribe(data.chatId)
+      peer.send({
+        eventName: SocketEvents.LeaveChat,
+        chatId: data.chatId,
+      })
+    }
     if (data.eventName === SocketEvents.NewMessage) {
       try {
         const message = await addMessageDB(userId, data.chatId, data.message)
@@ -45,37 +51,8 @@ export default defineWebSocketHandler({
         })
       }
     }
-    if (data.eventName === SocketEvents.ConversationNameUpdate) {
-      try {
-        await updateConversationName(userId, data.chatId, data.conversationName)
-        peer.send({
-          eventName: SocketEvents.ConversationNameUpdate,
-          chatId: data.chatId,
-          conversationName: data.conversationName,
-        })
-        peer.publish(data.chatId, {
-          eventName: SocketEvents.ConversationNameUpdate,
-          chatId: data.chatId,
-          conversationName: data.conversationName,
-        })
-      }
-      catch (error) {
-        peer.send({
-          eventName: SocketEvents.MessageError,
-          message: (error as any).message,
-        })
-      }
-    }
-    if (data.eventName === SocketEvents.ConversationParticipantsUpdate) {
-      peer.publish(data.chatId, {
-        eventName: SocketEvents.ConversationParticipantsUpdate,
-        chatId: data.chatId,
-        participants: data.participants,
-      })
-    }
     if (data.eventName === SocketEvents.WhiteboardJoined) {
       const chatId = data.chatId
-      // console.log('what the heell', getWhiteboardData(chatId))
       peer.subscribe(`whiteboard-${chatId}`)
       peer.send({
         user: 'sever',

@@ -1,6 +1,4 @@
 <script setup lang='ts'>
-import { SocketEvents } from '~/types'
-
 const { data: user, pending, error } = await useFetch('/api/user/info', {
   method: 'GET',
   credentials: 'include',
@@ -9,24 +7,6 @@ if (error.value && import.meta.client)
   window.location.href = '/login'
 
 userObject.value = user.value?.data || null
-onMounted(() => {
-  const source = new EventSource(`/api/sse?user=${userObject.value?.id}`)
-
-  source.addEventListener('open', (event) => {
-    console.log('SSE connection opened:', event)
-  })
-
-  source.addEventListener('message', async (event) => {
-    const data = JSON.parse(event.data)
-    if (data.type === SocketEvents.NewConversationCreated)
-      await handleNewChatSSEEvent()
-    console.log('Received event:', data.type, '- Message:', data.message)
-  })
-
-  source.addEventListener('error', (event) => {
-    console.error('Error with SSE connection:', event)
-  })
-})
 </script>
 
 <template>
