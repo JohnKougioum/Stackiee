@@ -23,7 +23,6 @@ export async function getUserConversations(userId: string) {
               },
             },
           },
-          latestMessage: true,
         },
       },
     },

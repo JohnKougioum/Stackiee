@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import z from 'zod'
+import { removeDiacritics } from '~/server/utils/normalize'
 
 const prisma = new PrismaClient()
 
@@ -23,11 +24,13 @@ export default defineEventHandler(async (event) => {
   }
 
   const { postBody, semester, course, fileId } = requestBody;
+  const normalizedBody = removeDiacritics(postBody)
 
   try {
     const newPost = await prisma.post.create({
       data: {
         body: postBody,
+        normalizedBody,
         semester: semester || 0,
         course: course || '',
         User: {
@@ -38,8 +41,6 @@ export default defineEventHandler(async (event) => {
       },
     });
 
-    // 2) If a fileId was provided (meaning the client has already uploaded a file),
-    //    link it to this newly created post
     if (fileId) {
       await prisma.file.update({
         where: { id: fileId },
