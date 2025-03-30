@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from "vue";
 
-definePageMeta({ wideLayout: true })
+definePageMeta({ wideLayout: true });
 
 /** Unified announcement interface */
 interface UnifiedAnnouncement {
@@ -35,14 +35,14 @@ const itemsPerPage = ref<number>(5); // default to 5 items
 const meta = ref<{ total: number; last_page: number } | null>(null);
 
 // --- Source Selection as Tabs ---
-const selectedSource = ref<'aboard'>('aboard');
+const selectedSource = ref<"aboard">("aboard");
 
 // --- Reactive State for Filter Dropdowns (for aboard) ---
 const filterTags = ref<FilterTag[]>([]);
 const authors = ref<Author[]>([]);
 const selectedTagId = ref<number | null>(null);
 const selectedAuthorId = ref<number | null>(null);
-const searchText = ref<string>('');
+const searchText = ref<string>("");
 
 // --- Transform Functions ---
 
@@ -53,7 +53,7 @@ function transformAboardData(item: any): UnifiedAnnouncement {
     body: item.body,
     preview: item.preview,
     createdAt: item.created_at,
-    authorName: item.author?.name || 'Unknown',
+    authorName: item.author?.name || "Unknown",
     tags: (item.tags || []).map((t: any) => t.title),
     attachments: item.attachments || [],
   };
@@ -65,27 +65,32 @@ async function fetchAnnouncements(page: number = 1) {
   loading.value = true;
   error.value = null;
   try {
-      const params = new URLSearchParams();
-      params.append('sortId', '0');
-      params.append('perPage', itemsPerPage.value.toString());
-      params.append('page', page.toString());
-      if (selectedTagId.value) {
-        params.append('tags[]', selectedTagId.value.toString());
+    const params = new URLSearchParams();
+    params.append("sortId", "0");
+    params.append("perPage", itemsPerPage.value.toString());
+    params.append("page", page.toString());
+    if (selectedTagId.value) {
+      params.append("tags[]", selectedTagId.value.toString());
+    }
+    if (selectedAuthorId.value) {
+      params.append("users[]", selectedAuthorId.value.toString());
+    }
+    if (searchText.value) {
+      params.append("title", searchText.value);
+    }
+    const res = await $fetch(
+      `https://aboard.iee.ihu.gr/api/v2/announcements?${params.toString()}`,
+      {
+        headers: { accept: "application/json" },
       }
-      if (selectedAuthorId.value) {
-        params.append('users[]', selectedAuthorId.value.toString());
-      }
-      if (searchText.value) {
-        params.append('title', searchText.value);
-      }
-      const res = await $fetch(`https://aboard.iee.ihu.gr/api/v2/announcements?${params.toString()}`, {
-        headers: { accept: 'application/json' },
-      });
-      announcements.value = (res.data || []).map((item: any) => transformAboardData(item));
-      meta.value = { total: res.meta.total, last_page: res.meta.last_page };
+    );
+    announcements.value = (res.data || []).map((item: any) =>
+      transformAboardData(item)
+    );
+    meta.value = { total: res.meta.total, last_page: res.meta.last_page };
   } catch (err: any) {
     console.error(err);
-    error.value = err.message || 'Failed to fetch announcements';
+    error.value = err.message || "Failed to fetch announcements";
   } finally {
     loading.value = false;
   }
@@ -94,30 +99,30 @@ async function fetchAnnouncements(page: number = 1) {
 // --- Fetch Filter Tags (for aboard) ---
 async function fetchFilterTags() {
   try {
-    const res = await $fetch('https://aboard.iee.ihu.gr/api/v2/filtertags', {
-      headers: { accept: 'application/json' },
+    const res = await $fetch("https://aboard.iee.ihu.gr/api/v2/filtertags", {
+      headers: { accept: "application/json" },
     });
     filterTags.value = (res || []).map((tag: any) => ({
       id: tag.id,
       title: tag.title,
     }));
   } catch (err: any) {
-    console.error('Error fetching filter tags:', err);
+    console.error("Error fetching filter tags:", err);
   }
 }
 
 // --- Fetch Authors (for aboard) ---
 async function fetchAuthors() {
   try {
-    const res = await $fetch('https://aboard.iee.ihu.gr/api/v2/authors', {
-      headers: { accept: 'application/json' },
+    const res = await $fetch("https://aboard.iee.ihu.gr/api/v2/authors", {
+      headers: { accept: "application/json" },
     });
     authors.value = (res || []).map((author: any) => ({
       id: author.id,
       name: author.name,
     }));
   } catch (err: any) {
-    console.error('Error fetching authors:', err);
+    console.error("Error fetching authors:", err);
   }
 }
 
@@ -125,7 +130,7 @@ async function fetchAuthors() {
 function clearFilters() {
   selectedTagId.value = null;
   selectedAuthorId.value = null;
-  searchText.value = '';
+  searchText.value = "";
   fetchAnnouncements(1);
 }
 
@@ -150,6 +155,27 @@ function closeAnnouncement() {
   selectedAnnouncement.value = null;
 }
 
+function getFileMeta(filename: string) {
+  const ext = filename.split(".").pop()?.toLowerCase() || "";
+  const map: Record<string, { icon: string; label: string }> = {
+    pdf: { icon: "📕", label: "PDF" },
+    doc: { icon: "📘", label: "Word" },
+    docx: { icon: "📘", label: "Word" },
+    xls: { icon: "📊", label: "Excel" },
+    xlsx: { icon: "📊", label: "Excel" },
+    csv: { icon: "📊", label: "CSV" },
+    jpg: { icon: "📷", label: "Image" },
+    jpeg: { icon: "📷", label: "Image" },
+    png: { icon: "📷", label: "Image" },
+    gif: { icon: "📷", label: "Image" },
+    zip: { icon: "🗜️", label: "Archive" },
+    rar: { icon: "🗜️", label: "Archive" },
+    txt: { icon: "📄", label: "Text" },
+  };
+
+  return map[ext] || { icon: "📄", label: ext.toUpperCase() || "File" };
+}
+
 onMounted(() => {
   // Default source is "aboard"
   fetchFilterTags();
@@ -160,86 +186,110 @@ onMounted(() => {
 
 <template>
   <div class="max-w-7xl mx-auto p-8 bg-base">
-
     <!-- Filter Section (only for aboard) -->
-    <div v-if="selectedSource === 'aboard'" class="mb-6 flex flex-col md:flex-row md:items-end md:space-x-4">
-  <!-- Search by Title -->
-  <div class="flex flex-col">
-    <label for="searchInput" class="block text-sm font-medium text-primary-dark">
-      Αναζήτηση με τίτλο:
-    </label>
-    <div class="mt-1 flex items-center space-x-2">
-      <input
-        id="searchInput"
-        v-model="searchText"
-        type="text"
-        placeholder="Search..."
-        class="w-40 rounded border border-secondary-gray px-2 py-1 text-sm text-primary-dark focus:ring-base-orange focus:border-base-orange"
-      />
-      <button
-        @click="fetchAnnouncements(1)"
-        class="px-3 py-1 bg-base-orange text-white rounded hover:bg-base-orange-darker transition-colors text-sm"
-      >
-        Search
-      </button>
+    <div
+      v-if="selectedSource === 'aboard'"
+      class="mb-6 flex flex-col md:flex-row md:flex-wrap md:items-end gap-4 px-4"
+    >
+      <!-- Search by Title -->
+      <div class="flex flex-col w-full md:w-auto">
+        <label
+          for="searchInput"
+          class="block text-sm font-medium text-primary-dark"
+        >
+          Αναζήτηση με τίτλο:
+        </label>
+        <div
+          class="mt-1 flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0"
+        >
+          <input
+            id="searchInput"
+            v-model="searchText"
+            type="text"
+            placeholder="Search..."
+            class="w-full md:w-40 rounded border border-secondary-gray px-2 py-1 text-sm text-primary-dark focus:ring-base-orange focus:border-base-orange"
+          />
+          <button
+            @click="fetchAnnouncements(1)"
+            class="w-full sm:w-auto px-3 py-1 bg-base-orange text-white rounded hover:bg-base-orange-darker transition-colors text-sm"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+
+      <!-- Tag Filter -->
+      <div class="flex flex-col w-full md:w-auto">
+        <label
+          for="tagFilter"
+          class="block text-sm font-medium text-primary-dark"
+        >
+          Κατηγορία:
+        </label>
+        <select
+          id="tagFilter"
+          v-model.number="selectedTagId"
+          @change="fetchAnnouncements(1)"
+          class="mt-1 w-full md:w-40 rounded border border-secondary-gray px-2 py-1 text-sm text-primary-dark focus:ring-base-orange focus:border-base-orange"
+        >
+          <option value="">Όλες οι κατηγορίες</option>
+          <option v-for="tag in filterTags" :key="tag.id" :value="tag.id">
+            {{ tag.title }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Author Filter -->
+      <div class="flex flex-col w-full md:w-auto">
+        <label
+          for="authorFilter"
+          class="block text-sm font-medium text-primary-dark"
+        >
+          Συντάκτης:
+        </label>
+        <select
+          id="authorFilter"
+          v-model.number="selectedAuthorId"
+          @change="fetchAnnouncements(1)"
+          class="mt-1 w-full md:w-40 rounded border border-secondary-gray px-2 py-1 text-sm text-primary-dark focus:ring-base-orange focus:border-base-orange"
+        >
+          <option value="">Όλοι</option>
+          <option v-for="author in authors" :key="author.id" :value="author.id">
+            {{ author.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Clear Filters Button -->
+      <div class="flex flex-col w-full md:w-auto">
+        <label class="invisible" for="clearFilters">Καθαρισμός</label>
+        <button
+          @click="clearFilters"
+          class="mt-1 flex items-center justify-center w-full sm:w-10 h-10 bg-white border border-secondary-gray text-base-orange rounded shadow hover:bg-base-orange hover:text-white transition-colors text-sm"
+          title="Clear Filters"
+        >
+          🗑
+        </button>
+      </div>
     </div>
-  </div>
-  <!-- Tag Filter -->
-  <div class="flex flex-col">
-    <label for="tagFilter" class="block text-sm font-medium text-primary-dark">
-      Κατηγορία:
-    </label>
-    <select
-      id="tagFilter"
-      v-model.number="selectedTagId"
-      @change="fetchAnnouncements(1)"
-      class="mt-1 w-40 rounded border border-secondary-gray px-2 py-1 text-sm text-primary-dark focus:ring-base-orange focus:border-base-orange"
-    >
-      <option value="">Όλες οι κατηγορίες</option>
-      <option v-for="tag in filterTags" :key="tag.id" :value="tag.id">
-        {{ tag.title }}
-      </option>
-    </select>
-  </div>
-  <!-- Author Filter -->
-  <div class="flex flex-col">
-    <label for="authorFilter" class="block text-sm font-medium text-primary-dark">
-      Συντάκτης:
-    </label>
-    <select
-      id="authorFilter"
-      v-model.number="selectedAuthorId"
-      @change="fetchAnnouncements(1)"
-      class="mt-1 w-40 rounded border border-secondary-gray px-2 py-1 text-sm text-primary-dark focus:ring-base-orange focus:border-base-orange"
-    >
-      <option value="">Όλοι</option>
-      <option v-for="author in authors" :key="author.id" :value="author.id">
-        {{ author.name }}
-      </option>
-    </select>
-  </div>
-  <!-- Clear Filters Button -->
-  <div class="flex flex-col">
-    <label class="invisible" for="clearFilters">Καθαρισμός</label>
-    <button
-      @click="clearFilters"
-      class="mt-1 flex items-center justify-center w-10 h-10 bg-white border border-secondary-gray text-base-orange rounded shadow hover:bg-base-orange hover:text-white transition-colors text-sm"
-      title="Clear Filters"
-    >
-      🗑
-    </button>
-  </div>
-</div>
 
     <!-- Announcements Table with Loader Overlay -->
-    <div class="relative">
-      <table class="w-full border border-secondary-gray shadow-lg rounded-lg overflow-hidden">
+    <div class="relative hidden md:block">
+      <table
+        class="w-full border border-secondary-gray shadow-lg rounded-lg overflow-hidden"
+      >
         <thead class="bg-base-orange">
           <tr>
             <!-- Author first -->
-            <th class="px-6 py-2 text-left text-sm font-semibold text-white">Συντάκτης</th>
-            <th class="px-6 py-2 text-left text-sm font-semibold text-white">Τίτλος</th>
-            <th class="px-6 py-2 text-left text-sm font-semibold text-white">Κατηγορίες</th>
+            <th class="px-6 py-2 text-left text-sm font-semibold text-white">
+              Συντάκτης
+            </th>
+            <th class="px-6 py-2 text-left text-sm font-semibold text-white">
+              Τίτλος
+            </th>
+            <th class="px-6 py-2 text-left text-sm font-semibold text-white">
+              Κατηγορίες
+            </th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-secondary-gray">
@@ -249,11 +299,17 @@ onMounted(() => {
             @click="openAnnouncement(announcement)"
             class="group duration-100 transition-colors group-hover:bg-secondary-gray group-focus-visible:ring-2 group-focus-visible:ring-primary-gray cursor-pointer"
           >
-            <td class="px-6 py-2 text-sm text-primary-dark">{{ announcement.authorName }}</td>
-            <td class="px-6 py-2 text-sm text-primary-dark">{{ announcement.title }}</td>
+            <td class="px-6 py-2 text-sm text-primary-dark">
+              {{ announcement.authorName }}
+            </td>
+            <td class="px-6 py-2 text-sm text-primary-dark">
+              {{ announcement.title }}
+            </td>
             <td class="px-6 py-2 text-sm text-primary-dark">
               <template v-for="(tag, i) in announcement.tags" :key="i">
-                <span class="inline-block bg-secondary-gray text-primary-dark text-xs px-2 py-0.5 rounded mr-1">
+                <span
+                  class="inline-block bg-secondary-gray text-primary-dark text-xs px-2 py-0.5 rounded mr-1"
+                >
                   {{ tag }}
                 </span>
               </template>
@@ -266,10 +322,55 @@ onMounted(() => {
         v-if="loading"
         class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 z-10"
       >
-        <svg class="animate-spin h-10 w-10 text-base-orange" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        <svg
+          class="animate-spin h-10 w-10 text-base-orange"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          ></path>
         </svg>
+      </div>
+    </div>
+
+    <!-- Mobile Friendly List -->
+    <div class="space-y-4 md:hidden">
+      <div
+        v-for="(announcement, index) in announcements"
+        :key="announcement.id + '-' + index"
+        @click="openAnnouncement(announcement)"
+        class="p-4 rounded-lg border border-secondary-gray shadow cursor-pointer bg-white"
+      >
+        <div class="mb-2 text-sm text-primary-dark">
+          <strong>Συντάκτης:</strong> {{ announcement.authorName }}
+        </div>
+        <div class="mb-2 text-sm text-primary-dark">
+          <strong>Τίτλος:</strong> {{ announcement.title }}
+        </div>
+        <div class="text-sm text-primary-dark">
+          <strong>Κατηγορίες:</strong>
+          <div class="flex flex-wrap mt-1">
+            <span
+              v-for="(tag, i) in announcement.tags"
+              :key="i"
+              class="inline-block bg-secondary-gray text-primary-dark text-xs px-2 py-0.5 rounded mr-1 mb-1"
+            >
+              {{ tag }}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -281,19 +382,19 @@ onMounted(() => {
           :disabled="currentPage === 1"
           class="px-4 py-2 bg-secondary-gray rounded disabled:opacity-50 hover:bg-primary-gray transition-colors text-sm text-primary-dark"
         >
-          Previous
+          Προηγούμενη
         </button>
         <button
           @click="nextPage"
           :disabled="meta && currentPage === meta.last_page"
           class="px-4 py-2 bg-secondary-gray rounded disabled:opacity-50 hover:bg-primary-gray transition-colors text-sm text-primary-dark"
         >
-          Next
+          Επόμενη
         </button>
       </div>
       <div class="flex items-center space-x-2">
         <label for="itemsPerPage" class="font-medium text-primary-dark text-sm">
-          Items per Page:
+          Ανά σελίδα:
         </label>
         <select
           id="itemsPerPage"
@@ -309,35 +410,82 @@ onMounted(() => {
       </div>
     </div>
     <div class="mt-4 text-center text-sm text-primary-dark">
-      Page {{ currentPage }} of {{ meta ? meta.last_page : '?' }}, Total: {{ meta ? meta.total : '?' }}
+      Σελίδα {{ currentPage }} από {{ meta ? meta.last_page : "?" }}, Σύνολο:
+      {{ meta ? meta.total : "?" }}
     </div>
 
     <!-- Announcement Detail Modal -->
-    <div v-if="selectedAnnouncement" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div class="bg-white p-8 rounded-lg max-w-4xl w-full relative overflow-auto max-h-[80vh] m-4">
-        <button
-          @click="closeAnnouncement"
-          class="absolute top-4 right-4 text-primary-dark text-3xl hover:text-primary-gray transition-colors"
+    <div
+      v-if="selectedAnnouncement"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+    >
+      <div
+        class="bg-white rounded-lg max-w-4xl w-full relative overflow-hidden max-h-[90vh] m-4 flex flex-col"
+      >
+        <!-- Fixed Header -->
+        <div
+          class="p-6 border-b border-secondary-gray relative flex flex-col gap-2"
         >
-          &times;
-        </button>
-        <h2 class="text-3xl font-bold mb-4 text-primary-dark">{{ selectedAnnouncement.title }}</h2>
-        <div class="flex items-center text-primary-dark text-sm mb-4">
-          <span class="mr-2">{{ selectedAnnouncement.authorName }}</span>
-          <span>&bull;</span>
-          <span class="ml-2">{{ selectedAnnouncement.createdAt }}</span>
+          <button
+            @click="closeAnnouncement"
+            class="absolute top-4 right-4 text-primary-dark text-3xl hover:text-primary-gray transition-colors"
+          >
+            &times;
+          </button>
+          <h2 class="text-2xl md:text-3xl font-bold text-primary-dark">
+            {{ selectedAnnouncement.title }}
+          </h2>
+          <div class="flex items-center text-primary-dark text-sm">
+            <span class="mr-2">{{ selectedAnnouncement.authorName }}</span>
+            <span>&bull;</span>
+            <span class="ml-2">{{ selectedAnnouncement.createdAt }}</span>
+          </div>
         </div>
-        <div class="prose max-w-none text-primary-dark" v-html="selectedAnnouncement.body"></div>
-        <!-- Attachments Section -->
-        <div v-if="selectedAnnouncement.attachments && selectedAnnouncement.attachments.length" class="mt-6">
-          <h3 class="text-lg font-semibold text-primary-dark mb-2">Attachments:</h3>
-          <ul class="list-disc list-inside text-sm text-primary-dark">
-            <li v-for="(att, i) in selectedAnnouncement.attachments" :key="att.id">
-              <a :href="att.attachment_url" target="_blank" class="text-base-orange hover:underline">
-                {{ att.filename }}
-              </a>
-            </li>
-          </ul>
+
+        <!-- Scrollable Body -->
+        <div class="overflow-y-auto p-6 space-y-6">
+          <div
+            class="prose max-w-none text-primary-dark"
+            v-html="selectedAnnouncement.body"
+          ></div>
+
+          <!-- Attachments Section -->
+          <div v-if="selectedAnnouncement.attachments?.length">
+            <h3 class="text-lg font-semibold text-primary-dark mb-2">
+              Συνημμένα:
+            </h3>
+            <ul class="grid gap-4 sm:grid-cols-2">
+              <li
+                v-for="att in selectedAnnouncement.attachments"
+                :key="att.id"
+                class="flex items-center space-x-4 p-4 rounded-lg border border-secondary-gray bg-gray-50 hover:bg-base-orange/10 transition"
+              >
+                <div class="text-3xl">
+                  {{ getFileMeta(att.filename).icon }}
+                </div>
+
+                <div class="flex-1 overflow-hidden">
+                  <div
+                    class="text-sm font-medium text-primary-dark truncate"
+                    :title="att.filename"
+                  >
+                    {{ att.filename }}
+                  </div>
+                  <div class="text-xs text-secondary-gray">
+                    {{ getFileMeta(att.filename).label }}
+                  </div>
+                </div>
+
+                <a
+                  :href="att.attachment_url"
+                  target="_blank"
+                  class="text-xs px-3 py-1 bg-base-orange text-white rounded hover:bg-base-orange-darker transition"
+                >
+                  Προβολή
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
