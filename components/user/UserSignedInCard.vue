@@ -1,13 +1,5 @@
-<script setup lang='ts'>
-const { data: user, pending, error } = await useFetch('/api/user/info', {
-  method: 'GET',
-  server: false,
-  credentials: 'include',
-})
-if (error.value && import.meta.client)
-  window.location.href = '/login'
-
-userObject.value = user.value?.data || null
+<script setup lang="ts">
+const user = computed(() => userObject.value)
 </script>
 
 <template>
@@ -15,17 +7,17 @@ userObject.value = user.value?.data || null
     <CommonDropdown placement="top">
       <button class="w-full">
         <div
-          v-if="!pending"
+          v-if="Object.keys(user || {}).length > 0"
           class="flex items-center justify-between gap-1 xl:bg-base-orange xl:bg-opacity-20 rounded-3xl
           cursor-pointer hover:bg-opacity-40 duration-75"
         >
           <div class="flex gap-2">
             <Icon name="carbon:user-avatar-filled" size="3rem" />
             <div class="text-sm flex-1 flex flex-col sm:hidden xl:flex">
-              <span v-if="user" class="w-[10rem] text-start capitalize text-ellipsis whitespace-nowrap overflow-hidden">
-                {{ displayUsernameLocale(user.data.fullName, user.data.fullNameEL, true) }}
+              <span class="w-[10rem] text-start capitalize text-ellipsis whitespace-nowrap overflow-hidden">
+                {{ displayUsernameLocale(user?.fullName, user?.fullNameEL, true) }}
               </span>
-              <span class="w-fit text-primary-gray">@{{ user?.data.uid }}</span>
+              <span class="w-fit text-primary-gray">@{{ user?.uid }}</span>
             </div>
           </div>
           <div class="hidden xl:block">

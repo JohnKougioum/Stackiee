@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import { SocketEvents } from '~/types'
 
+const { data: user, error } = await useFetch('/api/user/info', {
+  method: 'GET',
+  server: false,
+  credentials: 'include',
+})
+if (error.value && import.meta.client)
+  window.location.href = '/login'
+
 const { $connectWebsocket } = useNuxtApp()
 onMounted(async () => {
-  userObject.value?.id && await $connectWebsocket(userObject.value?.id)
+  userObject.value = user.value?.data || null
+  user.value?.data.id && await $connectWebsocket(user.value?.data.id)
 
-  const source = new EventSource(`/api/sse?user=${userObject.value?.id}`)
-  source.addEventListener('open', (event) => {
+  const source = new EventSource(`/api/sse?user=${user.value?.data.id}`)
+  source.addEventListener('open', async (event) => {
     console.log('SSE connection opened:', event)
   })
 
