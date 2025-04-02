@@ -11,8 +11,13 @@ if (error.value && import.meta.client)
 
 const { $connectWebsocket } = useNuxtApp()
 onMounted(async () => {
-  userObject.value = user.value?.data || null
-  user.value?.data.id && await $connectWebsocket(user.value?.data.id)
+  const unwatch = watch(user, async (newUser) => {
+    if (newUser?.data?.id) {
+      userObject.value = newUser?.data || null
+      await $connectWebsocket(newUser.data.id)
+      unwatch()
+    }
+  }, { immediate: true })
 
   const source = new EventSource(`/api/sse?user=${user.value?.data.id}`)
   source.addEventListener('open', async (event) => {
