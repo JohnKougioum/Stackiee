@@ -76,7 +76,7 @@ onDeactivated(() => {
     </template>
     <ChatLayout v-model="inputText" @submit="sendMessage">
       <template #title>
-        <ChatName class="flex-1" :name="conversationResponse!.name" :participants="conversationResponse!.participants" />
+        <ChatName class="w-[200px] flex-auto sm:w-auto sm:flex-1" :name="conversationResponse!.name" :participants="conversationResponse!.participants" :show-time-ago="false" />
       </template>
       <template #messages>
         <template v-if="conversationResponse?.participants.length">
@@ -109,7 +109,7 @@ onDeactivated(() => {
     <div class="rounded-md flex-1 h-full">
       <ChatLayout v-model="inputText" @submit="sendMessage">
         <template #title>
-          <ChatName class="flex-1 overflow-hidden" :name="conversationResponse!.name" :participants="conversationResponse!.participants" />
+          <ChatName class="w-[200px] flex-auto sm:w-auto sm:flex-1 overflow-hidden" :name="conversationResponse!.name" :participants="conversationResponse!.participants" :show-time-ago="false" />
         </template>
         <template #messages>
           <template v-if="conversationResponse?.participants.length">

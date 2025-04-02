@@ -37,6 +37,7 @@
     "title": "Filters"
   },
   "hello": "Hello",
+  "joined": "Joined",
   "nav": {
     "announcements": "Announcements",
     "compose": "Compose",
@@ -52,8 +53,10 @@
     "search": "Search"
   },
   "participants": "Participants",
+  "posts": "Posts",
   "publish": "Publish",
   "reply": "Reply",
+  "replyTo": "Reply to",
   "search": "Search",
   "searchForChat": "Search for a specific conversation",
   "searchForUsers": "Search for users",
