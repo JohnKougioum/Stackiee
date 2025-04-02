@@ -32,7 +32,7 @@ const timeAgo = props.lastMessageDate && useTimeAgo(props.lastMessageDate, timeA
 </script>
 
 <template>
-  <div>
+  <div class="min-w-0">
     <div class="flex justify-between">
       <span class="capitalize inline-block overflow-hidden whitespace-nowrap text-ellipsis">
         {{ getConversationName }}

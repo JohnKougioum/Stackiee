@@ -25,6 +25,13 @@ function go(evt: MouseEvent | KeyboardEvent) {
   else
     router.push(`/status/${props.item.id}`)
 }
+
+function copyLink() {
+  const url = `${window.location.origin}/status/${props.item.id}`
+  navigator.clipboard.writeText(url).catch((err) => {
+    console.error('Failed to copy: ', err)
+  })
+}
 </script>
 
 <template>
@@ -49,10 +56,10 @@ function go(evt: MouseEvent | KeyboardEvent) {
           </CommonTooltip>
         </button>
         <span class="text-sm font-semibold text-primary-gray select-none">
-          {{ item._count.Comment }}
+          {{ item?._count?.Comment }}
         </span>
       </div>
-      <button class="btn-icon">
+      <button class="btn-icon" @click="copyLink">
         <CommonTooltip placement="bottom" :content="$t('copyLink')">
           <div class="btn-icon">
             <Icon name="ph:link-simple-horizontal-duotone" size="24" color="#70798C" />

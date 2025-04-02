@@ -1,7 +1,13 @@
+<script setup lang="ts">
+defineProps<{
+  hideUserIcon?: boolean
+}>()
+</script>
+
 <template>
   <div class="flex flex-col gap-2 px-4 py-3 border-b-[1px] border-secondary-gray">
     <div class="flex gap-4 animate-pulse">
-      <div>
+      <div v-if="!hideUserIcon">
         <div class="w-12 h-12 rounded-full bg-primary-gray" />
       </div>
       <div class="flex flex-col flex-1 gap-2 pb-2">

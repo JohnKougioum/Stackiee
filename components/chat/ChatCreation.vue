@@ -65,7 +65,7 @@ watch(debouncedSearchString, async () => await execute())
 const selectedUsers = ref<ThinnedUser[]>([])
 
 function addUserToList(user: User | ThinnedUser) {
-  if (selectedUsers.value.includes(user)) {
+  if (selectedUsers.value.findIndex(u => u.id === user.id) !== -1) {
     selectedUsers.value = selectedUsers.value.filter(u => u.id !== user.id)
   }
   else {

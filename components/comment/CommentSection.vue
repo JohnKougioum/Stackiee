@@ -29,6 +29,23 @@ async function addComment(comment: string) {
     refresh()
 }
 
+async function scrollIntoView(id: string) {
+  const queryCommentId = useRoute().query.comment || ''
+  if (!queryCommentId || queryCommentId !== id)
+    return
+  await nextTick()
+  const element = document.getElementById(`comment-${queryCommentId}`)
+  if (element) {
+    setTimeout(() => {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }, 100)
+  }
+  useRouter().replace({ query: { ...useRoute().query, comment: undefined } })
+}
+
 onReactivated(() => {
   refresh()
 })
@@ -55,9 +72,11 @@ onReactivated(() => {
       <template v-if="comments && !pending">
         <CommentMessage
           v-for="comment in (comments as ApiResult<CommentData[]>).body"
+          :id="`comment-${comment.id}`"
           :key="comment.id"
           class="border-b-2 py-4"
           :data="comment"
+          @vue:mounted="scrollIntoView(comment.id)"
         />
       </template>
     </div>
