@@ -43,6 +43,7 @@ onMounted(async () => {
   }).then(async (response) => {
     if (response.statusCode === 200) {
       $auth.loginCookie.value = 'true'
+      connectSSE(response?.body?.user.id)
       response?.body?.user.id && await $connectWebsocket(response?.body?.user.id)
       userObject.value = response?.body?.user || null
       await navigateTo('/')

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SocketEvents } from '~/types'
+import { connectSSE, disconnectSSE } from './composables/sse.client'
 
 const route = useRoute()
 const { data: user, error } = await useFetch('/api/user/info', {
@@ -20,24 +20,12 @@ onMounted(async () => {
     }
   }, { immediate: true })
 
-  const source = new EventSource(`/api/sse?user=${user.value?.data.id}`)
-  source.addEventListener('open', async (event) => {
-    console.log('SSE connection opened:', event)
-  })
-
-  source.addEventListener('message', async (event) => {
-    const data = JSON.parse(event.data)
-    if (data.type === SocketEvents.NewConversationCreated)
-      await handleNewChatSSEEvent()
-    if (data.type === SocketEvents.ConversationParticipantsUpdate)
-      handleParticipantsUpdateSSEEvent(data.body.chatId, data.body.participants)
-    if (data.type === SocketEvents.ConversationNameUpdate)
-      handleChatNameUpdateSSEEvent(data.body.chatId, data.body.name)
-  })
-
-  source.addEventListener('error', (event) => {
-    console.error('Error with SSE connection:', event)
-  })
+  connectSSE(user.value?.data.id)
+})
+onUnmounted(() => {
+  const { $ws } = useNuxtApp()
+  $ws.value?.close()
+  disconnectSSE()
 })
 </script>
 
