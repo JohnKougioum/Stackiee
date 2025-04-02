@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 const { data: user, pending, error } = await useFetch('/api/user/info', {
   method: 'GET',
+  server: false,
   credentials: 'include',
 })
 if (error.value && import.meta.client)
