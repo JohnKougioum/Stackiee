@@ -1,5 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import z from 'zod'
+import { removeDiacritics } from '~/server/utils/normalize'
 
 const prisma = new PrismaClient()
 
@@ -16,31 +17,34 @@ export default defineEventHandler(async (event) => {
     postSearchSchema.parse(searchRequest)
 
     const limit = 15
-
     const startIndex = (searchRequest.page - 1) * limit
+
+    const searchQuery = searchRequest.searchQuery
+      ? removeDiacritics(searchRequest.searchQuery)
+      : null
 
     const prismaWhereQuery = {
       where: {
         AND: [
           {
-            ...searchRequest.searchQuery && {
-              body: {
+            ...searchQuery && {
+              normalizedBody: {
                 contains: searchRequest.searchQuery,
-                mode: 'insensitive',
-              },
+                mode: Prisma.QueryMode.insensitive,
+              }
             },
           },
           {
             OR: [
               {
-                ...searchRequest.semesters.length && {
+                ...searchRequest.semesters?.length && {
                   semester: {
                     in: searchRequest.semesters.map(Number),
                   },
                 },
               },
               {
-                ...searchRequest.courses.length && {
+                ...searchRequest.courses?.length && {
                   course: {
                     in: searchRequest.courses,
                   },
@@ -71,20 +75,12 @@ export default defineEventHandler(async (event) => {
 
     const postsCount = await prisma.post.count({ where: prismaWhereQuery.where })
 
-    if (!posts) {
-      throw createError({
-        statusCode: 403,
-        statusMessage: 'Something went wrong',
-      })
-    }
-
     return {
       statusCode: 200,
       body: posts,
       postsCount,
     }
-  }
-  catch (error) {
+  } catch (error) {
     throw createError({
       statusCode: 403,
       statusMessage: 'Invalid Payload',
