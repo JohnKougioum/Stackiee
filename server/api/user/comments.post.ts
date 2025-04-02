@@ -50,13 +50,6 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // posts.map(post => ({
-    //   ...post,
-    //   postUserName: {
-    //     fullName: post.Post?.User?.fullName || '',
-    //     fullNameEL: post.Post?.User?.fullNameEL || '',
-    //   },
-    // }))
     posts.forEach((post) => {
       post.postUsername = {
         fullName: post.Post?.User?.fullName || '',
