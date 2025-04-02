@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { SocketEvents } from '~/types'
 
+const route = useRoute()
 const { data: user, error } = await useFetch('/api/user/info', {
   method: 'GET',
   server: false,
   credentials: 'include',
 })
-if (error.value && import.meta.client)
+if (error.value && import.meta.client && route.path !== '/login' && route.path !== '/login/auth')
   window.location.href = '/login'
 
 const { $connectWebsocket } = useNuxtApp()

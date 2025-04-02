@@ -43,7 +43,8 @@ onMounted(async () => {
   }).then(async (response) => {
     if (response.statusCode === 200) {
       $auth.loginCookie.value = 'true'
-      response?.body?.userId && await $connectWebsocket(response?.body?.userId)
+      response?.body?.user.id && await $connectWebsocket(response?.body?.user.id)
+      userObject.value = response?.body?.user || null
       await navigateTo('/')
     }
   })
