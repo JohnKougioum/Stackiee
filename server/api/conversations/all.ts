@@ -14,8 +14,6 @@ export default defineEventHandler(async (event) => {
   const conversations = await getUserConversations(user.id)
   const finalResponse = {
     statusCode: 200,
-    user,
-    contextId: event.context.id.id,
     conversations: conversations.map(({ conversation }) => ({
       ...conversation,
     })),
