@@ -40,6 +40,7 @@ export async function updateParticipantsList(chatId: string, participants: Array
     }
   }
   else {
+    await navigateTo('/chat')
     await fetchChats()
   }
 }
