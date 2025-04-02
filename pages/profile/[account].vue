@@ -10,8 +10,12 @@ const route = useRoute().params
 const accoutUid = computed(() => route.account)
 
 onMounted(async () => {
-  if ((accoutUid.value === undefined || accoutUid.value === 'undefined') && userObject.value?.uid)
-    await navigateTo({ path: `/profile/${userObject.value?.uid}` })
+  const unwatch = watch(userObject, async () => {
+    if ((accoutUid.value === undefined || accoutUid.value === 'undefined') && userObject.value?.uid) {
+      await navigateTo({ path: `/profile/${userObject.value?.uid}` })
+      unwatch()
+    }
+  }, { immediate: true })
 })
 
 const { data: account, status } = await useAsyncData(`${accoutUid.value}-profile`, () => {
