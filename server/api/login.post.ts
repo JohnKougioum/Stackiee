@@ -24,26 +24,12 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  let profile
-  if (body.accessToken !== 'test') {
-    profile = await $fetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
-      method: 'GET',
-      headers: {
-        'x-access-token': body.accessToken,
-      },
-    })
-  }
-  else {
-    profile = {
-      'uid': 'it185219',
-      'am': '185219',
-      'cn': 'APOSTOLOS MALOUDIS',
-      'cn;lang-el': 'ΑΠΟΣΤΟΛΟΣ ΜΑΛΟΥΔΗΣ',
-      'eduPersonAffiliation': 'student',
-      'eduPersonPrimaryAffiliation': 'it',
-      'regyear': '2018',
-    }
-  }
+  const profile = await $fetch<IhuApiProfile>('https://api.iee.ihu.gr/profile', {
+    method: 'GET',
+    headers: {
+      'x-access-token': body.accessToken,
+    },
+  })
 
   if (!profile) {
     throw createError({

@@ -3,26 +3,6 @@ definePageMeta({
   title: 'Login',
   layout: 'none',
 })
-
-async function loginTolis() {
-  const { $auth, $connectWebsocket } = useNuxtApp()
-  await $fetch('/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    server: false,
-    body: {
-      accessToken: 'test',
-    },
-  }).then(async (response) => {
-    if (response.statusCode === 200) {
-      $auth.loginCookie.value = 'true'
-      response?.body?.userId && await $connectWebsocket(response?.body?.userId)
-      await navigateTo('/')
-    }
-  })
-}
 </script>
 
 <template>
@@ -45,9 +25,6 @@ async function loginTolis() {
           @click="$auth.redirectToLogin"
         >
           {{ $t('user.signIn') }}
-        </button>
-        <button @click="loginTolis">
-          tolis
         </button>
       </div>
     </div>
