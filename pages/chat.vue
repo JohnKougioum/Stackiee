@@ -61,12 +61,16 @@ const filteredChats = computed(() => {
               :to="`/chat/${chat.id}`"
               active-class="sd"
             >
-              <ChatName
-                class="border-[1px] border-primary-dark rounded-md my-4 mx-2 px-2"
-                :name="chat.name"
-                :last-message-date="chat.updatedAt.toString()"
-                :participants="[...chat.participants]"
-              />
+              <div class="border-[1px] border-primary-dark rounded-md my-4 mx-2 px-2 py-1">
+                <ChatName
+                  :name="chat.name"
+                  :last-message-date="chat.updatedAt.toString()"
+                  :participants="[...chat.participants]"
+                />
+                <div class="text-size-base text-primary-gray" :class="{ italic: !chat.latestMessage }">
+                  {{ chat.latestMessage || $t('chat.noMessages') }}
+                </div>
+              </div>
             </NuxtLink>
           </template>
         </div>
@@ -81,7 +85,7 @@ const filteredChats = computed(() => {
 <style lang="postcss" scoped>
 .sd {
   & > div {
-    @apply shadow-xl;
+    @apply shadow-xl bg-off-white transition duration-75;
   }
 }
 </style>

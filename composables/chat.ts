@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { Conversation, ConversationParticipant, User } from '@prisma/client'
+import type { Conversation, ConversationParticipant, Message } from '@prisma/client'
 import type { ThinnedUser } from '~/types/index'
 
 export type FullConversationType = Conversation & { participants: Array<ConversationParticipant & { user: ThinnedUser }> }
@@ -55,4 +55,9 @@ export function handleParticipantsUpdateSSEEvent(chatId: string, participants: A
 
 export function handleChatNameUpdateSSEEvent(chatId: string, newName: string) {
   updateChatName(chatId, newName)
+}
+
+export function handleLastMessageUpdateSSEEvent(newMessage: Message) {
+  const index = chats.value.findIndex(chat => chat.id === newMessage.conversationId)
+  index !== -1 && (chats.value[index].latestMessage = newMessage.body)
 }

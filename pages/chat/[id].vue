@@ -27,7 +27,6 @@ async function sendMessage() {
       eventName: SocketEvents.NewMessage,
       message: text,
       chatId,
-
     }))
   }
   catch (error) {

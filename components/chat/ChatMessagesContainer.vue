@@ -74,6 +74,10 @@ function getScrollerHeight(): Promise<number> {
 
 async function addMessage(message: Message) {
   messages.value.push(message)
+  const chatIndex = chats.value.findIndex(chat => chat.id === props.chatId)
+  if (chatIndex !== -1)
+    chats.value[chatIndex].latestMessage = message.body
+
   await scrollToBottom()
 }
 

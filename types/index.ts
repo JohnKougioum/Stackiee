@@ -481,3 +481,7 @@ export enum SocketEvents {
   WhiteboardUndo,
   WhiteboardRedo,
 }
+
+export enum NotificationTypes {
+  NewMessage,
+}
