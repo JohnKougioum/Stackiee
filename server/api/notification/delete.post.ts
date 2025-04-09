@@ -5,7 +5,6 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async (event) => {
   const notificationId = await readBody(event).then(body => body.notificationId)
   const userId = event.context.id.id
-  console.log('Notification ID:', notificationId, userId)
 
   if (!notificationId || !userId) {
     throw createError({
