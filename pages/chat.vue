@@ -7,14 +7,14 @@ useSeoMeta({
   title: 'Chat',
   description: 'Chat page',
 })
-const { chats, isChatsListLoading } = await fetchChats()
+const { isChatsListLoading } = await fetchChats()
 
 const route = useRoute()
 const isRootPath = computedEager(() => route.name === 'chat')
 
 const filterInputText = ref('')
 const filteredChats = computed(() => {
-  return chats.value.filter(chat =>
+  return orderedChats.value.filter(chat =>
     chat.name.toLowerCase().includes(filterInputText.value.toLowerCase())
     || chat.participants.some(participant =>
       participant.user.fullName.toLowerCase().includes(filterInputText.value.toLowerCase())
@@ -61,7 +61,7 @@ const filteredChats = computed(() => {
               :to="`/chat/${chat.id}`"
               active-class="sd"
             >
-              <div class="border-[1px] border-primary-dark rounded-md my-4 mx-2 px-2 py-1">
+              <div class="border-[1px] border-primary-dark rounded-md my-4 mx-2 px-2 py-1 relative">
                 <ChatName
                   :name="chat.name"
                   :last-message-date="chat.updatedAt.toString()"
@@ -70,6 +70,7 @@ const filteredChats = computed(() => {
                 <div class="text-size-base text-primary-gray" :class="{ italic: !chat.latestMessage }">
                   {{ chat.latestMessage || $t('chat.noMessages') }}
                 </div>
+                <div v-if="!chat.hasSeen" class="absolute -top-1 -right-1 w-3 h-3 bg-red-800 rounded-full" />
               </div>
             </NuxtLink>
           </template>

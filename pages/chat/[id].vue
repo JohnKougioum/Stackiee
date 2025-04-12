@@ -54,6 +54,8 @@ onMounted(async () => {
         messagesContainerWhiteboard.value?.addMessage(data.message)
     }
   })
+
+  await updateNotificationStatus(chatId)
 })
 
 function joinChat() {

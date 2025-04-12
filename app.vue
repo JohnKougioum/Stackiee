@@ -16,6 +16,7 @@ onMounted(async () => {
     if (newUser?.data?.id) {
       userObject.value = newUser?.data || null
       await $connectWebsocket(newUser.data.id)
+      await fetchAllNotifications()
       unwatch()
     }
   }, { immediate: true })

@@ -105,22 +105,33 @@ export async function addMessageDB(
               en: conversation.participants.find(p => p.user.id === userId)?.user.fullName,
               el: conversation.participants.find(p => p.user.id === userId)?.user.fullNameEL,
             }
-      const notification = await prisma.notification.create({
-        data: {
-          User: {
-            connect: {
-              id: participant.user.id,
-            },
-          },
+
+      const existingNotification = await prisma.notification.findFirst({
+        where: {
           fromId: conversationId,
+          userId: participant.user.id,
           type: NotificationTypes.NewMessage,
-          body: conversationName,
         },
       })
+      let notificationData = null
+      if (!existingNotification || (existingNotification && existingNotification.hasSeen)) {
+        notificationData = await prisma.notification.create({
+          data: {
+            User: {
+              connect: {
+                id: participant.user.id,
+              },
+            },
+            fromId: conversationId,
+            type: NotificationTypes.NewMessage,
+            body: conversationName,
+          },
+        })
+      }
       await sendSSEEvent(participant.user.id, JSON.stringify({
         type: NotificationTypes.NewMessage,
         body: {
-          ...notification,
+          notification: { ...notificationData },
           newMessage,
         },
       }))
