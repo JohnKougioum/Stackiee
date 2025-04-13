@@ -45,11 +45,15 @@
     "compose": "Σύνθεση",
     "home": "Αρχική",
     "messages": "Μηνύματα",
+    "notifications": "Ειδοποιήσεις",
     "profile": "Προφίλ",
     "search": "Αναζήτηση"
   },
   "noMorePosts": "Δεν υπάρχουν άλλες δημοσιεύσεις",
   "noUsersFound": "Δεν βρέθηκαν χρήστες",
+  "notifications": {
+    "sentMessage": "Υπάρχει νέα ειδοποίηση στην συνομιλία"
+  },
   "pagesTitles": {
     "home": "Αρχική",
     "search": "Αναζήτηση"

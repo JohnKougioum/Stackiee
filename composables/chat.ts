@@ -22,27 +22,9 @@ export async function fetchChats() {
 }
 
 export const orderedChats = computed(() => {
-  // const route = useRoute()
   return chats.value
-  // .sort((a, b) => {
-  //   if (route.params?.id?.includes(a.id) && !route.params?.id?.includes(b.id))
-  //     return -1
-  //   if (!route.params?.id?.includes(a.id) && route.params?.id?.includes(b.id))
-  //     return 1
-  //   if (notifications.value.length) {
-  //     const notificationA = notifications.value.find(notification => notification.fromId === a.id)?.hasSeen ?? true
-  //     const notificationB = notifications.value.find(notification => notification.fromId === b.id)?.hasSeen ?? true
-  //     if (!notificationA && notificationB)
-  //       return -1
-  //     if (notificationA && !notificationB)
-  //       return 1
-  //   }
-  //   const lastMessageA = new Date(a.updatedAt).getTime() || 0
-  //   const lastMessageB = new Date(b.updatedAt).getTime() || 0
-  //   return lastMessageB - lastMessageA
-  // })
     .map((chat) => {
-      const hasSeen = notifications.value.find(notification => notification.fromId === chat.id)?.hasSeen ?? true
+      const hasSeen = notifications.value.find(notification => notification.fromId === chat.id)?.hasSeen ?? undefined
       return {
         ...chat,
         hasSeen,

@@ -29,6 +29,9 @@ const { data: account, status } = await useAsyncData(`${accoutUid.value}-profile
 })
 
 const accountData = computed(() => account.value?.data[0] as User || [])
+useHead({
+  title: displayUsernameLocale(accountData.value.fullName, accountData.value.fullNameEL),
+})
 </script>
 
 <template>

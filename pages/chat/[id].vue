@@ -84,6 +84,10 @@ onUnmounted(() => {
   isWhiteboardOpen.value = false
   leaveChat()
 })
+
+onReactivated(async () => {
+  await updateNotificationStatus(chatId)
+})
 </script>
 
 <template>

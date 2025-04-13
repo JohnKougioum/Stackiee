@@ -45,11 +45,15 @@
     "compose": "Compose",
     "home": "Home",
     "messages": "Messages",
+    "notifications": "Notifications",
     "profile": "Profile",
     "search": "Search"
   },
   "noMorePosts": "No more posts",
   "noUsersFound": "No users found",
+  "notifications": {
+    "sentMessage": "There's a new notification in"
+  },
   "pagesTitles": {
     "home": "Home",
     "search": "Search"
