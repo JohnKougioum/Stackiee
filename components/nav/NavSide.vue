@@ -12,5 +12,6 @@
 
     <div class="flex-shrink hidden sm:block mt-4" />
     <NavSideItem :text="$t('settings.title')" to="/settings" icon="ri:settings-3-line" />
+    <NavSideItem class="block lg:hidden" element="button" :text="$t('user.signOut')" icon="ri:logout-box-line" @click.prevent="$auth.logout" />
   </nav>
 </template>

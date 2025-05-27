@@ -14,7 +14,12 @@ useHead({
     </template>
     <CommonLoader v-if="notificationsLoading" class="mt-24" />
     <div v-else class="mt-4 px-2 md:px-0">
-      <NotificationItem v-for="notification in notifications" :key="notification.id" class="mt-4" :notification="notification" />
+      <template v-if="notifications.length">
+        <NotificationItem v-for="notification in notifications" :key="notification.id" class="mt-4" :notification="notification" />
+      </template>
+      <div v-else class="w-full mt-8 flex justify-center text-lg">
+        {{ $t('notifications.noNotifications') }}
+      </div>
     </div>
   </MainContent>
 </template>

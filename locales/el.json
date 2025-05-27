@@ -52,6 +52,7 @@
   "noMorePosts": "Δεν υπάρχουν άλλες δημοσιεύσεις",
   "noUsersFound": "Δεν βρέθηκαν χρήστες",
   "notifications": {
+    "noNotifications": "Δεν έχεις ειδοποιήσεις",
     "sentMessage": "Υπάρχει νέα ειδοποίηση στην συνομιλία"
   },
   "pagesTitles": {

@@ -52,6 +52,7 @@
   "noMorePosts": "No more posts",
   "noUsersFound": "No users found",
   "notifications": {
+    "noNotifications": "You don't have any notifications",
     "sentMessage": "There's a new notification in"
   },
   "pagesTitles": {

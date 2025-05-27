@@ -43,7 +43,6 @@ const wideLayout = computed(() => route.meta.wideLayout ?? false)
         </div>
       </aside>
     </main>
-    <!-- <ModalContainer /> -->
   </div>
 </template>
 

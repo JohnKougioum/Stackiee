@@ -3,30 +3,74 @@ definePageMeta({
   title: 'Login',
   layout: 'none',
 })
+
+const codeSnippets = [
+  // eslint-disable-next-line no-template-curly-in-string
+  'const greet = name => `Hello, ${name}`;',
+  'function add(a, b) { return a + b; }',
+  'let items = [1,2,3].map(x => x * 2);',
+  'if (user.isAdmin) { showDashboard(); }',
+  'await fetch("/api/data").then(res => res.json());',
+  'class Person { constructor(n){this.name=n;} }',
+  'const PI = 3.14159;',
+  'for(let i=0;i<10;i++){ console.log(i); }',
+  'try { riskyOp(); } catch(e) { console.error(e); }',
+  'import React from "react";',
+]
 </script>
 
 <template>
-  <div class="flex h-full">
-    <div class="flex-1 bg-base-orange" />
-    <div class="max-w-[450px] px-20 py-32 flex flex-col justify-between">
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sapiente nam quis mollitia aut, nemo culpa obcaecati quae quaerat consectetur impedit modi harum ipsam tenetur sequi. Quidem quam inventore sunt!
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sapiente nam quis mollitia aut, nemo culpa obcaecati quae quaerat consectetur impedit modi harum ipsam tenetur sequi. Quidem quam inventore sunt!
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sapiente nam quis mollitia aut, nemo culpa obcaecati quae quaerat consectetur impedit modi harum ipsam tenetur sequi. Quidem quam inventore sunt!
-      </p>
-
-      <div class="py-8 px-10">
-        <button
-          class="bg-base-orange w-full py-2 rounded-lg text-xl text-white hover:bg-base-orange-darker"
-          @click="$auth.redirectToLogin"
+  <div class="box-content h-full w-full relative">
+    <div id="codeSnippets" class="h-full w-full code-lines">
+      <template v-for="i in 70" :key="i">
+        <span
+          class="code-line" :style="{
+            top: `${i * 2}%`,
+            left: `${Math.random() * 90}%`,
+            animationDelay: `${Math.random() * 8}s`,
+          }"
         >
-          {{ $t('user.signIn') }}
-        </button>
+          {{ codeSnippets[Math.floor(Math.random() * codeSnippets.length)] }}
+        </span>
+      </template>
+    </div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 py-2 px-8 bg-base rounded-lg shadow-xl border-primary w-[340px] md:w-[390px]">
+      <div class="flex justify-center mb-2">
+        <img class="block" src="../../assets/logo_full.svg" alt="logo">
       </div>
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui illo placeat ex eveniet quidem, earum possimus excepturi expedita necessitatibus vitae vel cupiditate rerum dolore vero ad labore odio deserunt facilis.
+      <button
+        class="bg-base-orange w-full py-2 rounded-lg text-xl text-white hover:bg-base-orange-darker mt-4"
+        @click="$auth.redirectToLogin"
+      >
+        {{ $t('user.signIn') }}
+      </button>
     </div>
   </div>
 </template>
+
+<style lang="postcss" scoped>
+.code-lines {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  font-size:1rem;
+  font-family:monospace;
+  color:rgba(255,255,255,0.06);
+  overflow:hidden;
+  background: #2F363F;
+}
+
+.code-line {
+  position:absolute;
+  white-space:nowrap;
+  animation:scrollUp 8s linear infinite;
+  user-select: none;
+}
+@keyframes scrollUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(-100%); }
+}
+</style>
