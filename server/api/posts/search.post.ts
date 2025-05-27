@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 import z from 'zod'
 import { removeDiacritics } from '~/server/utils/normalize'
 
@@ -29,9 +29,9 @@ export default defineEventHandler(async (event) => {
           {
             ...searchQuery && {
               normalizedBody: {
-                contains: searchRequest.searchQuery,
+                contains: searchQuery,
                 mode: Prisma.QueryMode.insensitive,
-              }
+              },
             },
           },
           {
@@ -80,7 +80,8 @@ export default defineEventHandler(async (event) => {
       body: posts,
       postsCount,
     }
-  } catch (error) {
+  }
+  catch (error) {
     throw createError({
       statusCode: 403,
       statusMessage: 'Invalid Payload',

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
+  element?: string
   text?: string
   icon: string
   to: string | Record<string, string>
   userOnly?: boolean
 }>(), {
+  element: 'NuxtLink',
   userOnly: false,
 })
 
@@ -12,6 +14,10 @@ defineSlots<{
   icon: object
   default: object
 }>()
+
+const componentToDisplay = computed(() =>
+  props.element === 'NuxtLink' ? resolveComponent('NuxtLink') : props.element,
+)
 
 const activeClass = ref('text-primary-dark')
 onHydrated(async () => {
@@ -28,7 +34,8 @@ const noUserVisual = computed(() => isHydrated.value && props.userOnly)
 </script>
 
 <template>
-  <NuxtLink
+  <component
+    :is="componentToDisplay"
     :to="to"
     :disabled="noUserDisable"
     :class="noUserVisual ? 'opacity-25 pointer-events-none ' : ''"
@@ -50,5 +57,5 @@ const noUserVisual = computed(() => isHydrated.value && props.userOnly)
         </slot>
       </div>
     </CommonTooltip>
-  </NuxtLink>
+  </component>
 </template>

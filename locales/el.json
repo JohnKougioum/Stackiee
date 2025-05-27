@@ -4,6 +4,7 @@
     "addParticipant": "Προσθήκη χρήστη",
     "enterNewName": "Εισάγετε το νέο όνομα",
     "new_chat": "Νέα Συνομιλία",
+    "noMessages": "Δεν υπάρχουν μηνύματα ακόμα",
     "or_create_a_new_one": "Ή δημιούργησε μια νέα",
     "rename": "Μετονομασία",
     "renameConversation": "Μετονομασία Συνομιλίας",
@@ -44,11 +45,16 @@
     "compose": "Σύνθεση",
     "home": "Αρχική",
     "messages": "Μηνύματα",
+    "notifications": "Ειδοποιήσεις",
     "profile": "Προφίλ",
     "search": "Αναζήτηση"
   },
   "noMorePosts": "Δεν υπάρχουν άλλες δημοσιεύσεις",
   "noUsersFound": "Δεν βρέθηκαν χρήστες",
+  "notifications": {
+    "noNotifications": "Δεν έχεις ειδοποιήσεις",
+    "sentMessage": "Υπάρχει νέα ειδοποίηση στην συνομιλία"
+  },
   "pagesTitles": {
     "home": "Αρχική",
     "search": "Αναζήτηση"

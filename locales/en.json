@@ -4,6 +4,7 @@
     "addParticipant": "Add participant",
     "enterNewName": "Enter new name",
     "new_chat": "New Chat",
+    "noMessages": "No messages yet",
     "or_create_a_new_one": "or create a new one",
     "rename": "Rename",
     "renameConversation": "Rename conversation",
@@ -44,11 +45,16 @@
     "compose": "Compose",
     "home": "Home",
     "messages": "Messages",
+    "notifications": "Notifications",
     "profile": "Profile",
     "search": "Search"
   },
   "noMorePosts": "No more posts",
   "noUsersFound": "No users found",
+  "notifications": {
+    "noNotifications": "You don't have any notifications",
+    "sentMessage": "There's a new notification in"
+  },
   "pagesTitles": {
     "home": "Home",
     "search": "Search"

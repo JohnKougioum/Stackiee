@@ -18,7 +18,7 @@ router.afterEach(() => {
       to="/"
       @click.prevent="$scrollToTop"
     >
-      S
+      <CommonLogo />
     </NuxtLink>
     <div
       class="hidden xl:flex items-center me mt-2"

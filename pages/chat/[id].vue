@@ -27,7 +27,6 @@ async function sendMessage() {
       eventName: SocketEvents.NewMessage,
       message: text,
       chatId,
-
     }))
   }
   catch (error) {
@@ -55,6 +54,8 @@ onMounted(async () => {
         messagesContainerWhiteboard.value?.addMessage(data.message)
     }
   })
+
+  await updateNotificationStatus(chatId)
 })
 
 function joinChat() {
@@ -82,6 +83,10 @@ function leaveChat() {
 onUnmounted(() => {
   isWhiteboardOpen.value = false
   leaveChat()
+})
+
+onReactivated(async () => {
+  await updateNotificationStatus(chatId)
 })
 </script>
 

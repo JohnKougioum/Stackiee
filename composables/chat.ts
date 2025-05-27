@@ -1,10 +1,10 @@
 import { ref } from 'vue'
-import type { Conversation, ConversationParticipant, User } from '@prisma/client'
+import type { Conversation, ConversationParticipant, Message } from '@prisma/client'
 import type { ThinnedUser } from '~/types/index'
 
-export type FullConversationType = Conversation & { participants: Array<ConversationParticipant & { user: ThinnedUser }> }
+export type FullConversationType = Conversation & { participants: Array<ConversationParticipant & { user: ThinnedUser }> } & { hasSeen?: boolean }
 
-export const chats = ref <Array<FullConversationType>>([])
+export const chats = ref <FullConversationType[]>([])
 const isChatsListLoading = ref(false)
 export async function fetchChats() {
   if (process.client) {
@@ -20,6 +20,17 @@ export async function fetchChats() {
     }
   }
 }
+
+export const orderedChats = computed(() => {
+  return chats.value
+    .map((chat) => {
+      const hasSeen = notifications.value.find(notification => notification.fromId === chat.id)?.hasSeen ?? undefined
+      return {
+        ...chat,
+        hasSeen,
+      }
+    })
+})
 
 export function updateChatName(chatId: string, newName: string) {
   const index = chats.value.findIndex(chat => chat.id === chatId)
@@ -55,4 +66,13 @@ export function handleParticipantsUpdateSSEEvent(chatId: string, participants: A
 
 export function handleChatNameUpdateSSEEvent(chatId: string, newName: string) {
   updateChatName(chatId, newName)
+}
+
+export function handleLastMessageUpdateSSEEvent(newMessage: Message, hasSeen: boolean) {
+  const index = chats.value.findIndex(chat => chat.id === newMessage.conversationId)
+  if (index !== -1) {
+    chats.value[index].latestMessage = newMessage.body
+    chats.value[index].updatedAt = newMessage.updatedAt
+    chats.value[index].hasSeen = hasSeen
+  }
 }

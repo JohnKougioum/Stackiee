@@ -1,4 +1,4 @@
-import { SocketEvents } from '@/types'
+import { NotificationTypes, SocketEvents } from '@/types'
 
 let sseSource: EventSource | null = null
 
@@ -34,6 +34,9 @@ async function handleMessage(event: MessageEvent) {
       break
     case SocketEvents.ConversationNameUpdate:
       handleChatNameUpdateSSEEvent(data.body.chatId, data.body.name)
+      break
+    case NotificationTypes.NewMessage:
+      await handleNewMessageSSEEvent(data.body)
       break
     default:
       console.warn('Unknown SSE event type:', data.type)

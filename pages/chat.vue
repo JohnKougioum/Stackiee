@@ -3,18 +3,18 @@ definePageMeta({
   wideLayout: true,
 })
 
-useSeoMeta({
+useHead({
   title: 'Chat',
-  description: 'Chat page',
 })
-const { chats, isChatsListLoading } = await fetchChats()
+
+const { isChatsListLoading } = await fetchChats()
 
 const route = useRoute()
 const isRootPath = computedEager(() => route.name === 'chat')
 
 const filterInputText = ref('')
 const filteredChats = computed(() => {
-  return chats.value.filter(chat =>
+  return orderedChats.value.filter(chat =>
     chat.name.toLowerCase().includes(filterInputText.value.toLowerCase())
     || chat.participants.some(participant =>
       participant.user.fullName.toLowerCase().includes(filterInputText.value.toLowerCase())
@@ -61,12 +61,18 @@ const filteredChats = computed(() => {
               :to="`/chat/${chat.id}`"
               active-class="sd"
             >
-              <ChatName
-                class="border-[1px] border-primary-dark rounded-md my-4 mx-2 px-2"
-                :name="chat.name"
-                :last-message-date="chat.updatedAt.toString()"
-                :participants="[...chat.participants]"
-              />
+              <div class="border-[1px] border-primary-dark rounded-md my-4 mx-2 px-2 py-1 relative">
+                <ChatName
+                  :name="chat.name"
+                  :last-message-date="chat.updatedAt.toString()"
+                  :participants="[...chat.participants]"
+                />
+                <div class="text-size-base text-primary-gray" :class="{ italic: !chat.latestMessage }">
+                  {{ chat.latestMessage || $t('chat.noMessages') }}
+                </div>
+                {{ !chat.hasSeen }} {{ chat.hasSeen !== undefined }}
+                <div v-if="!chat.hasSeen && chat.hasSeen !== undefined" class="absolute -top-1 -right-1 w-3 h-3 bg-red-800 rounded-full" />
+              </div>
             </NuxtLink>
           </template>
         </div>
@@ -81,7 +87,7 @@ const filteredChats = computed(() => {
 <style lang="postcss" scoped>
 .sd {
   & > div {
-    @apply shadow-xl;
+    @apply shadow-xl bg-off-white transition duration-75;
   }
 }
 </style>

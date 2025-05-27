@@ -1,7 +1,9 @@
-import { PrismaClient } from "@prisma/client";
-import { object as zobject, string as zstring } from "zod";
+import { PrismaClient } from '@prisma/client'
+import { object as zobject, string as zstring } from 'zod'
+import { NotificationTypes } from '@/types'
+import { sendSSEEvent } from '~/server/utils/server-events'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export async function getUserConversations(userId: string) {
   const conversations = await prisma.conversationParticipant.findMany({
@@ -26,24 +28,25 @@ export async function getUserConversations(userId: string) {
         },
       },
     },
-  });
-  return conversations;
+  })
+  return conversations
 }
 
 const createMessagePayloadSchema = zobject({
   conversationId: zstring().min(1),
   body: zstring().min(1),
-});
+})
 
 export async function addMessageDB(
-  userId = "",
-  conversationId = "",
-  body = ""
+  userId = '',
+  conversationId = '',
+  body = '',
 ) {
   try {
-    createMessagePayloadSchema.parse({ conversationId, body });
-  } catch (error) {
-    throw new Error("Invalid Payload");
+    createMessagePayloadSchema.parse({ conversationId, body })
+  }
+  catch (error) {
+    throw new Error('Invalid Payload')
   }
 
   const conversation = await prisma.conversation.findFirst({
@@ -51,15 +54,26 @@ export async function addMessageDB(
       id: conversationId,
     },
     include: {
-      participants: true,
+      participants: {
+        select: {
+          user: {
+            select: {
+              id: true,
+              uid: true,
+              fullName: true,
+              fullNameEL: true,
+            },
+          },
+        },
+      },
     },
-  });
+  })
 
   if (
-    !conversation ||
-    !conversation?.participants.some((p) => p.userId === userId)
+    !conversation
+    || !conversation?.participants.some(p => p.user.id === userId)
   )
-    throw new Error("Participant doesn't exist in this conversation");
+    throw new Error('Participant doesn\'t exist in this conversation')
 
   try {
     const newMessage = await prisma.message.create({
@@ -76,7 +90,52 @@ export async function addMessageDB(
           },
         },
       },
-    });
+    })
+
+    const participants = conversation.participants.filter(p => p.user.id !== userId)
+    for (const participant of participants) {
+      const conversationName = conversation.name
+        ? { value: conversation.name }
+        : participants.length > 1
+          ? {
+              en: participants.map(p => p.user.fullName).join(', '),
+              el: participants.map(p => p.user.fullNameEL).join(', '),
+            }
+          : {
+              en: conversation.participants.find(p => p.user.id === userId)?.user.fullName,
+              el: conversation.participants.find(p => p.user.id === userId)?.user.fullNameEL,
+            }
+
+      const existingNotification = await prisma.notification.findFirst({
+        where: {
+          fromId: conversationId,
+          userId: participant.user.id,
+          type: NotificationTypes.NewMessage,
+        },
+      })
+      let notificationData = null
+      if (!existingNotification || (existingNotification && existingNotification.hasSeen)) {
+        notificationData = await prisma.notification.create({
+          data: {
+            User: {
+              connect: {
+                id: participant.user.id,
+              },
+            },
+            fromId: conversationId,
+            type: NotificationTypes.NewMessage,
+            body: conversationName,
+          },
+        })
+      }
+      await sendSSEEvent(participant.user.id, JSON.stringify({
+        type: NotificationTypes.NewMessage,
+        body: {
+          notification: { ...notificationData },
+          newMessage,
+        },
+      }))
+    }
 
     await prisma.conversation.update({
       where: {
@@ -85,10 +144,11 @@ export async function addMessageDB(
       data: {
         latestMessage: newMessage.body,
       },
-    });
+    })
 
-    return newMessage;
-  } catch (error) {
-    throw createError("Error sending message");
+    return newMessage
+  }
+  catch (error) {
+    throw createError('Error sending message')
   }
 }

@@ -7,9 +7,11 @@
     <NavSideItem :text="$t('nav.messages')" to="/chat" icon="majesticons:messages-line" />
     <NavSideItem :text="$t('nav.profile')" :to="`/profile/${userObject?.uid}`" icon="mingcute:user-3-line" />
     <NavSideItem :text="$t('nav.announcements')" to="/announcements" icon="majesticons:megaphone-line" />
+    <NavSideItem :text="$t('nav.notifications')" to="/notifications" icon="majesticons:bell-line" />
     <NavSideItem :text="$t('nav.compose')" to="/compose" icon="quill:compose" />
 
     <div class="flex-shrink hidden sm:block mt-4" />
     <NavSideItem :text="$t('settings.title')" to="/settings" icon="ri:settings-3-line" />
+    <NavSideItem class="block lg:hidden" element="button" :text="$t('user.signOut')" icon="ri:logout-box-line" @click.prevent="$auth.logout" />
   </nav>
 </template>
