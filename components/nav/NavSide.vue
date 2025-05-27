@@ -1,5 +1,6 @@
 <template>
   <nav class="flex flex-col gap-2 sm:px-3 flex-shrink leading-normal md:text-xl  h-full mt-1">
+    <SearchWidget class="hidden xl:flex" />
     <NavSideItem :text="$t('nav.search')" to="/search" icon="ri:search-line" class="hidden sm:block xl:hidden" />
 
     <div class="flex-shrink hidden sm:block mt-2" />
