@@ -70,7 +70,6 @@ const filteredChats = computed(() => {
                 <div class="text-size-base text-primary-gray" :class="{ italic: !chat.latestMessage }">
                   {{ chat.latestMessage || $t('chat.noMessages') }}
                 </div>
-                {{ !chat.hasSeen }} {{ chat.hasSeen !== undefined }}
                 <div v-if="!chat.hasSeen && chat.hasSeen !== undefined" class="absolute -top-1 -right-1 w-3 h-3 bg-red-800 rounded-full" />
               </div>
             </NuxtLink>
