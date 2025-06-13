@@ -34,11 +34,25 @@ const codeSnippets = [
         </span>
       </template>
     </div>
-    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 py-2 px-8 bg-base rounded-lg shadow-xl border-primary w-[340px] md:w-[390px]">
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 py-6 px-8 bg-base rounded-lg shadow-xl border-primary w-[340px] md:w-[420px]">
       <div class="flex justify-center mb-2">
         <img class="block" src="../../assets/logo_full.svg" alt="logo">
       </div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Qui illo placeat ex eveniet quidem, earum possimus excepturi expedita necessitatibus vitae vel cupiditate rerum dolore vero ad labore odio deserunt facilis.
+      <div class="text-center py-2">
+        <p>
+          Η εφαρμογή Stackiee προσφέρει έναν σύγχρονο, οργανωμένο χώρο για φοιτητική επικοινωνία και αλληλεπίδραση. Οι χρήστες μπορούν να δημοσιεύουν απορίες, να ανταλλάσσουν μηνύματα και να ενημερώνονται για τις εξελίξεις του τμήματος.
+          <br>
+          <br>
+          Αναπτύχθηκε στο πλαίσιο διπλωματικής εργασίας
+        </p><div class="flex justify-between pt-2">
+          <span class="font-bold">
+            Μαλούδης Απόστολος
+          </span>
+          <span class="font-bold">
+            Κουγιουμτζίδης Ιωάννης
+          </span>
+        </div>
+      </div>
       <button
         class="bg-base-orange w-full py-2 rounded-lg text-xl text-white hover:bg-base-orange-darker mt-4"
         @click="$auth.redirectToLogin"
