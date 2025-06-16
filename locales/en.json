@@ -40,6 +40,12 @@
   },
   "hello": "Hello",
   "joined": "Joined",
+  "login": {
+    "giannis": "Kougioumtzidis Ioannis",
+    "msg1": "The Stackiee app offers a modern, organised space for student communication and interaction. Users can post questions, exchange messages and keep up to date with departmental developments.",
+    "msg2": "Developed as part of a thesis project",
+    "tolis": "Maloudis Apostolos"
+  },
   "nav": {
     "announcements": "Announcements",
     "compose": "Compose",

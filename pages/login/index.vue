@@ -40,16 +40,17 @@ const codeSnippets = [
       </div>
       <div class="text-center py-2">
         <p>
-          Η εφαρμογή Stackiee προσφέρει έναν σύγχρονο, οργανωμένο χώρο για φοιτητική επικοινωνία και αλληλεπίδραση. Οι χρήστες μπορούν να δημοσιεύουν απορίες, να ανταλλάσσουν μηνύματα και να ενημερώνονται για τις εξελίξεις του τμήματος.
+          {{ $t('login.msg1') }}
           <br>
           <br>
-          Αναπτύχθηκε στο πλαίσιο διπλωματικής εργασίας
+          {{ $t('login.msg2') }}
         </p><div class="flex justify-between pt-2">
           <span class="font-bold">
-            Μαλούδης Απόστολος
+            {{ $t('login.tolis') }}
+
           </span>
           <span class="font-bold">
-            Κουγιουμτζίδης Ιωάννης
+            {{ $t('login.giannis') }}
           </span>
         </div>
       </div>

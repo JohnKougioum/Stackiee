@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="py-2 px-2 md:px-4 flex gap-2 md:gap-4 w-full h-fit" v-bind="$attrs">
+  <div class="py-2 px-2 md:px-4 flex gap-2 md:gap-3 w-full h-fit" v-bind="$attrs">
     <div class="flex flex-col gap-1 justify-start items-center">
       <Icon name="carbon:user-avatar-filled" size="45" />
       <StatusAffiliationTag :affiliation="user.eduPersonAffiliation" />

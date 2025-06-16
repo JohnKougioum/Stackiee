@@ -59,49 +59,30 @@ watch(selectedTabIndex, () => {
     </div>
     <div>
       <template v-if="isHydrated">
-        <CommonPaginator
-          v-model:page="page"
-          :items="items"
-          :pending="pending"
-          :next-page="nextPage"
-          :hide-user-icon="tabs[selectedTabIndex].hideUserIcon"
-          :min-size="tabs[selectedTabIndex].minItemSize"
-        >
-          <template #default="{ item, active, index }">
-            <DynamicScrollerItem
-              :item="item"
-              :active="active"
-              :size-dependencies="[
-                item,
-              ]"
-              :data-index="index"
-              tag="article"
-            >
-              <div class="py-2 border-b-2">
-                <PostCard v-if="tabs[selectedTabIndex].name === 'Posts'" class="!px-0 md:!px-4" :item="item" />
-                <div v-else class="flex flex-col items-center justify-between">
-                  <NuxtLink :to="`/status/${item.postId}?comment=${item.id}`" class="text-sm text-sky-700 italic">
-                    {{ $t('replyTo') }}
-                    <span class="capitalize">
+        <template v-if="tabs[selectedTabIndex].name === 'Posts'">
+          <div v-for="item in items" :key="item.id" class="py-2 border-b-2">
+            <PostCard class="!px-0 md:!px-4 borber-" :item="item" />
+          </div>
+        </template>
+        <template v-else>
+          <div v-for="item in items" :key="item.id" class="flex flex-col items-center justify-between py-2 border-b-2">
+            <NuxtLink :to="`/status/${item.postId}?comment=${item.id}`" class="text-sm text-sky-700 italic">
+              {{ $t('replyTo') }}
+              <span class="capitalize">
 
-                      {{ displayUsernameLocale(item?.postUsername?.fullName, item?.postUsername?.fullNameEL, true) }}
-                    </span>
-                  </NuxtLink>
-                  <div class="flex flex-col gap-1 mt-1">
-                    <div class="h-[.125rem] w-[1px] border-slate-600 border-[1px]" />
-                    <div class="h-[.125rem] w-[1px] border-slate-600 border-[1px]" />
-                    <div class="h-[.125rem] w-[1px] border-slate-600 border-[1px] " />
-                    <div class="h-2 w-[1px] border-slate-600 border-[1px]" />
-                  </div>
-                  <CommentMessage class="pt-1" :data="item" />
-                </div>
-              </div>
-            </DynamicScrollerItem>
-          </template>
-          <template v-if="tabs[selectedTabIndex].name === 'Comments'" #end-message>
-            <div />
-          </template>
-        </CommonPaginator>
+                {{ displayUsernameLocale(item?.postUsername?.fullName, item?.postUsername?.fullNameEL, true) }}
+              </span>
+            </NuxtLink>
+            <div class="flex flex-col gap-1 mt-1">
+              <div class="h-[.125rem] w-[1px] border-slate-600 border-[1px]" />
+              <div class="h-[.125rem] w-[1px] border-slate-600 border-[1px]" />
+              <div class="h-[.125rem] w-[1px] border-slate-600 border-[1px] " />
+              <div class="h-2 w-[1px] border-slate-600 border-[1px]" />
+            </div>
+            <CommentMessage class="pt-1" :data="item" />
+          </div>
+        </template>
+
         <template v-if="status !== 'pending' && error">
           <div class="text-center p-4 mt-10 text-xl">
             {{ $t('somethingWentWrong') }}

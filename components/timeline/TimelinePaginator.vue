@@ -14,7 +14,7 @@ const { filters } = storeToRefs(useFilters())
 
 let searchQueryHistory = props.searchQuery
 const filtersHistory = [...filters.value]
-const selectedSemesters = computed(() => filters.value.filter(item => item.length === 1))
+const selectedSemesters = computed(() => filters.value.filter(item => item.length <= 2))
 const selectedCourses = computed(() => filters.value.filter(item => item.length === 4))
 
 const posts = ref<PostData[]>([])
