@@ -98,4 +98,7 @@ export default defineNuxtConfig({
   },
   prisma: { autoSetupPrisma: true },
   compatibilityDate: '2025-03-17',
+  devtools: {
+    enabled: false,
+  },
 })
